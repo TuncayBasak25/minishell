@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:37:14 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/20 15:24:08 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:22:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	counts_word(char *s, char sep, char *ignored)
 	i = -1;
 	count = 0;
 	ignore = 0;
+	if (!s)
+		return (count);
 	while (s[++i])
 	{
 		j = -1;

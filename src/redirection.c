@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/23 22:56:18 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:58:10 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	file_redirection(int type, int *fd, char *cmd, int *i)
 	free(file);
 }
 
-int	redirection(t_pipeline *pipeline, char *cmd)
+int	redirection(t_cmd_group *pipeline, char *cmd)
 {
 	int		i;
 	int		redir;

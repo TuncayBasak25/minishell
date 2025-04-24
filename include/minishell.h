@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/20 18:58:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:30:29 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ typedef struct s_prompt
 	char	*user;
 	char	*host;
 	char	*pwd;
+	char	*prompt;
 }	t_prompt;
 
 typedef struct s_cmd
 {
+	char			*infile;
+	char			*outfile;
 	int				fd_in;
 	int				fd_out;
 	int				fd_pipe[2];
@@ -66,12 +69,21 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-typedef struct s_pipeline
+typedef struct s_cmd_group
 {
-	int			size;
+	int			count;
 	t_cmd		*cmd_list;
 	char		**path;
-}	t_pipeline;
+}	t_cmd_group;
+
+typedef struct s_shell
+{
+	char		**env;
+	t_string	user_input;
+	t_token		token;
+	t_prompt	prompt;
+	t_cmd_group	cmd_group;
+}	t_shell;
 
 //TAB
 char	**ft_inittab(int size);
@@ -79,10 +91,11 @@ void	*free_tab(char **tab);
 
 //PROMPT
 void	print_prompt(t_prompt *prompt, char **envp);
-int		valid_prompt(char *prompt);
+void	valid_prompt(t_shell *data);
+RESULT	prompt_handling(t_shell *data);
 
 //REDIRECTION
-int		redirection(t_pipeline *pipeline, char *cmd);
+int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
 RESULT	simple_command(char *cmd, t_i32 start, t_i32 end, char **envp);

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/23 16:27:25 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:36:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ __attribute__((cold)) TOKEN	get_next_token(char *cmd, t_i32 *i)
 	//printf("i : %d\n", *i);
 	return ((t_token){NONE, -1, 0});
 }
-void	create_pipeline(t_pipeline *pipeline)
+void	create_pipeline(t_cmd_group *pipeline)
 {
-	pipeline->size = 1;
-	pipeline->cmd_list = (t_cmd *)ft_calloc(pipeline->size + 1, sizeof(t_cmd));
+	pipeline->count = 1;
+	pipeline->cmd_list = (t_cmd *)ft_calloc(pipeline->count + 1, sizeof(t_cmd));
 	if (!pipeline->cmd_list)
 		return ;
 	pipeline->cmd_list->fd_in = 0;
@@ -54,74 +54,54 @@ void	create_pipeline(t_pipeline *pipeline)
 
 int	main(int argc, char const **argv, char **envp)
 {
-	t_string	line;
-	t_token		token;
 	t_i32		start;
 	t_i32		end;
-	t_prompt	prompt;
-	t_pipeline	pipeline;
 	char		**cmd;
 	int			i;
-	int			result_prompt;
+	t_shell		data;
 
 	(void)argc;
 	(void)argv;
-	create_pipeline(&pipeline);
+	create_pipeline(&data.cmd_group);
+	data.env = envp;
 	while (1)
 	{
 		i = 0;
 		end = -1;
-		print_prompt(&prompt, envp);
-		line.chars = readline("$ ");
-		if (!line.chars)
+		if (prompt_handling(&data))
 			break ;
-		if (*line.chars)
-			add_history(line.chars);
-		result_prompt = valid_prompt(line.chars);
-		if (result_prompt == '\n')
-		{
-			printf(WHITE"minishell: parse error near `\\n'\n"RESET);
-			free(line.chars);
-			continue ;
-		}
-		else if (result_prompt != 0)
-		{
-			printf(WHITE"minishell: parse error near `%c'\n"RESET, result_prompt);
-			free(line.chars);
-			continue ;
-		}
-		cmd = split_limited(line.chars, '|', "\'\"");
+		cmd = split_limited(data.user_input.chars, '|', "\'\"");
 		while (cmd && cmd[i])
 		{
 			start = 0;
 			printf(BRED"PIPE %d : %s\n"RESET, i + 1, cmd[i]);
-			token = get_next_token(cmd[i], &end);
-			while (token.type != NONE)
+			data.token = get_next_token(cmd[i], &end);
+			while (data.token.type != NONE)
 			{
-				if (token.type == AND)
+				if (data.token.type == AND)
 				{
 					if (simple_command(cmd[i], start, end, envp))
 						break ;
 				}
-				if (token.type == OR)
+				if (data.token.type == OR)
 				{
 					if (!simple_command(cmd[i], start, end, envp))
 						break ;
 				}
-				start = end + token.len;
-				token = get_next_token(cmd[i], &end);
+				start = end + data.token.len;
+				data.token = get_next_token(cmd[i], &end);
 			}
-			if (token.type == NONE)
+			if (data.token.type == NONE)
 			{
-				(void)redirection(&pipeline, cmd[i]);
+				(void)redirection(&data.cmd_group, cmd[i]);
 				if (!ft_strncmp(cmd[i], "cd", 2))
-					cd(cmd[i], &prompt);
+					cd(cmd[i], &data.prompt);
 				else if (ft_strncmp(cmd[i], "echo", 4) == 0)
 					echo(cmd[i], envp);
 				else if (ft_strncmp(cmd[i], "pwd", 3) == 0)
 					pwd();
 				else if (ft_strncmp(cmd[i], "exit", 4) == 0)
-					return (free(line.chars), free_tab(cmd), 0);
+					return (free(data.user_input.chars), free_tab(cmd), 0);
 				else if (simple_command(cmd[i], start, end, envp))
 					continue ;
 			}
@@ -129,8 +109,8 @@ int	main(int argc, char const **argv, char **envp)
 			i++;
 		}
 		free_tab(cmd);
-		printf("line: %s\n", line.chars);
-		free(line.chars);
+		printf("line: %s\n", data.user_input.chars);
+		free(data.user_input.chars);
 	}
 	return (0);
 }
