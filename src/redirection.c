@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/24 11:58:10 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/25 21:47:46 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	redirection(t_cmd_group *pipeline, char *cmd)
 	int		redir;
 
 	i = -1;
-	printf("redirection : %s\n", cmd);
 	while (cmd[++i] && cmd[i] != '&' && cmd[i] != '|')
 	{
 		redir = 0;

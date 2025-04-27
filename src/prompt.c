@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/24 13:08:08 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/25 18:46:05 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ int	verif_quote_prompt(char *prompt, int *i)
 
 int	verif_struct_prompt(char *prompt, int *i, char *operator, int *repeat)
 {
-	if (prompt[*i] == '<' || prompt[*i] == '>' || prompt[*i] == '|' || prompt[*i] == '&')
+	if (prompt[*i] == '<' || prompt[*i] == '>' || prompt[*i] == '|')
 	{
 		if (!*operator)
 			*operator = prompt[*i];
-		if (*operator == prompt[*i] && *repeat < 2)
+		if ((*operator == prompt[*i] && *repeat < 2 && (*operator == '<' || *operator == '>')) || \
+			(*operator == prompt[*i] && *repeat < 1 && *operator == '|'))
 			*repeat += 1;
-		else if ((*operator == '|' || *operator == '&') && (prompt[*i] == '<' || prompt[*i] == '>'))
+		else if (*operator == '|' && (prompt[*i] == '<' || prompt[*i] == '>'))
 		{
 			*operator = prompt[*i];
 			*repeat = 1;
@@ -87,8 +88,8 @@ int	verif_struct_prompt(char *prompt, int *i, char *operator, int *repeat)
 	}
 	else if (prompt[*i])
 	{
-		if (*operator == '&' && *repeat == 1)
-			return (*operator);
+		if (prompt[*i] == '&')
+			return (prompt[*i]);
 		*repeat = 0;
 		*operator = 0;
 	}
@@ -142,29 +143,29 @@ void	valid_prompt(t_shell *data)
 {
 	int	result_prompt;
 
-	result_prompt = verif_prompt(data->user_input.chars);
+	result_prompt = verif_prompt(data->prompt.user_input.chars);
 	if (result_prompt == '\n')
 	{
 		printf(WHITE"minishell: parse error near `\\n'\n"RESET);
-		free(data->user_input.chars);
-		data->user_input.chars = NULL;
+		free(data->prompt.user_input.chars);
+		data->prompt.user_input.chars = NULL;
 	}
 	else if (result_prompt != 0)
 	{
 		printf(WHITE"minishell: parse error near `%c'\n"RESET, result_prompt);
-		free(data->user_input.chars);
-		data->user_input.chars = NULL;
+		free(data->prompt.user_input.chars);
+		data->prompt.user_input.chars = NULL;
 	}
 }
 
 RESULT	prompt_handling(t_shell *data)
 {
 	print_prompt(&data->prompt, data->env);
-	data->user_input.chars = readline("$ ");
-	if (!data->user_input.chars)
+	data->prompt.user_input.chars = readline("$ ");
+	if (!data->prompt.user_input.chars)
 		return (FAIL);
-	if (data->user_input.chars)
-		add_history(data->user_input.chars);
+	if (data->prompt.user_input.chars)
+		add_history(data->prompt.user_input.chars);
 	valid_prompt(data);
 	return (SUCCESS);
 }

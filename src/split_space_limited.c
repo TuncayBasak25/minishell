@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_limited.c                                    :+:      :+:    :+:   */
+/*   split_space_limited.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 11:37:14 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/24 23:01:58 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/04/25 21:50:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "Libft/libft.h"
+
+static char	**ft_inittab(int size)
+{
+	char	**str;
+
+	str = (char **) ft_calloc(size + 1, sizeof(char *));
+	if (!(str))
+		return (NULL);
+	str[size] = NULL;
+	return (str);
+}
 
 static int	is_ignored(char c, char *ignored)
 {
@@ -29,31 +44,32 @@ static int	is_ignored(char c, char *ignored)
 static int	counts_word(char *s, char sep, char *ignored)
 {
 	int	i;
-	int	j;
 	int	count;
 	int	ignore;
+	int	in_word;
 
-	i = -1;
+	i = 0;
 	count = 0;
 	ignore = 0;
-	if (!s)
-		return (count);
-	while (s[++i])
+	in_word = 0;
+	while (s[i])
 	{
-		j = -1;
-		while (ignored[++j])
+		if (is_ignored(s[i], ignored) && !ignore)
+			ignore = s[i];
+		else if (s[i] == ignore)
+			ignore = 0;
+		if (!ignore && s[i] != sep && !in_word)
 		{
-			if (s[i] == ignored[j] && !ignore)
-				ignore = s[i];
-			else if (s[i] == ignored[j] && ignore)
-				ignore = 0;
-		}
-		if ((s[i] == sep && s[i + 1] != sep && s[i - 1] != sep && !ignore) \
-		|| !s[i + 1])
+			in_word = 1;
 			count++;
+		}
+		else if (!ignore && s[i] == sep)
+			in_word = 0;
+		i++;
 	}
 	return (count);
 }
+
 
 static char	*ft_wrdcpy(char **dest, const char *s, int size)
 {
@@ -64,30 +80,27 @@ static char	*ft_wrdcpy(char **dest, const char *s, int size)
 	return (*dest);
 }
 
-static int	split(char *str, char c, char *ignored)
+static int	split(char *str, char sep, char *ignored)
 {
-	int	end;
+	int	i;
 	int	ignore;
 
-	end = 0;
+	i = 0;
 	ignore = 0;
-	while (str[end])
+	while (str[i])
 	{
-		ignore = is_ignored(str[end], ignored);
-		while (ignore)
-		{
-			end += 1;
-			if (str[end] == ignore)
-				ignore = 0;
-		}
-		end += 1;
-		if (str[end] == c && str[end + 1] != c && str[end - 1] != c)
+		if (is_ignored(str[i], ignored) && !ignore)
+			ignore = str[i];
+		else if (str[i] == ignore)
+			ignore = 0;
+		if (!ignore && str[i] == sep)
 			break ;
+		i++;
 	}
-	return (end);
+	return (i);
 }
 
-char	**split_limited(char *str, char c, char *ignored)
+char	**split_space_limited(char *str, char c, char *ignored)
 {
 	int		start;
 	int		end;

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/24 12:30:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:02:35 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "includes.h"
 # include "colors.h"
+
+# define CHAR_MARKER 0x1F
 
 /**
  * @brief Tokens utilisés pour identifier les opérateurs de redirection et de
@@ -49,20 +51,23 @@ typedef struct s_token
 
 typedef struct s_prompt
 {
-	char	*home;
-	char	*user;
-	char	*host;
-	char	*pwd;
-	char	*prompt;
+	char		*home;
+	char		*user;
+	char		*host;
+	char		*pwd;
+	char		*prompt;
+	t_string	user_input;
 }	t_prompt;
 
 typedef struct s_cmd
 {
+	int				id;
 	char			*infile;
 	char			*outfile;
 	int				fd_in;
 	int				fd_out;
 	int				fd_pipe[2];
+	char			*line_cmd;
 	char			**command;
 	char			*custom_path;
 	struct s_cmd	*prev;
@@ -79,7 +84,6 @@ typedef struct s_cmd_group
 typedef struct s_shell
 {
 	char		**env;
-	t_string	user_input;
 	t_token		token;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
@@ -98,7 +102,7 @@ RESULT	prompt_handling(t_shell *data);
 int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
-RESULT	simple_command(char *cmd, t_i32 start, t_i32 end, char **envp);
+RESULT	simple_command(t_cmd *cmd, char **env);
 void	cd(char *str, t_prompt *info);
 void	echo(char *str, char **envp);
 void	pwd(void);
@@ -109,5 +113,9 @@ char	**find_path(char **envp);
 char	*find_custom_path(const char *cmd, char **paths);
 void	error(char *str);
 char	**split_limited(char *str, char c, char *ignored);
+char	**split_space_limited(char *str, char c, char *ignored);
+
+// COMMAND
+RESULT	get_all_command(t_shell *data);
 
 #endif
