@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/24 23:02:35 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:22:57 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
 RESULT	simple_command(t_cmd *cmd, char **env);
-void	cd(char *str, t_prompt *info);
+void	cd(char **str, t_prompt *info);
 void	echo(char *str, char **envp);
 void	pwd(void);
 

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/25 21:42:24 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:22:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char const **argv, char **envp)
 		{
 			printf(BRED"PIPE %d : %s\n"RESET, data.cmd_group.cmd_list->id, data.cmd_group.cmd_list->command[0]);
 			if (!ft_strncmp(*data.cmd_group.cmd_list->command, "cd", 2))
-				cd(*data.cmd_group.cmd_list->command, &data.prompt);
+				cd(data.cmd_group.cmd_list->command, &data.prompt);
 			else if (ft_strncmp(*data.cmd_group.cmd_list->command, "echo", 4) == 0)
 				echo(*data.cmd_group.cmd_list->command, envp);
 			else if (ft_strncmp(*data.cmd_group.cmd_list->command, "pwd", 3) == 0)
