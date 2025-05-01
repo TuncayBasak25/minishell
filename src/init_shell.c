@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/30 11:42:17 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 09:59:45 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/05/01 08:50:16 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/05/01 08:57:52 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	echo(char **str, char **env)
+void	init_struct_shell(t_shell *data)
 {
-	t_utils	utils;
-
-	utils.i = 0;
-	utils.j = 0;
-	(void) env;
-	while (str[++utils.i])
-	{
-		if (ft_strncmp(str[utils.i], "-n", 2) == 0)
-			utils.j = 1;
-		else
-			break ;
-	}
-	while (str[utils.i])
-	{
-		ft_putstr_fd(str[utils.i], 1);
-		if (str[utils.i + 1])
-			ft_putstr_fd(" ", 1);
-		utils.i++;
-	}
-	if (!utils.j)
-		ft_putstr_fd("\n", 1);
+	data->env = NULL;
+	data->prompt.user_input.chars = NULL;
+	data->prompt.user_input.len = 0;
+	data->prompt.user_input.buffer.ptr = NULL;
+	data->prompt.user_input.buffer.size = 0;
+	data->prompt.user = NULL;
+	data->prompt.home = NULL;
+	data->prompt.pwd = NULL;
+	data->prompt.host = NULL;
+	data->prompt.prompt = NULL;
+	data->cmd_group.count = 0;
+	data->cmd_group.cmd_list = NULL;
+	data->cmd_group.path = NULL;
 }

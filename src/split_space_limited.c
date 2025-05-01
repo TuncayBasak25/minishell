@@ -6,26 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/25 21:50:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 09:26:22 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include "Libft/libft.h"
-
-static char	**ft_inittab(int size)
-{
-	char	**str;
-
-	str = (char **) ft_calloc(size + 1, sizeof(char *));
-	if (!(str))
-		return (NULL);
-	str[size] = NULL;
-	return (str);
-}
+#include "../include/minishell.h"
 
 static int	is_ignored(char c, char *ignored)
 {
@@ -69,7 +54,6 @@ static int	counts_word(char *s, char sep, char *ignored)
 	}
 	return (count);
 }
-
 
 static char	*ft_wrdcpy(char **dest, const char *s, int size)
 {

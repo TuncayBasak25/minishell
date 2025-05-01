@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 08:26:03 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/03/29 16:40:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 08:06:07 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	**find_path(char **envp)
 
 	path = NULL;
 	i = -1;
+	if (!envp)
+		return (NULL);
 	while (envp[++i])
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
@@ -81,23 +83,24 @@ char	*find_custom_path(const char *cmd, char **paths)
 	char	*part_path;
 
 	i = -1;
-	while (paths[++i])
+	if (paths)
 	{
-		part_path = ft_strjoin(paths[i], "/");
-		if (!part_path)
-			return (NULL);
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (!path)
-			return (NULL);
-		a = access(path, F_OK);
-		if (!a)
-			return (path);
-		free(path);
+		while (paths[++i])
+		{
+			part_path = ft_strjoin(paths[i], "/");
+			if (!part_path)
+				return (NULL);
+			path = ft_strjoin(part_path, cmd);
+			free(part_path);
+			if (!path)
+				return (NULL);
+			a = access(path, F_OK);
+			if (!a)
+				return (path);
+			free(path);
+		}
 	}
 	path = ft_strdup(cmd);
-	if (!path)
-		return (NULL);
 	return (path);
 }
 
@@ -142,6 +145,8 @@ char	**find_path_info(char **envp, char *info, char sep)
 
 	path = NULL;
 	i = -1;
+	if (!envp)
+		return (NULL);
 	while (envp[++i])
 	{
 		if (!ft_strncmp(envp[i], info, ft_strlen(info)))

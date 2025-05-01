@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/28 19:22:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 09:55:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
  * @brief Tokens utilisés pour identifier les opérateurs de redirection et de
  * séparation de commandes.
  * 
- * Chaque token est associé à un caractère ou une séquence de caractères spécifique.
+ * Chaque token est associé à un caractère ou une séquence de caractères 
+ * spécifique.
  */
 typedef enum e_operateur
 {
@@ -41,13 +42,34 @@ typedef enum e_operateur
 	BACKSLASH
 }	t_operateur;
 
+typedef struct s_utils
+{
+	int			i;
+	int			j;
+	int			start;
+	int			end;
+	int			quote;
+	int			repeat;
+	int			result;
+	int			ignore;
+	bool		sq;
+	bool		dq;
+	char		operator;
+	char		*str;
+	char		*path;
+	char		*tmp;
+	char		**strs;
+	char		**tmps;
+	const char	*ptr;
+
+}	t_utils;
+
 typedef struct s_token
 {
 	t_operateur	type;
 	t_i32		index;
 	t_u32		len;
 }	t_token;
-# define TOKEN t_token __attribute__((warn_unused_result))
 
 typedef struct s_prompt
 {
@@ -89,22 +111,26 @@ typedef struct s_shell
 	t_cmd_group	cmd_group;
 }	t_shell;
 
+//INIT
+void	init_struct_shell(t_shell *data);
+
 //TAB
 char	**ft_inittab(int size);
 void	*free_tab(char **tab);
 
 //PROMPT
-void	print_prompt(t_prompt *prompt, char **envp);
-void	valid_prompt(t_shell *data);
+void	get_prompt(t_prompt *prompt, char **envp);
+void	build_prompt(t_prompt *prompt, char **envp);
+void	valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
 
 //REDIRECTION
 int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
-RESULT	simple_command(t_cmd *cmd, char **env);
+void	exec(t_shell *data);
 void	cd(char **str, t_prompt *info);
-void	echo(char *str, char **envp);
+void	echo(char **str, char **envp);
 void	pwd(void);
 
 // UTILS
@@ -116,6 +142,7 @@ char	**split_limited(char *str, char c, char *ignored);
 char	**split_space_limited(char *str, char c, char *ignored);
 
 // COMMAND
-RESULT	get_all_command(t_shell *data);
+t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);
+void	get_input_data(t_shell *data);
 
 #endif

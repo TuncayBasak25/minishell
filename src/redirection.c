@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/25 21:47:46 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:40:24 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	start_and_end(char *cmd, int *s, int *e)
 
 	quote = 0;
 	start = 0;
-	while (cmd[start] && (cmd[start] == ' ' || cmd[start] == '<' || cmd[start] == '>'))
+	while (cmd[start] && (cmd[start] == ' ' || \
+		cmd[start] == '<' || cmd[start] == '>'))
 		start++;
 	end = start + 1;
 	if (cmd[start] == '\"' || cmd[start] == '\'')
@@ -32,7 +33,8 @@ static void	start_and_end(char *cmd, int *s, int *e)
 	}
 	else
 	{
-		while (cmd[end] && cmd[end] != ' ' && cmd[end] != '<' && cmd[end] != '>')
+		while (cmd[end] && cmd[end] != ' ' && \
+			cmd[end] != '<' && cmd[end] != '>')
 			end++;
 	}
 	*s = start;
@@ -65,6 +67,32 @@ static void	file_redirection(int type, int *fd, char *cmd, int *i)
 	free(file);
 }
 
+static int	check_redirection(char *cmd, int *i)
+{
+	int	redir;
+
+	redir = 0;
+	if (cmd[*i] == '<')
+	{
+		redir = INPUT_REDIREC;
+		if (cmd[*i + 1] == '<')
+		{
+			redir = HERDOC;
+			*i += 1;
+		}
+	}
+	else if (cmd[*i] == '>')
+	{
+		redir = OUTPUT_REDIREC;
+		if (cmd[*i + 1] == '>')
+		{
+			redir = APPEND;
+			*i += 1;
+		}
+	}
+	return (redir);
+}
+
 int	redirection(t_cmd_group *pipeline, char *cmd)
 {
 	int		i;
@@ -73,25 +101,7 @@ int	redirection(t_cmd_group *pipeline, char *cmd)
 	i = -1;
 	while (cmd[++i] && cmd[i] != '&' && cmd[i] != '|')
 	{
-		redir = 0;
-		if (cmd[i] == '<')
-		{
-			redir = INPUT_REDIREC;
-			if (cmd[i + 1] == '<')
-			{
-				redir = HERDOC;
-				i++;
-			}
-		}
-		else if (cmd[i] == '>')
-		{
-			redir = OUTPUT_REDIREC;
-			if (cmd[i + 1] == '>')
-			{
-				redir = APPEND;
-				i++;
-			}
-		}
+		redir = check_redirection(cmd, &i);
 		if (!cmd[i])
 			break ;
 		if (redir == INPUT_REDIREC)

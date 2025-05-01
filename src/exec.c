@@ -6,19 +6,19 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/25 23:02:12 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:32:20 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-__attribute__((hot)) RESULT	simple_command(t_cmd *cmd, char **env)
+static void	simple_command(t_cmd *cmd, char **env)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
-		return (FAIL);
+		return ;
 	if (pid == 0)
 	{
 		if (execve(cmd->custom_path, cmd->command, env) == -1)
@@ -30,5 +30,29 @@ __attribute__((hot)) RESULT	simple_command(t_cmd *cmd, char **env)
 		}
 	}
 	waitpid(pid, NULL, 0);
-	return (SUCCESS);
+}
+
+void	exec(t_shell *data)
+{
+	printf(BRED"PIPE %d : %s\n"RESET, data->cmd_group.cmd_list->id, \
+		data->cmd_group.cmd_list->command[0]);
+	if (!ft_strncmp(*data->cmd_group.cmd_list->command, "cd", 2) && \
+		ft_strlen(*data->cmd_group.cmd_list->command) == 2)
+		cd(data->cmd_group.cmd_list->command, &data->prompt);
+	else if (!ft_strncmp(*data->cmd_group.cmd_list->command, "echo", 4) && \
+		ft_strlen(*data->cmd_group.cmd_list->command) == 4)
+		echo(data->cmd_group.cmd_list->command, data->env);
+	else if (!ft_strncmp(*data->cmd_group.cmd_list->command, "pwd", 3) && \
+		ft_strlen(*data->cmd_group.cmd_list->command) == 3)
+		pwd();
+	else if (!ft_strncmp(*data->cmd_group.cmd_list->command, "exit", 4) && \
+		ft_strlen(*data->cmd_group.cmd_list->command) == 4)
+	{
+		printf(BRED"exit\n"RESET);
+		free(data->prompt.user_input.chars);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		simple_command(data->cmd_group.cmd_list, data->env);
+	data->cmd_group.cmd_list = data->cmd_group.cmd_list->next;
 }

@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 15:24:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/04/20 15:25:10 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 09:28:35 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-__attribute__((cold)) char	**ft_inittab(int size)
+char	**ft_inittab(int size)
 {
 	char	**str;
 
@@ -23,7 +23,7 @@ __attribute__((cold)) char	**ft_inittab(int size)
 	return (str);
 }
 
-__attribute__((cold)) void	*free_tab(char **tab)
+void	*free_tab(char **tab)
 {
 	int	i;
 

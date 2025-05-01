@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 07:57:03 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/17 07:57:04 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/01 08:04:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s)
 	char	*dest;
 
 	i = -1;
+	if (!s)
+		return (NULL);
 	dest = (char *) ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!(dest))
 		return (NULL);
