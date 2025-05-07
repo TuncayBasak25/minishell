@@ -6,68 +6,89 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 10:47:32 by tbasak            #+#    #+#             */
-/*   Updated: 2025/03/21 11:45:03 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/07 13:33:42 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "core.h"
+#include "readline/readline.h"
+#include "readline/history.h"
+#include <printf.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <unistd.h>
 #include "terminal.h"
-#include "string.h"
-#include "fd.h"
-#include <stdio.h>
 
-#define BACK_SPACE '\x7F'
-#define UP "\033[A"
-#define DOWN "\033[B"
-#define RIGHT "\033[C"
-#define LEFT "\033[D"
 
-RESULT	push_input_until_endline(t_string *input)
+void	remove_from_history(t_cstr input)
 {
-	char	c;
-	t_u32	ignore;
+	t_i32		i;
+    HIST_ENTRY	**hist;
+	HIST_ENTRY	*entry;
 
-	c = 0;
-	while (TRUE)
+	hist = history_list();
+    if (!hist)
+		return ;
+	i = -1;
+    while (++i < history_length)
 	{
-		if (fd_read_to_buffer(FD_STDIN, &c, 1, &ignore) == FAIL)
-			return (fail(FNAME));
-		if (c == BACK_SPACE)
-		{
-			fd_write_cstring(FD_STDOUT, LEFT " " LEFT);//Move left, write space and move left again to erase one char
-			input->len--;//We remove the last char
-			continue ;//We keep reading
-		}
-		fd_write_char(FD_STDOUT, c);
-		if (c == '\n')
-			return (SUCCESS);
-		string_push_char(input, c);
-	}
-	return (SUCCESS);
+        if (strcmp(hist[i]->line, input) == 0) {
+            entry = remove_history(i);
+			if (entry)
+			{
+				free(entry->data);
+				free(entry->line);
+				free(entry);
+			}
+            break;
+        }
+    }
 }
 
-int	main()
+void	add_unique_history(t_cstr input)
 {
-	t_string	input;
-	t_i32		exit_status;
+	remove_from_history(input);
+	add_history(input);
+	free(input);
+}
 
-	if (term_enable_raw_mode() == FAIL)
-		return (fail("Unable to setup terminal in raw mode!"));
-	string_init(&input);
-	exit_status = 0;
+t_bool	g_sigint = FALSE;
+
+void	sigint_handler_readline(t_i32 sigid)
+{
+	(void)sigid;
+	write(1, "\n", 1);  // Print newline
+	rl_on_new_line();               // Move to new prompt line
+	rl_replace_line("", 0);        // Clear the current input
+	rl_redisplay(); 
+}
+
+void	sigint_handler_normal(t_i32 sigid)
+{
+	(void)sigid;
+	g_sigint = TRUE;
+}
+
+t_i32	main(void)
+{
 	while (TRUE)
 	{
-		if (push_input_until_endline(&input) == FAIL)
+		signal(SIGINT, sigint_handler_readline);
+		term_restore();
+		t_cstr	input = readline("$");
+		term_enable_raw_mode();
+		signal(SIGINT, sigint_handler_normal);
+		if (input == 0)
+			continue ;
+		if (strcmp(input, "exit") == 0)
 		{
-			exit_status = 1;
+			free(input);
 			break ;
 		}
-		fd_write_cstring(FD_STDOUT, "New command! [");
-		fd_write_string(FD_STDOUT, &input);
-		printf("] len[%u]\n\n", input.len);
-		input.len = 0;
+		printf("%s\n", input);
+		add_unique_history(input);
+		sleep(3);//Waitpid
 	}
-	string_destroy(&input);
-	if (term_restore() == FAIL)
-		return (fail("Unable to restore terminal to original state!"));
-	return (exit_status);
+	rl_clear_history();
 }

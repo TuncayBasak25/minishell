@@ -6,7 +6,7 @@
 #    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/03/25 10:15:48 by tbasak           ###   ########.fr        #
+#    Updated: 2025/05/07 11:27:09 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,7 @@ CFLAGS = -Wall -Wextra -Werror -I./include -I./util/include
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	@make -C util
-	$(CC) $(CFLAGS) $(OBJ) -L./util -lutil -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(NAME)
 
 all: $(NAME)
 
