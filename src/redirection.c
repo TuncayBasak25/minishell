@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 10:40:24 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:56:48 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	start_and_end(char *cmd, int *s, int *e)
 	*e = end;
 }
 
-static void	file_redirection(int type, int *fd, char *cmd, int *i)
+static char	*file_redirection(int type, int *fd, char *cmd, int *i)
 {
 	int		start;
 	int		end;
@@ -51,8 +51,7 @@ static void	file_redirection(int type, int *fd, char *cmd, int *i)
 	file = ft_substr(cmd, start, end - start);
 	*i += end;
 	if (!file)
-		return ;
-	printf("file : %s\n", file);
+		return (NULL);
 	if (*fd > 2)
 		close(*fd);
 	*fd = -1;
@@ -64,7 +63,7 @@ static void	file_redirection(int type, int *fd, char *cmd, int *i)
 		*fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (type == HERDOC)
 		*fd = open(file, O_RDONLY);
-	free(file);
+	return (file);
 }
 
 static int	check_redirection(char *cmd, int *i)
@@ -105,11 +104,14 @@ int	redirection(t_cmd_group *pipeline, char *cmd)
 		if (!cmd[i])
 			break ;
 		if (redir == INPUT_REDIREC)
-			file_redirection(redir, &pipeline->cmd_list->fd_in, &cmd[i], &i);
+			pipeline->cmd_list->infile = file_redirection(redir, \
+				&pipeline->cmd_list->fd_in, &cmd[i], &i);
 		else if (redir == HERDOC)
-			file_redirection(redir, &pipeline->cmd_list->fd_in, &cmd[i], &i);
+			pipeline->cmd_list->infile = file_redirection(redir, \
+				&pipeline->cmd_list->fd_in, &cmd[i], &i);
 		else if (redir == OUTPUT_REDIREC || redir == APPEND)
-			file_redirection(redir, &pipeline->cmd_list->fd_out, &cmd[i], &i);
+			pipeline->cmd_list->outfile = file_redirection(redir, \
+				&pipeline->cmd_list->fd_out, &cmd[i], &i);
 	}
 	return (0);
 }

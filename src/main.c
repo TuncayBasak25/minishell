@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 10:28:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:49:58 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,8 @@ int	main(int argc, char const **argv, char **envp)
 	while (1)
 	{
 		if (read_and_parse_input(&data))
-			break ;
-		while (data.cmd_group.cmd_list)
-			exec(&data);
-		printf("line: %s\n", data.prompt.user_input.chars);
+			continue ;
+		exec(&data, data.cmd_group.cmd_list, envp);
 		free(data.prompt.user_input.chars);
 	}
 	return (0);

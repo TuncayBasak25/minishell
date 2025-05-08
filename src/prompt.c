@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 07:33:37 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:38:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ RESULT	prompt_handling(t_shell *data)
 		return (FAIL);
 	if (data->prompt.user_input.chars && data->prompt.user_input.chars[0])
 		add_history(data->prompt.user_input.chars);
-	valid_input(data);
+	if (valid_input(data))
+	{
+		free(data->prompt.user_input.chars);
+		data->prompt.user_input.chars = NULL;
+		return (FAIL);
+	}
+	else
+		data->prompt.user_input.chars = \
+			expand_variables(data->prompt.user_input.chars);
 	return (SUCCESS);
 }

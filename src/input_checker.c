@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 09:27:43 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:11:25 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,23 @@ static int	input_checker(char *prompt)
 	return (0);
 }
 
-void	valid_input(t_shell *data)
+int	valid_input(t_shell *data)
 {
 	int	result_prompt;
 
 	result_prompt = input_checker(data->prompt.user_input.chars);
 	if (result_prompt == '\n')
 	{
-		printf(WHITE"minishell: parse error near `\\n'\n"RESET);
 		free(data->prompt.user_input.chars);
 		data->prompt.user_input.chars = NULL;
+		return (printf(WHITE"minishell: parse error near `\\n'\n"RESET));
 	}
 	else if (result_prompt != 0)
 	{
-		printf(WHITE"minishell: parse error near `%c'\n"RESET, result_prompt);
 		free(data->prompt.user_input.chars);
 		data->prompt.user_input.chars = NULL;
+		return (printf(WHITE"minishell: parse error near `%c'\n"RESET, \
+			result_prompt));
 	}
+	return (0);
 }

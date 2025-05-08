@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_command.c                                      :+:      :+:    :+:   */
+/*   get_input_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 08:58:32 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:33:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,34 +50,6 @@ static char	*trim_spaces(char *str)
 	while (end > start && *end == ' ')
 		*end-- = '\0';
 	return (ft_strdup(start));
-}
-
-void	remove_first_quote(char **tab)
-{
-	char	*s;
-	char	*pos;
-	char	*pos2;
-	char	quote;
-
-	while (*tab)
-	{
-		s = *tab;
-		pos = ft_strchr(s, '\'');
-		pos2 = ft_strchr(s, '"');
-		if (!pos || (pos2 && pos2 < pos))
-			pos = pos2;
-		if (!pos)
-		{
-			tab++;
-			continue ;
-		}
-		quote = *pos;
-		ft_memmove(pos, pos + 1, ft_strlen(pos));
-		pos = ft_strchr(pos, quote);
-		if (pos)
-			ft_memmove(pos, pos + 1, ft_strlen(pos));
-		tab++;
-	}
 }
 
 char	*get_command(char *input)
@@ -125,9 +97,7 @@ void	get_input_data(t_shell *data)
 		if (!utils.str)
 			return ((void) free_tab(utils.strs));
 		utils.tmps = split_space_limited(utils.str, ' ', "\'\"");
-		if (!utils.tmps)
-			return ((void) free(utils.str), (void) free_tab(utils.strs));
-		remove_first_quote(utils.tmps);
+		remove_all_quotes(utils.tmps);
 		data->cmd_group.cmd_list = init_struct_cmd(prev, utils.tmps, \
 			utils.str, data->cmd_group.path);
 		data->cmd_group.cmd_list->id = utils.i + 1;

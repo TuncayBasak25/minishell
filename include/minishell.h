@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 09:55:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:05:42 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "includes.h"
 # include "colors.h"
-
-# define CHAR_MARKER 0x1F
 
 /**
  * @brief Tokens utilisés pour identifier les opérateurs de redirection et de
@@ -58,6 +56,8 @@ typedef struct s_utils
 	char		*str;
 	char		*path;
 	char		*tmp;
+	char		*input;
+	char		*out;
 	char		**strs;
 	char		**tmps;
 	const char	*ptr;
@@ -121,17 +121,19 @@ void	*free_tab(char **tab);
 //PROMPT
 void	get_prompt(t_prompt *prompt, char **envp);
 void	build_prompt(t_prompt *prompt, char **envp);
-void	valid_input(t_shell *data);
+int		valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
 
 //REDIRECTION
 int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
-void	exec(t_shell *data);
+void	exec(t_shell *data, t_cmd *cmds, char **envp);
 void	cd(char **str, t_prompt *info);
 void	echo(char **str, char **envp);
 void	pwd(void);
+int		handle_missing_command_or_infile(t_cmd **cmds);
+void	replace_command_with_echo_n(t_cmd **cmds);
 
 // UTILS
 char	**find_path_info(char **envp, char *info, char sep);
@@ -140,6 +142,11 @@ char	*find_custom_path(const char *cmd, char **paths);
 void	error(char *str);
 char	**split_limited(char *str, char c, char *ignored);
 char	**split_space_limited(char *str, char c, char *ignored);
+void	remove_all_quotes(char **tab);
+bool	is_valid_var_char(char c);
+bool	is_single_quoted(const char *str, int i);
+int		append_string(char *out, int o, const char *val);
+char	*expand_variables(char *raw_input);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

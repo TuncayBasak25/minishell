@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 09:09:33 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:10:40 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	cd(char **str, t_prompt *info)
 	}
 	if (chdir(utils.path) == -1)
 	{
-		ft_putstr_fd("minishel: cd: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(utils.path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
