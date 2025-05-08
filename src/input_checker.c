@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/03 19:11:25 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:23:51 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	check_struct_input(char *prompt, int *i, char *op, int *repeat)
 	{
 		if (!*op)
 			*op = prompt[*i];
+		if (*repeat == 1 && prompt[*i - 1] == ' ' && (prompt[*i] == '>' || prompt[*i] == '<'))
+			return (prompt[*i]);
 		if ((*op == prompt[*i] && *repeat < 2 && (*op == '<' || *op == '>')) || \
 		(*op == prompt[*i] && *repeat < 1 && *op == '|'))
 			*repeat += 1;
@@ -44,7 +46,7 @@ static int	check_struct_input(char *prompt, int *i, char *op, int *repeat)
 		else
 			return (prompt[*i]);
 	}
-	else if (prompt[*i])
+	else if (prompt[*i] && prompt[*i] != ' ')
 	{
 		if (prompt[*i] == '&')
 			return (prompt[*i]);

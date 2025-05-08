@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 13:03:01 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:15:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 	{
 		if (cmds->prev || cmds->next)
 			return (replace_command_with_echo_n(&cmds), 0);
+		if (cmds->command[1])
+			cmds->command[1] = normalize_cd_args(cmds->command[1]);
 		return (cd(cmds->command, &data->prompt), 1);
 	}
 	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
