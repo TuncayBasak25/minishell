@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 15:16:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:38:53 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "includes.h"
 # include "colors.h"
+
+extern int	g_sig;
 
 /**
  * @brief Tokens utilisés pour identifier les opérateurs de redirection et de
@@ -133,6 +135,7 @@ char	*normalize_cd_args(char *str);
 void	cd(char **str, t_prompt *info);
 void	echo(char **str, char **envp);
 void	pwd(void);
+void	exit_minishell(t_shell *data, t_cmd *cmds);
 int		handle_missing_command_or_infile(t_cmd **cmds);
 void	replace_command_with_echo_n(t_cmd **cmds);
 

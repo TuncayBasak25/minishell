@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 14:23:51 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:02:05 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,29 @@ static int	check_quote_input(char *prompt, int *i)
 	return (0);
 }
 
-static int	check_struct_input(char *prompt, int *i, char *op, int *repeat)
+static int	check_struct_input(char *p, int *i, char *op, int *repeat)
 {
-	if (prompt[*i] == '<' || prompt[*i] == '>' || prompt[*i] == '|')
+	if (p[*i] == '<' || p[*i] == '>' || p[*i] == '|')
 	{
 		if (!*op)
-			*op = prompt[*i];
-		if (*repeat == 1 && prompt[*i - 1] == ' ' && (prompt[*i] == '>' || prompt[*i] == '<'))
-			return (prompt[*i]);
-		if ((*op == prompt[*i] && *repeat < 2 && (*op == '<' || *op == '>')) || \
-		(*op == prompt[*i] && *repeat < 1 && *op == '|'))
+			*op = p[*i];
+		if (*repeat == 1 && p[*i - 1] == ' ' && (p[*i] == '>' || p[*i] == '<'))
+			return (p[*i]);
+		if ((*op == p[*i] && *repeat < 2 && (*op == '<' || *op == '>')) || \
+		(*op == p[*i] && *repeat < 1 && *op == '|'))
 			*repeat += 1;
-		else if (*op == '|' && (prompt[*i] == '<' || prompt[*i] == '>'))
+		else if (*op == '|' && (p[*i] == '<' || p[*i] == '>'))
 		{
-			*op = prompt[*i];
+			*op = p[*i];
 			*repeat = 1;
 		}
 		else
-			return (prompt[*i]);
+			return (p[*i]);
 	}
-	else if (prompt[*i] && prompt[*i] != ' ')
+	else if (p[*i] && p[*i] != ' ')
 	{
-		if (prompt[*i] == '&')
-			return (prompt[*i]);
+		if (p[*i] == '&')
+			return (p[*i]);
 		*repeat = 0;
 		*op = 0;
 	}

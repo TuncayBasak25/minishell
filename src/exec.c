@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 15:15:56 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:01:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 	{
 		if (cmds->prev || cmds->next)
 			return (replace_command_with_echo_n(&cmds), 0);
-		free(data->prompt.user_input.chars);
-		exit(EXIT_SUCCESS);
+		exit_minishell(data, cmds);
+		return (1);
 	}
 	return (0);
 }

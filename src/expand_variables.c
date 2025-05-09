@@ -6,13 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 13:04:49 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:36:32 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	g_sig = 0;
 
 static int	handle_pid_exit(char *out, char next, int o)
 {

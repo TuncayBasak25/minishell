@@ -6,11 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 12:49:58 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:38:32 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	g_sig = 0;
 
 void	go_to_head(t_shell *data)
 {
