@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 15:16:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/10 04:52:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*normalize_cd_args(char *str)
 			ft_putstr_fd(ptr, 1);
 			ft_putstr_fd("\n", 1);
 		}
+		if (!ptr)
+			return (str);
 		free(str);
 		return (ptr);
 	}
