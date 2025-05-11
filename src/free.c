@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 18:24:40 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:54:37 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ static void	close_fd(t_cmd *cmd)
 		close(cmd->fd_in);
 	if (cmd->fd_out > 2)
 		close(cmd->fd_out);
-	if (cmd->fd_pipe[0] > 2)
-		close(cmd->fd_pipe[0]);
-	if (cmd->fd_pipe[1] > 2)
-		close(cmd->fd_pipe[1]);
 }
 
 static void	free_cmd(t_cmd_group *cmd_group)
@@ -59,14 +55,29 @@ static void	free_prompt(t_prompt *prompt)
 	free(prompt->pwd);
 	free(prompt->full_pwd);
 	free(prompt->prompt);
-	free(prompt->user_input.chars);
+	free(prompt->user_input);
+}
+
+char	**free_env(char **env, int len)
+{
+	int	i;
+
+	i = -1;
+	if (!env)
+		return (NULL);
+	while (++i < len)
+		free(env[i]);
+	free(env);
+	return (NULL);
 }
 
 void	free_shell(t_shell *data, int exit_prog)
 {
 	if (data->env && exit_prog)
 	{
-		data->env = free_tab(data->env);
+		data->env = free_env(data->env, data->env_len);
+		data->env_len = 0;
+		printf(WHITE"exit\n"RESET);
 		rl_clear_history();
 	}
 	free_cmd(&data->cmd_group);

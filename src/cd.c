@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 18:16:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:05:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ void	cd(t_shell *data, char **str, t_prompt *info)
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+		g_sig = 1;
 	}
 	else
+	{
 		update_var_env(data->env, "OLDPWD=", info->full_pwd);
+		g_sig = 0;
+	}
 	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 15:39:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 23:18:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 			return (replace_command_with_echo_n(&cmds), 0);
 		if (cmds->command[1])
 		{
+			if (cmds->command[2])
+				g_sig = 1;
 			if (cmds->command[2])
 				return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
 					RESET, 2), 1);
@@ -64,13 +66,16 @@ static void	exec_cmd(t_cmd *cmd, char **envp)
 		pwd();
 	else
 	{
-		execve(cmd->custom_path, cmd->command, envp);
-		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
-		ft_putstr_fd(*cmd->command, 2);
-		ft_putstr_fd("\n"RESET, 2);
-		exit(EXIT_FAILURE);
+		if (execve(cmd->custom_path, cmd->command, envp))
+		{
+			ft_putstr_fd(WHITE"minishell: command not found: ", 2);
+			ft_putstr_fd(*cmd->command, 2);
+			ft_putstr_fd("\n"RESET, 2);
+			g_sig = 127;
+			exit(g_sig);
+		}
 	}
-	exit(EXIT_SUCCESS);
+	exit(g_sig);
 }
 
 static void	fork_and_setup_pipeline_stage(t_cmd \

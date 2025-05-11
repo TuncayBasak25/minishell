@@ -6,21 +6,24 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 15:56:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:56:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	**copy_env(char **envp)
+char	**copy_env(t_shell *data, char **envp)
 {
 	int		i;
 	int		len;
 	char	**env_copy;
 
 	len = 0;
+	if (!envp)
+		return (NULL);
 	while (envp[len])
 		len++;
+	data->env_len = len;
 	env_copy = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!env_copy)
 		return (NULL);

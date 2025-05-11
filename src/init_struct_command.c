@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 08:19:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/03 22:19:56 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:42:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env)
 	cmd->outfile = NULL;
 	cmd->fd_in = 0;
 	cmd->fd_out = 1;
-	cmd->fd_pipe[0] = -1;
-	cmd->fd_pipe[1] = -1;
 	cmd->line_cmd = line;
 	cmd->command = command;
 	if (cmd->command)

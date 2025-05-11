@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/09 17:02:05 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:41:07 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,17 @@ int	valid_input(t_shell *data)
 {
 	int	result_prompt;
 
-	result_prompt = input_checker(data->prompt.user_input.chars);
+	result_prompt = input_checker(data->prompt.user_input);
 	if (result_prompt == '\n')
 	{
-		free(data->prompt.user_input.chars);
-		data->prompt.user_input.chars = NULL;
+		free(data->prompt.user_input);
+		data->prompt.user_input = NULL;
 		return (printf(WHITE"minishell: parse error near `\\n'\n"RESET));
 	}
 	else if (result_prompt != 0)
 	{
-		free(data->prompt.user_input.chars);
-		data->prompt.user_input.chars = NULL;
+		free(data->prompt.user_input);
+		data->prompt.user_input = NULL;
 		return (printf(WHITE"minishell: parse error near `%c'\n"RESET, \
 			result_prompt));
 	}

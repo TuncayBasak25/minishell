@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 17:04:50 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:40:41 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	get_input_data(t_shell *data)
 	t_cmd	*prev;
 
 	utils.i = -1;
-	utils.strs = split_limited(data->prompt.user_input.chars, '|', "\'\"");
+	utils.strs = split_limited(data->prompt.user_input, '|', "\'\"");
 	prev = NULL;
 	if (!utils.strs)
 		return ;

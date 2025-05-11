@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 18:20:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:53:41 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_prompt
 	char		*pwd;
 	char		*full_pwd;
 	char		*prompt;
-	t_string	user_input;
+	char		*user_input;
 }	t_prompt;
 
 typedef struct s_cmd
@@ -76,7 +76,6 @@ typedef struct s_cmd
 	char			*outfile;
 	int				fd_in;
 	int				fd_out;
-	int				fd_pipe[2];
 	char			*line_cmd;
 	char			**command;
 	char			*custom_path;
@@ -94,6 +93,7 @@ typedef struct s_cmd_group
 typedef struct s_shell
 {
 	char		**env;
+	int			env_len;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
 }	t_shell;
@@ -133,7 +133,7 @@ bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
 char	*expand_variables(char *raw_input);
-char	**copy_env(char **envp);
+char	**copy_env(t_shell *data, char **envp);
 void	update_var_env(char **env, char *key, char *value);
 char	*get_env(char **env, char *key);
 
