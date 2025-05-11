@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/10 04:52:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 14:38:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,12 @@ char	*normalize_cd_args(char *str)
 
 	if (!str)
 		return (str);
+	ptr = NULL;
 	if (str[0] == '-')
 	{
-		if (str[1] == '-')
-		{
+		if (str[1] == '-' && str[2] == '\0')
 			ptr = getenv("HOME");
-			ft_putstr_fd(ptr, 1);
-			ft_putstr_fd("\n", 1);
-		}
-		else
+		else if (str[1] == '\0')
 		{
 			ptr = getenv("OLDPWD");
 			ft_putstr_fd(ptr, 1);
@@ -42,29 +39,17 @@ char	*normalize_cd_args(char *str)
 
 void	cd(char **str, t_prompt *info)
 {
-	t_utils	utils;
+	char	*path;
 
-	utils.quote = 0;
-	utils.start = 0;
 	if (!str[1])
-		utils.path = ft_strdup(info->home);
+		path = ft_strdup(info->home);
 	else
-	{
-		utils.end = ft_strlen(str[1]);
-		if (str[1][utils.start] == '\'' || str[1][utils.start] == '\"')
-			utils.quote = str[1][utils.start++];
-		while (str[1][++utils.end] && (str[1][utils.end] != ' ' || utils.quote))
-		{
-			if (str[1][utils.end] == utils.quote)
-				break ;
-		}
-		utils.path = ft_substr(str[1], utils.start, utils.end - utils.start);
-	}
-	if (chdir(utils.path) == -1)
+		path = ft_substr(str[1], 0, ft_strlen(str[1]));
+	if (chdir(path) == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(utils.path, 2);
+		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
-	free(utils.path);
+	free(path);
 }
