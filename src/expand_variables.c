@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/09 14:36:32 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 01:07:42 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,32 @@ static int	handle_pid_exit(char *out, char next, int o)
 	return (o);
 }
 
-static int	handle_dollar(char *out, char *input, size_t *i, int o)
+static int	handle_dollar(t_utils *utils, char *input, size_t *i, int o)
 {
 	char	*var;
 	char	*val;
 
 	i[0]++;
 	if (input[i[0]] == '$' || input[i[0]] == '?')
-		return (handle_pid_exit(out, input[i[0]++], o));
+		return (handle_pid_exit(utils->out, input[i[0]++], o));
 	if (!is_valid_var_char(input[i[0]]))
 	{
-		out[o++] = '$';
+		utils->out[o++] = '$';
 		return (o);
 	}
 	i[1] = i[0];
 	while (is_valid_var_char(input[i[0]]))
 		i[0]++;
-	var = ft_substr(input, i[1], i[0] - i[1]);
-	if (!var)
+	utils->tmp = ft_substr(input, i[1], i[0] - i[1]);
+	if (!utils->tmp)
 		return (o);
-	val = getenv(var);
+	var = ft_strjoin(utils->tmp, "=");
+	free(utils->tmp);
+	val = get_env(utils->strs, var);
 	free(var);
 	if (val)
-		o = append_string(out, o, val);
+		o = append_string(utils->out, o, val);
+	free(val);
 	return (o);
 }
 
@@ -59,10 +62,11 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 
 	if (*i == 0 || utils->input[*i - 1] == ' ')
 	{
-		home = getenv("HOME");
+		home = get_env(utils->strs, "HOME=");
 		if (!sq && home)
 		{
 			o = append_string(utils->out, o, home);
+			free(home);
 			(*i)++;
 			return (o);
 		}
@@ -71,7 +75,7 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 	return (o);
 }
 
-char	*expand_variables(char *raw_input)
+char	*expand_variables(char **env, char *raw_input)
 {
 	t_utils	utils;
 	size_t	i[2];
@@ -81,12 +85,13 @@ char	*expand_variables(char *raw_input)
 	o = 0;
 	utils.input = raw_input;
 	utils.out = malloc(ft_strlen(raw_input) + 2000);
+	utils.strs = env;
 	if (!utils.out)
 		return (raw_input);
 	while (raw_input[i[0]])
 	{
 		if (raw_input[i[0]] == '$' && !is_single_quoted(raw_input, i[0]))
-			o = handle_dollar(utils.out, raw_input, i, o);
+			o = handle_dollar(&utils, raw_input, i, o);
 		else if (raw_input[i[0]] == '~')
 			o = handle_tilde(&utils, i, o, is_single_quoted(raw_input, i[0]));
 		else

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 20:53:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 00:58:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	*normalize_cd_args(char **env, char *str);
 void	cd(t_shell *data, char **str, t_prompt *info);
 void	echo(char **str, char **envp);
 void	pwd(void);
+void	environnement(char **env);
 void	exit_minishell(t_shell *data, t_cmd *cmds);
 int		handle_missing_command_or_infile(t_cmd **cmds);
 void	replace_command_with_echo_n(t_cmd **cmds);
@@ -132,7 +133,7 @@ void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
-char	*expand_variables(char *raw_input);
+char	*expand_variables(char **env, char *raw_input);
 char	**copy_env(t_shell *data, char **envp);
 void	update_var_env(char **env, char *key, char *value);
 char	*get_env(char **env, char *key);

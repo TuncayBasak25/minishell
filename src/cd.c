@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 21:05:13 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 00:48:39 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*normalize_cd_args(char **env, char *str)
 void	cd(t_shell *data, char **str, t_prompt *info)
 {
 	char	*path;
+	char	tmp[1024];
 
 	if (!str[1])
 		path = ft_strdup(info->home);
@@ -55,6 +56,7 @@ void	cd(t_shell *data, char **str, t_prompt *info)
 	else
 	{
 		update_var_env(data->env, "OLDPWD=", info->full_pwd);
+		update_var_env(data->env, "PWD=", getcwd(tmp, sizeof(tmp)));
 		g_sig = 0;
 	}
 	free(path);

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 23:18:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 00:42:54 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ static void	exec_cmd(t_cmd *cmd, char **envp)
 	else if (!ft_strncmp(*cmd->command, "pwd", 3) && \
 		ft_strlen(*cmd->command) == 3)
 		pwd();
+	else if (!ft_strncmp(*cmd->command, "env", 3) && \
+		ft_strlen(*cmd->command) == 3)
+		environnement(envp);
 	else
 	{
 		if (execve(cmd->custom_path, cmd->command, envp))
