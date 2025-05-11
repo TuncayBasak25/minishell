@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 11:56:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:26:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ static char	*file_redirection(int type, int *fd, char *cmd, int *i)
 
 	start_and_end(cmd, &start, &end);
 	file = ft_substr(cmd, start, end - start);
-	*i += end;
+	*i += end - 1;
 	if (!file)
 		return (NULL);
 	if (*fd > 2)
 		close(*fd);
 	*fd = -1;
-	if (type == INPUT_REDIREC)
+	if (type == INPUT)
 		*fd = open(file, O_RDONLY);
-	else if (type == OUTPUT_REDIREC)
+	else if (type == OUTPUT)
 		*fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == APPEND)
 		*fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -73,7 +73,7 @@ static int	check_redirection(char *cmd, int *i)
 	redir = 0;
 	if (cmd[*i] == '<')
 	{
-		redir = INPUT_REDIREC;
+		redir = INPUT;
 		if (cmd[*i + 1] == '<')
 		{
 			redir = HERDOC;
@@ -82,7 +82,7 @@ static int	check_redirection(char *cmd, int *i)
 	}
 	else if (cmd[*i] == '>')
 	{
-		redir = OUTPUT_REDIREC;
+		redir = OUTPUT;
 		if (cmd[*i + 1] == '>')
 		{
 			redir = APPEND;
@@ -103,13 +103,18 @@ int	redirection(t_cmd_group *pipeline, char *cmd)
 		redir = check_redirection(cmd, &i);
 		if (!cmd[i])
 			break ;
-		if (redir == INPUT_REDIREC)
+		if ((redir == INPUT || redir == HERDOC) && pipeline->cmd_list->infile)
+			free(pipeline->cmd_list->infile);
+		else if ((redir == OUTPUT || redir == APPEND) && \
+			pipeline->cmd_list->outfile)
+			free(pipeline->cmd_list->outfile);
+		if (redir == INPUT)
 			pipeline->cmd_list->infile = file_redirection(redir, \
 				&pipeline->cmd_list->fd_in, &cmd[i], &i);
 		else if (redir == HERDOC)
 			pipeline->cmd_list->infile = file_redirection(redir, \
 				&pipeline->cmd_list->fd_in, &cmd[i], &i);
-		else if (redir == OUTPUT_REDIREC || redir == APPEND)
+		else if (redir == OUTPUT || redir == APPEND)
 			pipeline->cmd_list->outfile = file_redirection(redir, \
 				&pipeline->cmd_list->fd_out, &cmd[i], &i);
 	}

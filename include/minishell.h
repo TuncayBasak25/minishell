@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/09 14:38:53 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:20:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,10 @@ extern int	g_sig;
 typedef enum e_operateur
 {
 	NONE,
-	INPUT_REDIREC,
-	OUTPUT_REDIREC,
+	INPUT,
+	OUTPUT,
 	HERDOC,
-	APPEND,
-	PIPE,
-	AND,
-	OR,
-	SIMPLE_QUOTE,
-	DOUBLE_QUOTE,
-	DOLLAR,
-	AMPERSAND,
-	BACKSLASH
+	APPEND
 }	t_operateur;
 
 typedef struct s_utils
@@ -66,19 +58,13 @@ typedef struct s_utils
 
 }	t_utils;
 
-typedef struct s_token
-{
-	t_operateur	type;
-	t_i32		index;
-	t_u32		len;
-}	t_token;
-
 typedef struct s_prompt
 {
 	char		*home;
 	char		*user;
 	char		*host;
 	char		*pwd;
+	char		*full_pwd;
 	char		*prompt;
 	t_string	user_input;
 }	t_prompt;
@@ -108,13 +94,9 @@ typedef struct s_cmd_group
 typedef struct s_shell
 {
 	char		**env;
-	t_token		token;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
 }	t_shell;
-
-//INIT
-void	init_struct_shell(t_shell *data);
 
 //TAB
 char	**ft_inittab(int size);
@@ -131,8 +113,8 @@ int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
 void	exec(t_shell *data, t_cmd *cmds, char **envp);
-char	*normalize_cd_args(char *str);
-void	cd(char **str, t_prompt *info);
+char	*normalize_cd_args(char **env, char *str);
+void	cd(t_shell *data, char **str, t_prompt *info);
 void	echo(char **str, char **envp);
 void	pwd(void);
 void	exit_minishell(t_shell *data, t_cmd *cmds);
@@ -151,9 +133,15 @@ bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
 char	*expand_variables(char *raw_input);
+char	**copy_env(char **envp);
+void	update_var_env(char **env, char *key, char *value);
+char	*get_env(char **env, char *key);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);
 void	get_input_data(t_shell *data);
+
+//FREE
+void	free_shell(t_shell *data, int exit_prog);
 
 #endif

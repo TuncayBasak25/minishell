@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 14:38:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:16:41 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*normalize_cd_args(char *str)
+char	*normalize_cd_args(char **env, char *str)
 {
 	char	*ptr;
 
@@ -22,10 +22,10 @@ char	*normalize_cd_args(char *str)
 	if (str[0] == '-')
 	{
 		if (str[1] == '-' && str[2] == '\0')
-			ptr = getenv("HOME");
+			ptr = get_env(env, "HOME=");
 		else if (str[1] == '\0')
 		{
-			ptr = getenv("OLDPWD");
+			ptr = get_env(env, "OLDPWD=");
 			ft_putstr_fd(ptr, 1);
 			ft_putstr_fd("\n", 1);
 		}
@@ -37,7 +37,7 @@ char	*normalize_cd_args(char *str)
 	return (str);
 }
 
-void	cd(char **str, t_prompt *info)
+void	cd(t_shell *data, char **str, t_prompt *info)
 {
 	char	*path;
 
@@ -51,5 +51,7 @@ void	cd(char **str, t_prompt *info)
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
+	else
+		update_var_env(data->env, "OLDPWD=", info->full_pwd);
 	free(path);
 }

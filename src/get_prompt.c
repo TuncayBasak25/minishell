@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 05:35:28 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 07:07:49 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 15:49:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ __attribute__((hot)) void	get_prompt(t_prompt *prompt, char **envp)
 	char	pwd[1024];
 	char	*tmp;
 
-	prompt->home = getenv("HOME");
-	prompt->user = getenv("USER");
+	prompt->home = get_env(envp, "HOME=");
+	prompt->user = get_env(envp, "USER=");
 	get_host(prompt, envp);
 	getcwd(pwd, sizeof(pwd));
+	prompt->full_pwd = ft_strdup(pwd);
 	lhome = ft_strlen(prompt->home);
 	lpwd = ft_strlen(pwd);
 	if (prompt->home && ft_strncmp(pwd, prompt->home, lhome) == 0)

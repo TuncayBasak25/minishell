@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/09 14:38:32 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:13:40 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ int	main(int argc, char const **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	init_struct_shell(&data);
-	data.env = envp;
+	data = (t_shell){0};
+	data.env = copy_env(envp);
 	while (1)
 	{
-		if (read_and_parse_input(&data))
-			continue ;
-		exec(&data, data.cmd_group.cmd_list, envp);
-		free(data.prompt.user_input.chars);
+		if (!read_and_parse_input(&data))
+			exec(&data, data.cmd_group.cmd_list, data.env);
+		free_shell(&data, 0);
 	}
 	return (0);
 }

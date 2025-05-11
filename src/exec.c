@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/10 05:07:22 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 15:39:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 			if (cmds->command[2])
 				return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
 					RESET, 2), 1);
-			cmds->command[1] = normalize_cd_args(cmds->command[1]);
+			cmds->command[1] = normalize_cd_args(data->env, cmds->command[1]);
 		}
-		return (cd(cmds->command, &data->prompt), 1);
+		return (cd(data, cmds->command, &data->prompt), 1);
 	}
 	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
 		ft_strlen(*cmds->command) == 4)

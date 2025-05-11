@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/10 04:55:22 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/11 16:30:25 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void	exit_is_digit_arg(t_shell *data, t_cmd *cmds)
 		ft_putstr_fd(cmds->command[1], 2);
 		ft_putstr_fd(": numeric argument required\n"RESET, 2);
 		g_sig = 2;
+		free_shell(data, 1);
 		exit(g_sig);
 	}
 }
@@ -91,8 +92,9 @@ void	exit_minishell(t_shell *data, t_cmd *cmds)
 		}
 		else
 			g_sig = (ft_atoi(cmds->command[1]) % 256 + 256) % 256;
+		free_shell(data, 1);
 		exit(g_sig);
 	}
-	free(data->prompt.user_input.chars);
+	free_shell(data, 1);
 	exit(EXIT_SUCCESS);
 }
