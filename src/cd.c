@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 03:06:19 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:07:47 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,31 @@ char	*normalize_cd_args(char **env, char *str, int env_len)
 	return (str);
 }
 
-void	cd(t_shell *data, char **str, t_prompt *info)
+static int	setup_cd(t_shell *data, char **strs)
+{
+	if (strs[1])
+	{
+		if (strs[2])
+			g_sig = 1;
+		if (strs[2])
+			return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
+				RESET, 2), FAIL);
+		strs[1] = normalize_cd_args(data->env, strs[1], data->env_len);
+	}
+	return (SUCCESS);
+}
+
+void	cd(t_shell *data, char **strs, t_prompt *info)
 {
 	char	*path;
 	char	tmp[1024];
 
-	if (!str[1])
+	if (setup_cd(data, strs))
+		return ;
+	if (!strs[1])
 		path = ft_strdup(info->home);
 	else
-		path = ft_substr(str[1], 0, ft_strlen(str[1]));
+		path = ft_substr(strs[1], 0, ft_strlen(strs[1]));
 	if (chdir(path) == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);

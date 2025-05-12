@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 03:05:50 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:31:00 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,16 @@ int		redirection(t_cmd_group *pipeline, char *cmd);
 //EXEC
 void	exec(t_shell *data, t_cmd *cmds);
 char	*normalize_cd_args(char **env, char *str, int env_len);
-void	cd(t_shell *data, char **str, t_prompt *info);
-void	echo(char **str, char **envp);
+void	cd(t_shell *data, char **strs, t_prompt *info);
+void	echo(char **strs);
 void	pwd(void);
 void	environnement(char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds);
 int		handle_missing_command_or_infile(t_cmd **cmds);
 void	replace_command_with_echo_n(t_cmd **cmds);
+int		is_builtin(char *cmd);
+void	built_in(t_shell *data, t_cmd *cmds);
+void	builtin_parent_process(t_shell *data, t_cmd *cmd);
 
 // UTILS
 char	**find_path_info(char **envp, char *info, char sep, int env_len);

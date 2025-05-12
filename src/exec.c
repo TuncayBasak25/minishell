@@ -6,40 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 03:11:28 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:30:20 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static int	built_in(t_shell *data, t_cmd *cmds)
-{
-	if (!ft_strncmp(*cmds->command, "cd", 2) && \
-		ft_strlen(*cmds->command) == 2)
-	{
-		if (cmds->prev || cmds->next)
-			return (replace_command_with_echo_n(&cmds), 0);
-		if (cmds->command[1])
-		{
-			if (cmds->command[2])
-				g_sig = 1;
-			if (cmds->command[2])
-				return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
-					RESET, 2), 1);
-			cmds->command[1] = normalize_cd_args(data->env, cmds->command[1], \
-				data->env_len);
-		}
-		return (cd(data, cmds->command, &data->prompt), 1);
-	}
-	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
-		ft_strlen(*cmds->command) == 4)
-	{
-		if (cmds->prev || cmds->next)
-			return (replace_command_with_echo_n(&cmds), 0);
-		return (exit_minishell(data, cmds), 1);
-	}
-	return (0);
-}
 
 static void	redir_io(t_cmd *cmd)
 {
@@ -55,21 +26,17 @@ static void	redir_io(t_cmd *cmd)
 	}
 }
 
-static void	exec_cmd(t_cmd *cmd, char **envp, int env_len)
+static void	exec_cmd(t_shell *data, t_cmd *cmd)
 {
 	redir_io(cmd);
-	if (!ft_strncmp(*cmd->command, "echo", 4) && \
-		ft_strlen(*cmd->command) == 4)
-		echo(cmd->command, envp);
-	else if (!ft_strncmp(*cmd->command, "pwd", 3) && \
-		ft_strlen(*cmd->command) == 3)
-		pwd();
-	else if (!ft_strncmp(*cmd->command, "env", 3) && \
-		ft_strlen(*cmd->command) == 3)
-		environnement(envp, env_len);
+	if (!is_builtin(cmd->command[0]))
+	{
+		built_in(data, cmd);
+		exit(g_sig);
+	}
 	else
 	{
-		if (execve(cmd->custom_path, cmd->command, envp))
+		if (execve(cmd->custom_path, cmd->command, data->env))
 		{
 			ft_putstr_fd(WHITE"minishell: command not found: ", 2);
 			ft_putstr_fd(*cmd->command, 2);
@@ -104,7 +71,7 @@ static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
-		exec_cmd(cmds, data->env, data->env_len);
+		exec_cmd(data, cmds);
 	}
 	if (prev_fd != -1)
 		close(prev_fd);
@@ -120,8 +87,9 @@ void	exec(t_shell *data, t_cmd *cmds)
 	{
 		if (handle_missing_command_or_infile(&cmds))
 			continue ;
-		if (built_in(data, cmds))
+		if (!cmds->prev && !cmds->next && !is_builtin(cmds->command[0]))
 		{
+			builtin_parent_process(data, cmds);
 			cmds = cmds->next;
 			continue ;
 		}
