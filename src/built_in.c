@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 15:30:19 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:39:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ int	is_builtin(char *cmd)
 	else if (!ft_strncmp(cmd, "cd", 2) && ft_strlen(cmd) == 2)
 		return (SUCCESS);
 	else if (!ft_strncmp(cmd, "pwd", 3) && ft_strlen(cmd) == 3)
+		return (SUCCESS);
+	else if (!ft_strncmp(cmd, "export", 6) && ft_strlen(cmd) == 6)
+		return (SUCCESS);
+	else if (!ft_strncmp(cmd, "unset", 5) && ft_strlen(cmd) == 5)
 		return (SUCCESS);
 	else if (!ft_strncmp(cmd, "env", 3) && ft_strlen(cmd) == 3)
 		return (SUCCESS);
@@ -38,6 +42,12 @@ void	built_in(t_shell *data, t_cmd *cmds)
 	else if (!ft_strncmp(*cmds->command, "pwd", 3) && \
 		ft_strlen(*cmds->command) == 3)
 		pwd();
+	else if (!ft_strncmp(*cmds->command, "export", 6) && \
+		ft_strlen(*cmds->command) == 6)
+		export(data, cmds->command[1]);
+	else if (!ft_strncmp(*cmds->command, "unset", 5) && \
+		ft_strlen(*cmds->command) == 5)
+		unset(data, cmds->command[1]);
 	else if (!ft_strncmp(*cmds->command, "env", 3) && \
 		ft_strlen(*cmds->command) == 3)
 		environnement(data->env, data->env_len);
