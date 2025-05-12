@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 15:07:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 01:42:45 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	cd(t_shell *data, char **strs, t_prompt *info)
 		path = ft_strdup(info->home);
 	else
 		path = ft_substr(strs[1], 0, ft_strlen(strs[1]));
-	if (chdir(path) == -1)
+	if (!path || chdir(path) == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
