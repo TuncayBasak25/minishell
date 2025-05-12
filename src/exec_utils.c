@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/08 13:03:11 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:55:06 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	replace_command_with_echo_n(t_cmd **cmds)
 	(*cmds)[0].command[2] = NULL;
 }
 
-int	handle_missing_command_or_infile(t_cmd **cmds)
+int	handle_missing_command_or_file(t_cmd **cmds)
 {
 	if (!(*cmds)->command || ((*cmds)->infile && \
 		access((*cmds)->infile, F_OK) == -1))
@@ -35,13 +35,8 @@ int	handle_missing_command_or_infile(t_cmd **cmds)
 				ft_putstr_fd((*cmds)->infile, 2);
 				ft_putstr_fd(": No such file or directory\n"RESET, 2);
 			}
-			replace_command_with_echo_n(cmds);
 		}
-		if (!(*cmds)->command)
-		{
-			*cmds = (*cmds)->next;
-			return (1);
-		}
+		replace_command_with_echo_n(cmds);
 	}
 	return (0);
 }
