@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 20:41:07 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:06:33 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_quote_input(char *prompt, int *i)
 
 static int	check_struct_input(char *p, int *i, char *op, int *repeat)
 {
-	if (p[*i] == '<' || p[*i] == '>' || p[*i] == '|')
+	if ((*op != '|' && (p[*i] == '<' || p[*i] == '>')) || p[*i] == '|')
 	{
 		if (!*op)
 			*op = p[*i];
