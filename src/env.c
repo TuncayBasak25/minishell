@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 00:43:09 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 03:05:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**copy_env(t_shell *data, char **envp)
 	return (env_copy);
 }
 
-void	update_var_env(char **env, char *key, char *value)
+void	update_var_env(char **env, char *key, char *value, int env_len)
 {
 	int		i;
 	char	*new_var;
@@ -46,8 +46,10 @@ void	update_var_env(char **env, char *key, char *value)
 	i = -1;
 	if (!env || !key || !value)
 		return ;
-	while (env[++i])
+	while (++i < env_len)
 	{
+		if (!env[i])
+			continue ;
 		if (!ft_strncmp(env[i], key, ft_strlen(key)))
 		{
 			free(env[i]);
@@ -58,7 +60,7 @@ void	update_var_env(char **env, char *key, char *value)
 	}
 }
 
-char	*get_env(char **env, char *key)
+char	*get_env(char **env, char *key, int env_len)
 {
 	int		i;
 	char	*value;
@@ -66,8 +68,10 @@ char	*get_env(char **env, char *key)
 	i = -1;
 	if (!env || !key)
 		return (NULL);
-	while (env[++i])
+	while (++i < env_len)
 	{
+		if (!env[i])
+			continue ;
 		if (!ft_strncmp(env[i], key, ft_strlen(key)))
 		{
 			value = ft_strdup(&env[i][ft_strlen(key)]);
@@ -77,14 +81,14 @@ char	*get_env(char **env, char *key)
 	return (NULL);
 }
 
-void	environnement(char **env)
+void	environnement(char **env, int env_len)
 {
 	int	i;
 
 	i = -1;
 	if (!env)
 		return ;
-	while (env[++i])
+	while (++i < env_len)
 	{
 		ft_putstr_fd(env[i], 1);
 		ft_putstr_fd("\n", 1);

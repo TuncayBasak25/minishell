@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 00:48:39 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 03:06:19 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*normalize_cd_args(char **env, char *str)
+char	*normalize_cd_args(char **env, char *str, int env_len)
 {
 	char	*ptr;
 
@@ -22,10 +22,10 @@ char	*normalize_cd_args(char **env, char *str)
 	if (str[0] == '-')
 	{
 		if (str[1] == '-' && str[2] == '\0')
-			ptr = get_env(env, "HOME=");
+			ptr = get_env(env, "HOME=", env_len);
 		else if (str[1] == '\0')
 		{
-			ptr = get_env(env, "OLDPWD=");
+			ptr = get_env(env, "OLDPWD=", env_len);
 			ft_putstr_fd(ptr, 1);
 			ft_putstr_fd("\n", 1);
 		}
@@ -55,8 +55,9 @@ void	cd(t_shell *data, char **str, t_prompt *info)
 	}
 	else
 	{
-		update_var_env(data->env, "OLDPWD=", info->full_pwd);
-		update_var_env(data->env, "PWD=", getcwd(tmp, sizeof(tmp)));
+		update_var_env(data->env, "OLDPWD=", info->full_pwd, data->env_len);
+		update_var_env(data->env, "PWD=", getcwd(tmp, sizeof(tmp)), \
+		data->env_len);
 		g_sig = 0;
 	}
 	free(path);

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 08:26:03 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/01 08:06:07 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 02:45:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
  * @warning	La fonction suppose que `envp` est un tableau valide terminé par 
  * 			`NULL`.
  */
-char	**find_path(char **envp)
+char	**find_path(char **envp, int env_len)
 {
 	int		i;
 	char	**path;
@@ -41,8 +41,10 @@ char	**find_path(char **envp)
 	i = -1;
 	if (!envp)
 		return (NULL);
-	while (envp[++i])
+	while (++i < env_len)
 	{
+		if (!envp[i])
+			continue ;
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
 			path = ft_split(envp[i] + 5, ':');
@@ -104,41 +106,7 @@ char	*find_custom_path(const char *cmd, char **paths)
 	return (path);
 }
 
-/**
- * @brief	Gère et affiche les erreurs survenues durant l'exécution du prog.
- *
- *	La fonction affiche un message d'erreur personnalisé selon le code d'erreur 
- *	fourni et termine proprement le programme après avoir libéré les ressources.
- *
- * @param pipe 	Pointeur vers la structure `t_pipe` contenant les données du 
- * 				pipeline. Peut être `NULL` si aucune structure n'a encore été 
- * 				allouée.
- * @param code	Code d'erreur décrivant l'origine du problème :
- * 				- `-1` : Format incorrect des arguments.
- *				- `0`, `1` : Impossible d'ouvrir un fichier (entrée ou sortie).
- *				- `2` : Échec de l'initialisation des structures.
- *				- `3` : Échec de la création d'un pipe.
- *				- `4` : Échec de la création d'un processus (fork).
- *				- `5` : Échec de l'exécution d'une commande (execve).
- *				- `6` : Échec lors de l'attente d'un processus (waitpid).
- *				- `7` : Échec lors d'une redirection de fichier (dup2).
- *				- Autre : Erreur générique.
- *
- * @note	La fonction appelle `ft_free_pipe()` si `pipe` n'est pas `NULL`, 
- * 			pour garantir que toutes les ressources (fichiers, mémoire, etc.) 
- * 			sont libérées avant la fin du programme.
- * 
- * @warning	Cette fonction termine toujours le programme avec 
- * 			`exit(EXIT_FAILURE)`.
- */
-void	error(char *str)
-{
-	perror(BRED"Error\033[0m"RESET);
-	if (str)
-		ft_putstr_fd(str, 2);
-}
-
-char	**find_path_info(char **envp, char *info, char sep)
+char	**find_path_info(char **envp, char *info, char sep, int env_len)
 {
 	int		i;
 	char	**path;
@@ -147,8 +115,10 @@ char	**find_path_info(char **envp, char *info, char sep)
 	i = -1;
 	if (!envp)
 		return (NULL);
-	while (envp[++i])
+	while (++i < env_len)
 	{
+		if (!envp[i])
+			continue ;
 		if (!ft_strncmp(envp[i], info, ft_strlen(info)))
 		{
 			path = ft_split(envp[i] + ft_strlen(info), sep);

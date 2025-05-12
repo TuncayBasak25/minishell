@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 01:07:42 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 02:11:51 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	handle_dollar(t_utils *utils, char *input, size_t *i, int o)
 		return (o);
 	var = ft_strjoin(utils->tmp, "=");
 	free(utils->tmp);
-	val = get_env(utils->strs, var);
+	val = get_env(utils->strs, var, utils->len);
 	free(var);
 	if (val)
 		o = append_string(utils->out, o, val);
@@ -62,7 +62,7 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 
 	if (*i == 0 || utils->input[*i - 1] == ' ')
 	{
-		home = get_env(utils->strs, "HOME=");
+		home = get_env(utils->strs, "HOME=", utils->len);
 		if (!sq && home)
 		{
 			o = append_string(utils->out, o, home);
@@ -75,7 +75,7 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 	return (o);
 }
 
-char	*expand_variables(char **env, char *raw_input)
+char	*expand_variables(char **env, char *raw_input, int env_len)
 {
 	t_utils	utils;
 	size_t	i[2];
@@ -86,6 +86,7 @@ char	*expand_variables(char **env, char *raw_input)
 	utils.input = raw_input;
 	utils.out = malloc(ft_strlen(raw_input) + 2000);
 	utils.strs = env;
+	utils.len = env_len;
 	if (!utils.out)
 		return (raw_input);
 	while (raw_input[i[0]])

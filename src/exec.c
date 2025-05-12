@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 00:42:54 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 03:11:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 			if (cmds->command[2])
 				return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
 					RESET, 2), 1);
-			cmds->command[1] = normalize_cd_args(data->env, cmds->command[1]);
+			cmds->command[1] = normalize_cd_args(data->env, cmds->command[1], \
+				data->env_len);
 		}
 		return (cd(data, cmds->command, &data->prompt), 1);
 	}
@@ -35,8 +36,7 @@ static int	built_in(t_shell *data, t_cmd *cmds)
 	{
 		if (cmds->prev || cmds->next)
 			return (replace_command_with_echo_n(&cmds), 0);
-		exit_minishell(data, cmds);
-		return (1);
+		return (exit_minishell(data, cmds), 1);
 	}
 	return (0);
 }
@@ -55,7 +55,7 @@ static void	redir_io(t_cmd *cmd)
 	}
 }
 
-static void	exec_cmd(t_cmd *cmd, char **envp)
+static void	exec_cmd(t_cmd *cmd, char **envp, int env_len)
 {
 	redir_io(cmd);
 	if (!ft_strncmp(*cmd->command, "echo", 4) && \
@@ -66,7 +66,7 @@ static void	exec_cmd(t_cmd *cmd, char **envp)
 		pwd();
 	else if (!ft_strncmp(*cmd->command, "env", 3) && \
 		ft_strlen(*cmd->command) == 3)
-		environnement(envp);
+		environnement(envp, env_len);
 	else
 	{
 		if (execve(cmd->custom_path, cmd->command, envp))
@@ -81,8 +81,8 @@ static void	exec_cmd(t_cmd *cmd, char **envp)
 	exit(g_sig);
 }
 
-static void	fork_and_setup_pipeline_stage(t_cmd \
-	*cmds, int *pipefd, int prev_fd, char **envp)
+static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
+	*cmds, int *pipefd, int prev_fd)
 {
 	pid_t	pid;
 
@@ -104,13 +104,13 @@ static void	fork_and_setup_pipeline_stage(t_cmd \
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
 		}
-		exec_cmd(cmds, envp);
+		exec_cmd(cmds, data->env, data->env_len);
 	}
 	if (prev_fd != -1)
 		close(prev_fd);
 }
 
-void	exec(t_shell *data, t_cmd *cmds, char **envp)
+void	exec(t_shell *data, t_cmd *cmds)
 {
 	int		pipefd[2];
 	int		prev_fd;
@@ -125,7 +125,7 @@ void	exec(t_shell *data, t_cmd *cmds, char **envp)
 			cmds = cmds->next;
 			continue ;
 		}
-		fork_and_setup_pipeline_stage(cmds, pipefd, prev_fd, envp);
+		fork_and_setup_pipeline_stage(data, cmds, pipefd, prev_fd);
 		if (cmds->next)
 		{
 			close(pipefd[1]);

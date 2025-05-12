@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 20:40:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 02:28:40 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	get_input_data(t_shell *data)
 	prev = NULL;
 	if (!utils.strs)
 		return ;
-	data->cmd_group.path = find_path(data->env);
+	data->cmd_group.path = find_path(data->env, data->env_len);
 	while (utils.strs[++utils.i])
 	{
 		utils.str = get_command(utils.strs[utils.i]);

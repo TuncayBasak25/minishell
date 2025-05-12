@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 00:58:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 03:05:50 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_utils
 {
 	int			i;
 	int			j;
+	int			len;
 	int			start;
 	int			end;
 	int			quote;
@@ -103,8 +104,7 @@ char	**ft_inittab(int size);
 void	*free_tab(char **tab);
 
 //PROMPT
-void	get_prompt(t_prompt *prompt, char **envp);
-void	build_prompt(t_prompt *prompt, char **envp);
+void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
 
@@ -112,31 +112,30 @@ RESULT	prompt_handling(t_shell *data);
 int		redirection(t_cmd_group *pipeline, char *cmd);
 
 //EXEC
-void	exec(t_shell *data, t_cmd *cmds, char **envp);
-char	*normalize_cd_args(char **env, char *str);
+void	exec(t_shell *data, t_cmd *cmds);
+char	*normalize_cd_args(char **env, char *str, int env_len);
 void	cd(t_shell *data, char **str, t_prompt *info);
 void	echo(char **str, char **envp);
 void	pwd(void);
-void	environnement(char **env);
+void	environnement(char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds);
 int		handle_missing_command_or_infile(t_cmd **cmds);
 void	replace_command_with_echo_n(t_cmd **cmds);
 
 // UTILS
-char	**find_path_info(char **envp, char *info, char sep);
-char	**find_path(char **envp);
+char	**find_path_info(char **envp, char *info, char sep, int env_len);
+char	**find_path(char **envp, int env_len);
 char	*find_custom_path(const char *cmd, char **paths);
-void	error(char *str);
 char	**split_limited(char *str, char c, char *ignored);
 char	**split_space_limited(char *str, char c, char *ignored);
 void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
-char	*expand_variables(char **env, char *raw_input);
+char	*expand_variables(char **env, char *raw_input, int env_len);
 char	**copy_env(t_shell *data, char **envp);
-void	update_var_env(char **env, char *key, char *value);
-char	*get_env(char **env, char *key);
+void	update_var_env(char **env, char *key, char *value, int env_len);
+char	*get_env(char **env, char *key, int env_len);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);
