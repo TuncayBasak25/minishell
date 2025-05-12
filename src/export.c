@@ -6,11 +6,16 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:50:40 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:45 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:40:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+static bool	is_valid_var_char_env(char c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
 
 static char	*get_var_key(char *var)
 {
@@ -68,6 +73,13 @@ void	export(t_shell *data, char *var)
 
 	if (!var || !*var)
 		return ;
+	if (is_valid_var_char_env(var[0]) == false)
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(var, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return ;
+	}
 	var_key = get_var_key(var);
 	if (!var_key)
 		return ;
