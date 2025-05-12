@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 18:48:31 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 01:31:40 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ char	**copy_env(t_shell *data, char **envp);
 void	update_var_env(char **env, char *key, char *value, int env_len);
 char	*get_env(char **env, char *key, int env_len);
 char	**resize_env(t_shell *data, int k);
+void	sort_and_print_tab(char **tab, int size);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

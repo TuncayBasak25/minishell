@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:50:40 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 19:40:13 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:02:10 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	export(t_shell *data, char *var)
 	char	*var_env;
 
 	if (!var || !*var)
-		return ;
+		return (sort_and_print_tab(data->env, data->env_len));
 	if (is_valid_var_char_env(var[0]) == false)
 	{
 		ft_putstr_fd("minishell: export: `", 2);
