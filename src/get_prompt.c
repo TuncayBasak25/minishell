@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 05:35:28 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 02:26:05 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:05:12 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,23 @@ __attribute__((hot)) static void	get_prompt(t_prompt *prompt, char **envp, \
 {
 	int		lhome;
 	int		lpwd;
-	char	pwd[1024];
 	char	*tmp;
 
 	prompt->home = get_env(envp, "HOME=", env_len);
 	prompt->user = get_env(envp, "USER=", env_len);
 	get_host(prompt, envp, env_len);
-	getcwd(pwd, sizeof(pwd));
-	prompt->full_pwd = ft_strdup(pwd);
+	prompt->full_pwd = getcwd(NULL, 0);
 	lhome = ft_strlen(prompt->home);
-	lpwd = ft_strlen(pwd);
-	if (prompt->home && ft_strncmp(pwd, prompt->home, lhome) == 0)
+	lpwd = ft_strlen(prompt->full_pwd);
+	if (prompt->home && prompt->full_pwd && \
+		ft_strncmp(prompt->full_pwd, prompt->home, lhome) == 0)
 	{
-		tmp = ft_substr(pwd, lhome, lpwd - lhome);
+		tmp = ft_substr(prompt->full_pwd, lhome, lpwd - lhome);
 		prompt->pwd = ft_strjoin("~", tmp);
 		free(tmp);
 	}
 	else
-		prompt->pwd = ft_strdup(pwd);
+		prompt->pwd = ft_strdup(prompt->full_pwd);
 }
 
 void	build_prompt(t_prompt *prompt, char **envp, int env_len)
