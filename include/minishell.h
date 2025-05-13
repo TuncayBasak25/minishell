@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 01:31:40 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 05:25:11 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ void	pwd(void);
 void	export(t_shell *data, char *var);
 void	unset(t_shell *data, char *var);
 void	environnement(char **env, int env_len);
-void	exit_minishell(t_shell *data, t_cmd *cmds);
+void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 int		handle_missing_command_or_file(t_cmd **cmds);
 void	replace_command_with_echo_n(t_cmd **cmds);
 int		is_builtin(char *cmd);
-void	built_in(t_shell *data, t_cmd *cmds);
+void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
 
 // UTILS
@@ -143,6 +143,7 @@ void	update_var_env(char **env, char *key, char *value, int env_len);
 char	*get_env(char **env, char *key, int env_len);
 char	**resize_env(t_shell *data, int k);
 void	sort_and_print_tab(char **tab, int size);
+void	restore_std_fds(int stdin_fd, int stdout_fd);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

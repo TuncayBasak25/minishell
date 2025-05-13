@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 17:39:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 05:25:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_builtin(char *cmd)
 	return (FAIL);
 }
 
-void	built_in(t_shell *data, t_cmd *cmds)
+void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 {
 	if (!ft_strncmp(*cmds->command, "echo", 4) && \
 		ft_strlen(*cmds->command) == 4)
@@ -53,7 +53,23 @@ void	built_in(t_shell *data, t_cmd *cmds)
 		environnement(data->env, data->env_len);
 	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
 		ft_strlen(*cmds->command) == 4)
-		exit_minishell(data, cmds);
+		exit_minishell(data, cmds, fd_in, fd_out);
+}
+
+void	restore_std_fds(int stdin_fd, int stdout_fd)
+{
+	if (stdin_fd > -1)
+	{
+		dup2(stdin_fd, STDIN_FILENO);
+		if (stdin_fd > 2)
+			close(stdin_fd);
+	}
+	if (stdout_fd > -1)
+	{
+		dup2(stdout_fd, STDOUT_FILENO);
+		if (stdout_fd > 2)
+			close(stdout_fd);
+	}
 }
 
 void	builtin_parent_process(t_shell *data, t_cmd *cmd)
@@ -69,11 +85,6 @@ void	builtin_parent_process(t_shell *data, t_cmd *cmd)
 		dup2(cmd->fd_in, STDIN_FILENO);
 	if (cmd->fd_out > 2)
 		dup2(cmd->fd_out, STDOUT_FILENO);
-	built_in(data, cmd);
-	if (cmd->fd_in > 2)
-		dup2(stdin_fd, STDIN_FILENO);
-	if (cmd->fd_out > 2)
-		dup2(stdout_fd, STDOUT_FILENO);
-	close(stdin_fd);
-	close(stdout_fd);
+	built_in(data, cmd, stdin_fd, stdout_fd);
+	restore_std_fds(stdin_fd, stdout_fd);
 }

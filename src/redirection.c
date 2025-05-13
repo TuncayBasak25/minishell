@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 18:26:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 05:32:22 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,34 @@ static void	start_and_end(char *cmd, int *s, int *e)
 	*e = end;
 }
 
+static int	create_heredoc_fd(char **delimiter)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
+		return (-1);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !ft_strcmp(line, *delimiter))
+			break ;
+		if (line)
+		{
+			ft_putstr_fd(line, fd);
+			ft_putstr_fd("\n", fd);
+		}
+		free(line);
+	}
+	free(line);
+	close(fd);
+	free(*delimiter);
+	*delimiter = ft_strdup(".heredoc_tmp");
+	fd = open(".heredoc_tmp", O_RDONLY);
+	return (fd);
+}
+
 static char	*file_redirection(int type, int *fd, char *cmd, int *i)
 {
 	int		start;
@@ -62,7 +90,7 @@ static char	*file_redirection(int type, int *fd, char *cmd, int *i)
 	else if (type == APPEND)
 		*fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (type == HERDOC)
-		*fd = open(file, O_RDONLY);
+		*fd = create_heredoc_fd(&file);
 	return (file);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 05:33:35 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/13 05:06:18 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	free_shell(t_shell *data, int exit_prog)
 		data->env_len = 0;
 		rl_clear_history();
 	}
+	if (access(".heredoc_tmp", F_OK) == 0)
+		unlink(".heredoc_tmp");
 	free_cmd(&data->cmd_group);
 	free_prompt(&data->prompt);
 	data->prompt = (t_prompt){0};
