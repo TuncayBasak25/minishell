@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 05:25:11 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:15:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
 
 // UTILS
-char	**find_path_info(char **envp, char *info, char sep, int env_len);
 char	**find_path(char **envp, int env_len);
 char	*find_custom_path(const char *cmd, char **paths);
 char	**split_limited(char *str, char c, char *ignored);
@@ -144,6 +143,8 @@ char	*get_env(char **env, char *key, int env_len);
 char	**resize_env(t_shell *data, int k);
 void	sort_and_print_tab(char **tab, int size);
 void	restore_std_fds(int stdin_fd, int stdout_fd);
+char	*extract_str_from_strs(char **strs, char *find, char sep, \
+	int strs_len);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

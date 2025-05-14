@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 05:35:28 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 15:05:12 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:31:38 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,20 @@
 __attribute__((cold)) void	get_host(t_prompt *prompt, char **envp, int env_len)
 {
 	int		i;
-	char	**host;
 
 	i = -1;
-	host = find_path_info(envp, "SESSION_MANAGER=local/", ':', env_len);
-	if (!host)
-	{
-		prompt->host = NULL;
+	prompt->host = extract_str_from_strs(envp, \
+		"SESSION_MANAGER=local/", ':', env_len);
+	if (!prompt->host)
 		return ;
-	}
-	while (host[0][++i])
+	while (prompt->host[++i])
 	{
-		if (host[0][i] == '.')
+		if (prompt->host[i] == '.')
 		{
-			host[0][i] = '\0';
+			prompt->host[i] = '\0';
 			break ;
 		}
 	}
-	prompt->host = ft_strdup(*host);
-	host = free_tab(host);
 }
 
 __attribute__((hot)) static void	get_prompt(t_prompt *prompt, char **envp, \

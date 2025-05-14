@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 08:26:03 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 02:45:56 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:15:32 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,26 +106,31 @@ char	*find_custom_path(const char *cmd, char **paths)
 	return (path);
 }
 
-char	**find_path_info(char **envp, char *info, char sep, int env_len)
+char	*extract_str_from_strs(char **strs, char *find, char sep, int strs_len)
 {
 	int		i;
-	char	**path;
+	int		j;
+	int		find_len;
+	char	*str_extract;
 
-	path = NULL;
 	i = -1;
-	if (!envp)
+	j = -1;
+	str_extract = NULL;
+	find_len = ft_strlen(find);
+	while (!strs)
 		return (NULL);
-	while (++i < env_len)
+	while (!str_extract && ++i < strs_len)
 	{
-		if (!envp[i])
+		if (!strs[i])
 			continue ;
-		if (!ft_strncmp(envp[i], info, ft_strlen(info)))
+		if (ft_strncmp(strs[i], find, find_len) == 0)
 		{
-			path = ft_split(envp[i] + ft_strlen(info), sep);
-			if (!path)
-				return (NULL);
-			break ;
+			while (strs[i][++j + find_len] && strs[i][j + find_len] != sep)
+				continue ;
+			if (!strs[i][j + find_len])
+				return (ft_strdup(""));
+			str_extract = ft_substr(strs[i], find_len, j);
 		}
 	}
-	return (path);
+	return (str_extract);
 }
