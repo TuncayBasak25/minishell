@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 18:41:14 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:13:33 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ typedef struct s_shell
 {
 	char		**env;
 	int			env_len;
+	int			status;
+	pid_t		pid_last;
+	pid_t		pid_wait;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
 }	t_shell;
@@ -147,6 +150,8 @@ void	sort_and_print_tab(char **tab, int size);
 void	restore_std_fds(int stdin_fd, int stdout_fd);
 char	*extract_str_from_strs(char **strs, char *find, char sep, \
 	int strs_len);
+int		extract_exit_code(int status);
+void	wait_exec(t_shell *data);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

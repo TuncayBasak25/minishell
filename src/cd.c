@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 01:42:45 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:19:21 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ static int	setup_cd(t_shell *data, char **strs)
 	if (strs[1])
 	{
 		if (strs[2])
+		{
 			g_sig = 1;
-		if (strs[2])
 			return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
 				RESET, 2), FAIL);
+		}
 		strs[1] = normalize_cd_args(data->env, strs[1], data->env_len);
 	}
 	return (SUCCESS);

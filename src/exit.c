@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 05:25:22 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:23:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 	}
 	restore_std_fds(fd_in, fd_out);
 	free_shell(data, 1);
-	exit(EXIT_SUCCESS);
+	g_sig = 0;
+	exit(g_sig);
 }

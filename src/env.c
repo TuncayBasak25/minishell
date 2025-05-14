@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 03:05:13 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:24:07 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	environnement(char **env, int env_len)
 	int	i;
 
 	i = -1;
+	g_sig = 0;
 	if (!env)
 		return ;
 	while (++i < env_len)
@@ -93,5 +94,4 @@ void	environnement(char **env, int env_len)
 		ft_putstr_fd(env[i], 1);
 		ft_putstr_fd("\n", 1);
 	}
-	g_sig = 0;
 }

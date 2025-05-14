@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 19:40:06 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:13:55 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,12 @@ static void	exec_cmd(t_shell *data, t_cmd *cmd)
 static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 	*cmds, int *pipefd, int prev_fd)
 {
-	pid_t	pid;
-
 	if (cmds->next && pipe(pipefd) == -1)
 		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
+	data->pid_last = fork();
+	if (data->pid_last == -1)
 		exit(EXIT_FAILURE);
-	if (pid == 0)
+	if (data->pid_last == 0)
 	{
 		if (prev_fd != -1)
 		{
@@ -101,6 +99,5 @@ void	exec(t_shell *data, t_cmd *cmds)
 		}
 		cmds = cmds->next;
 	}
-	while (wait(NULL) > 0 || errno != ECHILD)
-		;
+	wait_exec(data);
 }
