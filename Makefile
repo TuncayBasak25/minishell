@@ -6,7 +6,7 @@
 #    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/04/02 07:32:51 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/14 15:47:15 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,5 +86,10 @@ shell:
 	@echo ${BYELLOW}"[INFO] RUNNING MINISHELL..."${RESET}
 	@./$(NAME) || (echo ${BRED}"[ERROR] MINISHELL FAILED TO START !"${RESET} && exit 1)
 	@echo ${BYELLOW}"[INFO] MINISHELL TERMINATED."${RESET}
+
+valgrind:
+	@echo ${BYELLOW}"[INFO] RUNNING VALGRIND..."${RESET}
+	@valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes -s ./$(NAME) || (echo ${BRED}"[ERROR] VALGRIND FAILED !"${RESET} && exit 1)
+	@echo ${BYELLOW}"[INFO] VALGRIND TERMINATED."${RESET}
 
 .PHONY: all clean fclean re shell
