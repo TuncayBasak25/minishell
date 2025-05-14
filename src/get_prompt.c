@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 05:35:28 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 13:31:38 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:14:36 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ void	build_prompt(t_prompt *prompt, char **envp, int env_len)
 	prompt->prompt = ft_strjoin(tmp, "$ ");
 	free(tmp);
 	if (!prompt->prompt)
-		prompt->prompt = ft_strdup("minishell$ ");
+		prompt->prompt = ft_strdup(PROMPT_DEFAULT);
 }

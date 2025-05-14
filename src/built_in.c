@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 05:25:34 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:38:12 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	is_builtin(char *cmd)
 
 void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 {
+	if (!cmds->command)
+		return ;
 	if (!ft_strncmp(*cmds->command, "echo", 4) && \
 		ft_strlen(*cmds->command) == 4)
 		echo(cmds->command);

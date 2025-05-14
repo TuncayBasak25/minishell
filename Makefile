@@ -6,7 +6,7 @@
 #    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/14 15:47:15 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/14 18:40:53 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,4 +92,4 @@ valgrind:
 	@valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes -s ./$(NAME) || (echo ${BRED}"[ERROR] VALGRIND FAILED !"${RESET} && exit 1)
 	@echo ${BYELLOW}"[INFO] VALGRIND TERMINATED."${RESET}
 
-.PHONY: all clean fclean re shell
+.PHONY: all clean fclean re shell valgrind

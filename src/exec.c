@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/13 05:23:10 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:40:06 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,23 @@ static void	redir_io(t_cmd *cmd)
 static void	exec_cmd(t_shell *data, t_cmd *cmd)
 {
 	redir_io(cmd);
-	if (!is_builtin(cmd->command[0]))
+	if (!cmd->command || !is_builtin(cmd->command[0]))
 	{
+		g_sig = 0;
 		built_in(data, cmd, -1, -1);
+		free_shell(data, 1);
 		exit(g_sig);
 	}
 	else
 	{
-		if (execve(cmd->custom_path, cmd->command, data->env))
-		{
-			ft_putstr_fd(WHITE"minishell: command not found: ", 2);
-			ft_putstr_fd(*cmd->command, 2);
-			ft_putstr_fd("\n"RESET, 2);
-			g_sig = 127;
-			exit(g_sig);
-		}
+		execve(cmd->custom_path, cmd->command, data->env);
+		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
+		ft_putstr_fd(*cmd->command, 2);
+		ft_putstr_fd("\n"RESET, 2);
+		g_sig = 127;
+		free_shell(data, 1);
+		exit(g_sig);
 	}
-	exit(g_sig);
 }
 
 static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
@@ -85,9 +85,9 @@ void	exec(t_shell *data, t_cmd *cmds)
 	prev_fd = -1;
 	while (cmds)
 	{
-		if (handle_missing_command_or_file(&cmds))
-			continue ;
-		if (!cmds->prev && !cmds->next && !is_builtin(cmds->command[0]))
+		handle_missing_file(&cmds);
+		if (!cmds->prev && !cmds->next && (!cmds->command || \
+			!is_builtin(cmds->command[0])))
 		{
 			builtin_parent_process(data, cmds);
 			cmds = cmds->next;

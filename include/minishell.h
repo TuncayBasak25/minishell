@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 14:15:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:41:14 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "includes.h"
 # include "colors.h"
+
+# define PROMPT_DEFAULT "minishell$ "
+# define HEREDOC_FILE ".heredoc_tmp"
 
 extern int	g_sig;
 
@@ -30,7 +33,7 @@ typedef enum e_operateur
 	NONE,
 	INPUT,
 	OUTPUT,
-	HERDOC,
+	HEREDOC,
 	APPEND
 }	t_operateur;
 
@@ -121,8 +124,7 @@ void	export(t_shell *data, char *var);
 void	unset(t_shell *data, char *var);
 void	environnement(char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
-int		handle_missing_command_or_file(t_cmd **cmds);
-void	replace_command_with_echo_n(t_cmd **cmds);
+void	handle_missing_file(t_cmd **cmds);
 int		is_builtin(char *cmd);
 void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
