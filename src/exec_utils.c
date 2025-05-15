@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 04:36:04 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 06:01:23 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,14 @@ int	handle_missing_file(t_cmd **cmds)
 		ft_putstr_fd(": No such file or directory\n"RESET, 2);
 		if (!(*cmds)->prev || (*cmds)->command)
 			g_sig = 1;
-		if ((*cmds)->next)
+		else if ((*cmds)->prev && !(*cmds)->command)
 		{
+			g_sig = 0;
+			return (SUCCESS);
+		}
+		if ((*cmds)->next || ((*cmds)->prev && !(*cmds)->next))
+		{
+			g_sig = 1;
 			(*cmds)->command = free_tab((*cmds)->command);
 			return (SUCCESS);
 		}

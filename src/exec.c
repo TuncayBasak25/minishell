@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 04:39:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 06:12:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	exec_cmd(t_shell *data, t_cmd *cmd)
 	redir_io(cmd);
 	if (!cmd->command || !is_builtin(cmd->command[0]))
 	{
-		g_sig = 0;
 		built_in(data, cmd, -1, -1);
 		free_shell(data, 1);
 		exit(g_sig);
