@@ -6,19 +6,33 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 06:01:23 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:10:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	handle_missing_file(t_cmd **cmds)
+void	print_error_file(t_cmd *cmd)
 {
-	if (((*cmds)->infile && access((*cmds)->infile, F_OK) == -1))
+	if (access(cmd->infile, R_OK) == -1)
 	{
 		ft_putstr_fd(WHITE"minishell: ", 2);
-		ft_putstr_fd((*cmds)->infile, 2);
+		ft_putstr_fd(cmd->infile, 2);
+		ft_putstr_fd(": Permission denied\n"RESET, 2);
+	}
+	else if ((access(cmd->infile, F_OK) == -1))
+	{
+		ft_putstr_fd(WHITE"minishell: ", 2);
+		ft_putstr_fd(cmd->infile, 2);
 		ft_putstr_fd(": No such file or directory\n"RESET, 2);
+	}
+}
+
+int	handle_missing_file(t_cmd **cmds)
+{
+	if (((*cmds)->infile && access((*cmds)->infile, F_OK | R_OK) == -1))
+	{
+		print_error_file(*cmds);
 		if (!(*cmds)->prev || (*cmds)->command)
 			g_sig = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
