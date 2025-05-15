@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:19:21 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 12:59:57 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ char	*normalize_cd_args(char **env, char *str, int env_len)
 		else if (str[1] == '\0')
 		{
 			ptr = get_env(env, "OLDPWD=", env_len);
-			ft_putstr_fd(ptr, 1);
-			ft_putstr_fd("\n", 1);
+			if (ptr)
+			{
+				ft_putstr_fd(ptr, 1);
+				ft_putstr_fd("\n", 1);
+			}
 		}
 		if (!ptr)
 			return (str);
