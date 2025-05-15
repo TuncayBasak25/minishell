@@ -6,24 +6,32 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:47:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 04:36:04 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	handle_missing_file(t_cmd **cmds)
+int	handle_missing_file(t_cmd **cmds)
 {
 	if (((*cmds)->infile && access((*cmds)->infile, F_OK) == -1))
 	{
 		ft_putstr_fd(WHITE"minishell: ", 2);
 		ft_putstr_fd((*cmds)->infile, 2);
 		ft_putstr_fd(": No such file or directory\n"RESET, 2);
-		if (!(*cmds)->prev)
+		if (!(*cmds)->prev || (*cmds)->command)
 			g_sig = 1;
+		if ((*cmds)->next)
+		{
+			(*cmds)->command = free_tab((*cmds)->command);
+			return (SUCCESS);
+		}
+		*cmds = (*cmds)->next;
+		return (FAIL);
 	}
 	else
 		g_sig = 0;
+	return (SUCCESS);
 }
 
 int	extract_exit_code(int status)

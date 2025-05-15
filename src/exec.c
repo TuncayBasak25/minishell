@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:13:55 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 04:39:41 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	exec(t_shell *data, t_cmd *cmds)
 	prev_fd = -1;
 	while (cmds)
 	{
-		handle_missing_file(&cmds);
+		if (handle_missing_file(&cmds))
+			continue ;
 		if (!cmds->prev && !cmds->next && (!cmds->command || \
 			!is_builtin(cmds->command[0])))
 		{

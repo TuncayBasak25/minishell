@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:13:33 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 03:46:26 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	export(t_shell *data, char *var);
 void	unset(t_shell *data, char *var);
 void	environnement(char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
-void	handle_missing_file(t_cmd **cmds);
+int		handle_missing_file(t_cmd **cmds);
 int		is_builtin(char *cmd);
 void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
