@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 06:12:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:36:12 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,24 @@ static void	redir_io(t_cmd *cmd)
 	}
 }
 
+static void	print_error_exec(t_cmd *cmd)
+{
+	if (access(cmd->custom_path, F_OK) == -1)
+	{
+		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
+		ft_putstr_fd(*cmd->command, 2);
+		ft_putstr_fd("\n"RESET, 2);
+		g_sig = 127;
+	}
+	else
+	{
+		ft_putstr_fd(WHITE"minishell: ", 2);
+		ft_putstr_fd(cmd->custom_path, 2);
+		ft_putstr_fd(": Permission denied\n"RESET, 2);
+		g_sig = 126;
+	}
+}
+
 static void	exec_cmd(t_shell *data, t_cmd *cmd)
 {
 	redir_io(cmd);
@@ -38,10 +56,7 @@ static void	exec_cmd(t_shell *data, t_cmd *cmd)
 	else
 	{
 		execve(cmd->custom_path, cmd->command, data->env);
-		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
-		ft_putstr_fd(*cmd->command, 2);
-		ft_putstr_fd("\n"RESET, 2);
-		g_sig = 127;
+		print_error_exec(cmd);
 		free_shell(data, 1);
 		exit(g_sig);
 	}
