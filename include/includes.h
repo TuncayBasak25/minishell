@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:18:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 17:38:46 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:20:31 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <stdint.h>
 # include <stdbool.h>
 # include <limits.h>

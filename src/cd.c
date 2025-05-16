@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 15:11:46 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:27:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,28 @@ static int	setup_cd(t_shell *data, char **strs)
 
 void	print_error_cd(char *path)
 {
-	if (access(path, X_OK) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Permission denied\n"RESET, 2);
-	}
-	else if ((access(path, F_OK) == -1))
+	struct stat	buf;
+
+	if ((access(path, F_OK) == -1))
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	else if (stat(path, &buf) == 0)
+	{
+		if (S_ISDIR(buf.st_mode) == 0)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": Not a directory\n", 2);
+		}
+		else if (access(path, X_OK) == -1)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": Permission denied\n"RESET, 2);
+		}
 	}
 }
 
