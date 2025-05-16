@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 04:56:24 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:10:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ void	print_error_file(char *filename, int flag)
 	}
 }
 
-int	handle_outfile(t_cmd **cmds)
+int	handle_outfile(t_shell *data, t_cmd **cmds)
 {
 	if (((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1))
 	{
 		print_error_file((*cmds)->outfile, W_OK);
 		if (!(*cmds)->prev || (*cmds)->command)
-			g_sig = 1;
+			data->exit_status = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
 		{
-			g_sig = 1;
+			data->exit_status = 1;
 			return (SUCCESS);
 		}
 		if ((*cmds)->next || ((*cmds)->prev && !(*cmds)->next))
 		{
-			g_sig = 1;
+			data->exit_status = 1;
 			(*cmds)->command = free_tab((*cmds)->command);
 			return (SUCCESS);
 		}
@@ -50,25 +50,25 @@ int	handle_outfile(t_cmd **cmds)
 		return (FAIL);
 	}
 	else if ((*cmds)->outfile)
-		g_sig = 0;
+		data->exit_status = 0;
 	return (SUCCESS);
 }
 
-int	handle_infile(t_cmd **cmds)
+int	handle_infile(t_shell *data, t_cmd **cmds)
 {
 	if (((*cmds)->infile && access((*cmds)->infile, F_OK | R_OK) == -1))
 	{
 		print_error_file((*cmds)->infile, R_OK);
 		if (!(*cmds)->prev || (*cmds)->command)
-			g_sig = 1;
+			data->exit_status = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
 		{
-			g_sig = 0;
+			data->exit_status = 0;
 			return (SUCCESS);
 		}
 		if ((*cmds)->next || ((*cmds)->prev && !(*cmds)->next))
 		{
-			g_sig = 1;
+			data->exit_status = 1;
 			(*cmds)->command = free_tab((*cmds)->command);
 			return (SUCCESS);
 		}
@@ -76,7 +76,7 @@ int	handle_infile(t_cmd **cmds)
 		return (FAIL);
 	}
 	else if ((*cmds)->infile)
-		g_sig = 0;
+		data->exit_status = 0;
 	return (SUCCESS);
 }
 
@@ -95,7 +95,7 @@ void	wait_exec(t_shell *data)
 	while (data->pid_wait > 0)
 	{
 		if (data->pid_wait == data->pid_last)
-			g_sig = extract_exit_code(data->status);
+			data->exit_status = extract_exit_code(data->status);
 		data->pid_wait = waitpid(-1, &data->status, 0);
 	}
 }

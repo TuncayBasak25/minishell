@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 10:27:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:55:29 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	setup_cd(t_shell *data, char **strs)
 	{
 		if (strs[2])
 		{
-			g_sig = 1;
+			data->exit_status = 1;
 			return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
 				RESET, 2), FAIL);
 		}
@@ -96,14 +96,14 @@ void	cd(t_shell *data, char **strs, t_prompt *info)
 	if (!path || chdir(path) == -1)
 	{
 		print_error_cd(path);
-		g_sig = 1;
+		data->exit_status = 1;
 	}
 	else
 	{
 		update_var_env(data->env, "OLDPWD=", info->full_pwd, data->env_len);
 		update_var_env(data->env, "PWD=", getcwd(tmp, sizeof(tmp)), \
 		data->env_len);
-		g_sig = 0;
+		data->exit_status = 0;
 	}
 	free(path);
 }

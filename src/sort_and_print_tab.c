@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 23:49:19 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:21:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:16:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	print_export(char **strs, int size)
 	}
 }
 
-void	sort_and_print_tab(char **tab, int size)
+void	sort_and_print_tab(t_shell *data, char **tab, int size)
 {
 	int		i;
 	int		j;
@@ -83,5 +83,5 @@ void	sort_and_print_tab(char **tab, int size)
 	}
 	print_export(tmp, size);
 	free(tmp);
-	g_sig = 0;
+	data->exit_status = 0;
 }

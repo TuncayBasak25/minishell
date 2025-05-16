@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:23:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:01:38 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static void	exit_is_digit_arg(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		ft_putstr_fd(WHITE"minishell: exit: ", 2);
 		ft_putstr_fd(cmds->command[1], 2);
 		ft_putstr_fd(": numeric argument required\n"RESET, 2);
-		g_sig = 2;
+		data->exit_status = 2;
 		restore_std_fds(fd_in, fd_out);
 		free_shell(data, 1);
-		exit(g_sig);
+		exit(data->exit_status);
 	}
 }
 
@@ -88,17 +88,17 @@ void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		if (cmds->command[2])
 		{
 			ft_putstr_fd(WHITE"minishell: exit: too many arguments\n"RESET, 2);
-			g_sig = 1;
+			data->exit_status = 1;
 			return ;
 		}
 		else
-			g_sig = (ft_atoi(cmds->command[1]) % 256 + 256) % 256;
+			data->exit_status = (ft_atoi(cmds->command[1]) % 256 + 256) % 256;
 		restore_std_fds(fd_in, fd_out);
 		free_shell(data, 1);
-		exit(g_sig);
+		exit(data->exit_status);
 	}
 	restore_std_fds(fd_in, fd_out);
 	free_shell(data, 1);
-	g_sig = 0;
-	exit(g_sig);
+	data->exit_status = 0;
+	exit(data->exit_status);
 }

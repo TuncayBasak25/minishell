@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 18:38:12 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:08:14 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		return ;
 	if (!ft_strncmp(*cmds->command, "echo", 4) && \
 		ft_strlen(*cmds->command) == 4)
-		echo(cmds->command);
+		echo(data, cmds->command);
 	else if (!ft_strncmp(*cmds->command, "cd", 2) && \
 		ft_strlen(*cmds->command) == 2)
 		cd(data, cmds->command, &data->prompt);
 	else if (!ft_strncmp(*cmds->command, "pwd", 3) && \
 		ft_strlen(*cmds->command) == 3)
-		pwd();
+		pwd(data);
 	else if (!ft_strncmp(*cmds->command, "export", 6) && \
 		ft_strlen(*cmds->command) == 6)
 		export(data, cmds->command[1]);
@@ -52,7 +52,7 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		unset(data, cmds->command[1]);
 	else if (!ft_strncmp(*cmds->command, "env", 3) && \
 		ft_strlen(*cmds->command) == 3)
-		environnement(data->env, data->env_len);
+		environnement(data, data->env, data->env_len);
 	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
 		ft_strlen(*cmds->command) == 4)
 		exit_minishell(data, cmds, fd_in, fd_out);

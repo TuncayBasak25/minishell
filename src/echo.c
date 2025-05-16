@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:42:17 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 14:39:56 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:55:33 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	echo(char **strs)
+void	echo(t_shell *data, char **strs)
 {
 	t_utils	utils;
 
@@ -34,5 +34,5 @@ void	echo(char **strs)
 	}
 	if (!utils.j)
 		ft_putstr_fd("\n", 1);
-	g_sig = 0;
+	data->exit_status = 0;
 }

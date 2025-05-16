@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:24:07 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:08:18 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ char	*get_env(char **env, char *key, int env_len)
 	return (NULL);
 }
 
-void	environnement(char **env, int env_len)
+void	environnement(t_shell *data, char **env, int env_len)
 {
 	int	i;
 
 	i = -1;
-	g_sig = 0;
+	data->exit_status = 0;
 	if (!env)
 		return ;
 	while (++i < env_len)

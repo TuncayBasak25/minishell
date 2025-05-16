@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   find_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 07:34:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 12:56:16 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/05/16 11:55:07 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/05/16 11:55:27 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	pwd(t_shell *data)
+int	find_char(char *str, char c)
 {
-	char	pwd[1024];
+	int	i;
 
-	if (getcwd(pwd, sizeof(pwd)) != NULL)
+	i = 0;
+	while (str[i])
 	{
-		printf("%s\n", pwd);
-		data->exit_status = 0;
+		if (str[i] == c)
+			return (i);
+		i++;
 	}
-	else
-	{
-		perror("getcwd() error");
-		data->exit_status = 1;
-	}
+	return (0);
 }

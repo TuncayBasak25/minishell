@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:16:37 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 23:25:06 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:59:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	unset(t_shell *data, char *var)
 	char	*var_tmp;
 
 	i = -1;
-	g_sig = 0;
+	data->exit_status = 0;
 	if (!data->env || !var || !*var)
 		return ;
 	var_tmp = ft_strjoin(var, "=");
