@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 03:46:26 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 05:22:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ typedef struct s_utils
 	int			end;
 	int			quote;
 	int			repeat;
+	int			result_tmp;
 	int			result;
 	int			ignore;
+	int			fd;
 	bool		sq;
 	bool		dq;
 	char		operator;
@@ -55,6 +57,7 @@ typedef struct s_utils
 	char		*path;
 	char		*tmp;
 	char		*input;
+	char		*output;
 	char		*out;
 	char		**strs;
 	char		**tmps;
@@ -127,7 +130,8 @@ void	export(t_shell *data, char *var);
 void	unset(t_shell *data, char *var);
 void	environnement(char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
-int		handle_missing_file(t_cmd **cmds);
+int		handle_infile(t_cmd **cmds);
+int		handle_outfile(t_cmd **cmds);
 int		is_builtin(char *cmd);
 void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
@@ -152,6 +156,10 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 	int strs_len);
 int		extract_exit_code(int status);
 void	wait_exec(t_shell *data);
+void	start_and_end(char *cmd, int *s, int *e);
+char	*get_filename(char *cmd, int *i);
+int		get_fd(int type, char **file, int fd);
+int		create_heredoc_fd(char **delimiter);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

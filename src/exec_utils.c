@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/15 16:50:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 04:56:24 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	print_error_file(char *filename)
+void	print_error_file(char *filename, int flag)
 {
 	if ((access(filename, F_OK) == -1))
 	{
@@ -20,7 +20,7 @@ void	print_error_file(char *filename)
 		ft_putstr_fd(filename, 2);
 		ft_putstr_fd(": No such file or directory\n"RESET, 2);
 	}
-	else if (access(filename, R_OK) == -1)
+	else if (access(filename, flag) == -1)
 	{
 		ft_putstr_fd(WHITE"minishell: ", 2);
 		ft_putstr_fd(filename, 2);
@@ -28,11 +28,37 @@ void	print_error_file(char *filename)
 	}
 }
 
-int	handle_missing_file(t_cmd **cmds)
+int	handle_outfile(t_cmd **cmds)
+{
+	if (((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1))
+	{
+		print_error_file((*cmds)->outfile, W_OK);
+		if (!(*cmds)->prev || (*cmds)->command)
+			g_sig = 1;
+		else if ((*cmds)->prev && !(*cmds)->command)
+		{
+			g_sig = 1;
+			return (SUCCESS);
+		}
+		if ((*cmds)->next || ((*cmds)->prev && !(*cmds)->next))
+		{
+			g_sig = 1;
+			(*cmds)->command = free_tab((*cmds)->command);
+			return (SUCCESS);
+		}
+		*cmds = (*cmds)->next;
+		return (FAIL);
+	}
+	else if ((*cmds)->outfile)
+		g_sig = 0;
+	return (SUCCESS);
+}
+
+int	handle_infile(t_cmd **cmds)
 {
 	if (((*cmds)->infile && access((*cmds)->infile, F_OK | R_OK) == -1))
 	{
-		print_error_file((*cmds)->infile);
+		print_error_file((*cmds)->infile, R_OK);
 		if (!(*cmds)->prev || (*cmds)->command)
 			g_sig = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
@@ -49,7 +75,7 @@ int	handle_missing_file(t_cmd **cmds)
 		*cmds = (*cmds)->next;
 		return (FAIL);
 	}
-	else
+	else if ((*cmds)->infile)
 		g_sig = 0;
 	return (SUCCESS);
 }

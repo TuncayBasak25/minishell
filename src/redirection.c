@@ -6,42 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/14 17:17:51 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/16 05:22:45 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	start_and_end(char *cmd, int *s, int *e)
-{
-	int	start;
-	int	end;
-	int	quote;
-
-	quote = 0;
-	start = 0;
-	while (cmd[start] && (cmd[start] == ' ' || \
-		cmd[start] == '<' || cmd[start] == '>'))
-		start++;
-	end = start + 1;
-	if (cmd[start] == '\"' || cmd[start] == '\'')
-	{
-		quote = cmd[start];
-		start++;
-		while (cmd[end] && cmd[end] != quote)
-			end++;
-	}
-	else
-	{
-		while (cmd[end] && cmd[end] != ' ' && \
-			cmd[end] != '<' && cmd[end] != '>')
-			end++;
-	}
-	*s = start;
-	*e = end;
-}
-
-static int	create_heredoc_fd(char **delimiter)
+int	create_heredoc_fd(char **delimiter)
 {
 	int		fd;
 	char	*line;
@@ -67,31 +38,6 @@ static int	create_heredoc_fd(char **delimiter)
 	*delimiter = ft_strdup(HEREDOC_FILE);
 	fd = open(HEREDOC_FILE, O_RDONLY);
 	return (fd);
-}
-
-static char	*file_redirection(int type, int *fd, char *cmd, int *i)
-{
-	int		start;
-	int		end;
-	char	*file;
-
-	start_and_end(cmd, &start, &end);
-	file = ft_substr(cmd, start, end - start);
-	*i += end - 1;
-	if (!file)
-		return (NULL);
-	if (*fd > 2)
-		close(*fd);
-	*fd = -1;
-	if (type == INPUT)
-		*fd = open(file, O_RDONLY);
-	else if (type == OUTPUT)
-		*fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (type == APPEND)
-		*fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (type == HEREDOC)
-		*fd = create_heredoc_fd(&file);
-	return (file);
 }
 
 static int	check_redirection(char *cmd, int *i)
@@ -120,31 +66,68 @@ static int	check_redirection(char *cmd, int *i)
 	return (redir);
 }
 
+void	error_access_redirection(t_cmd_group *pipeline, char *cmd, \
+	t_utils *utils)
+{
+	while (cmd[++utils->i] && cmd[utils->i] != '&' && cmd[utils->i] != '|')
+	{
+		utils->result_tmp = check_redirection(cmd, &utils->i);
+		if (utils->result_tmp == HEREDOC)
+		{
+			utils->tmp = get_filename(&cmd[utils->i], &utils->i);
+			utils->fd = create_heredoc_fd(&utils->tmp);
+			free(utils->tmp);
+			close(utils->fd);
+		}
+	}
+	if (utils->result == INPUT)
+		pipeline->cmd_list->infile = ft_strdup(utils->str);
+	else if (utils->result == OUTPUT || utils->result == APPEND)
+		pipeline->cmd_list->outfile = ft_strdup(utils->str);
+	free(utils->str);
+}
+
+void	get_redirection(t_cmd_group *pipeline, t_utils *utils)
+{
+	if (utils->result == INPUT || utils->result == HEREDOC)
+	{
+		pipeline->cmd_list->fd_in = get_fd(utils->result, &utils->str, \
+			pipeline->cmd_list->fd_in);
+		pipeline->cmd_list->infile = ft_strdup(utils->str);
+	}
+	else if (utils->result == OUTPUT || utils->result == APPEND)
+	{
+		pipeline->cmd_list->fd_out = get_fd(utils->result, &utils->str, \
+			pipeline->cmd_list->fd_out);
+		pipeline->cmd_list->outfile = ft_strdup(utils->str);
+	}
+	free(utils->str);
+}
+
 int	redirection(t_cmd_group *pipeline, char *cmd)
 {
-	int		i;
-	int		redir;
+	t_utils	utils;
 
-	i = -1;
-	while (cmd[++i] && cmd[i] != '&' && cmd[i] != '|')
+	utils.i = -1;
+	utils.str = NULL;
+	while (cmd[++utils.i] && cmd[utils.i] != '&' && cmd[utils.i] != '|')
 	{
-		redir = check_redirection(cmd, &i);
-		if (!cmd[i])
+		utils.result_tmp = check_redirection(cmd, &utils.i);
+		while (utils.result_tmp == 0 && cmd[++utils.i])
+			utils.result_tmp = check_redirection(cmd, &utils.i);
+		if (!cmd[utils.i])
 			break ;
-		if ((redir == INPUT || redir == HEREDOC) && pipeline->cmd_list->infile)
-			free(pipeline->cmd_list->infile);
-		else if ((redir == OUTPUT || redir == APPEND) && \
-			pipeline->cmd_list->outfile)
-			free(pipeline->cmd_list->outfile);
-		if (redir == INPUT)
-			pipeline->cmd_list->infile = file_redirection(redir, \
-				&pipeline->cmd_list->fd_in, &cmd[i], &i);
-		else if (redir == HEREDOC)
-			pipeline->cmd_list->infile = file_redirection(redir, \
-				&pipeline->cmd_list->fd_in, &cmd[i], &i);
-		else if (redir == OUTPUT || redir == APPEND)
-			pipeline->cmd_list->outfile = file_redirection(redir, \
-				&pipeline->cmd_list->fd_out, &cmd[i], &i);
+		utils.str = get_filename(&cmd[utils.i], &utils.i);
+		utils.result = utils.result_tmp;
+		if ((utils.result == INPUT && access(utils.str, F_OK | R_OK) == -1) || \
+		((utils.result_tmp == OUTPUT || utils.result_tmp == APPEND) && \
+		access(utils.str, F_OK) == 0 && access(utils.str, W_OK) == -1))
+		{
+			error_access_redirection(pipeline, cmd, &utils);
+			break ;
+		}
+		else
+			get_redirection(pipeline, &utils);
 	}
 	return (0);
 }
