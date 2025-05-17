@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 14:43:56 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/17 15:13:09 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,6 @@ void	incomplete_env_start(t_shell *data, const char *prog_name)
 }
 
 int	g_sig = 0;
-
-void	sigquit_handler(sigid)
-{
-	(void)sigid;
-	printf("Hey");
-}
 
 int	main(int argc, char const **argv, char **envp)
 {

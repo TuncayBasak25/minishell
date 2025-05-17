@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 14:49:03 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/17 15:24:46 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,9 @@ void	get_input_data(t_shell *data);
 
 //FREE
 void	free_shell(t_shell *data, int exit_prog);
+
+void	sigint_prompt(int sigid);
+
+void	sigint_exec(int sigid);
 
 #endif
