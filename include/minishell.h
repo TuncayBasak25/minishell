@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 09:10:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:25:29 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ int		get_fd(int type, char **file, int fd);
 int		create_heredoc_fd(char **delimiter);
 int		find_char(char *str, char c);
 void	up_shlvl(t_shell *data, char **env, int env_len);
+char	*get_original_var(t_shell *data, char *var);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);
