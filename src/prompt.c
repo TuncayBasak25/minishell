@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 15:24:13 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/17 15:43:39 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ RESULT	prompt_handling(t_shell *data)
 	g_sig = 0;
 	signal(SIGINT, sigint_exec);
 	if (!data->prompt.user_input)
-		return (FAIL);
+	{
+		free_shell(data, 1);
+		exit(0);
+	}
 	if (data->prompt.user_input && data->prompt.user_input[0])
 		add_history(data->prompt.user_input);
 	if (valid_input(data))
