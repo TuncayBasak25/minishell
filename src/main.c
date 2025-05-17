@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 14:55:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:57:51 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	incomplete_env_start(t_shell *data, const char *prog_name)
 
 int	g_sig = 0;
 
-void	sigquit_handler(sigid)
+void	sigquit_handler(int sigid)
 {
 	(void)sigid;
 	printf("Hey");
