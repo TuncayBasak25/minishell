@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 13:26:34 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:47:48 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	incomplete_env_start(t_shell *data, const char *prog_name)
 	{
 		var_underscore = get_original_var(data, "_=");
 		if (!var_underscore)
-			export(data, "_=usr/bin/make");
+			export(data, "_=");
 		return (up_shlvl(data, data->env, data->env_len));
 	}
 	getcwd(pwd, sizeof(pwd));
