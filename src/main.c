@@ -6,9 +6,10 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 14:47:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:55:47 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minishell.h"
 
@@ -58,6 +59,14 @@ void	incomplete_env_start(t_shell *data, const char *prog_name)
 	free(var_underscore);
 }
 
+int	g_sig = 0;
+
+void	sigquit_handler(sigid)
+{
+	(void)sigid;
+	printf("Hey");
+}
+
 int	main(int argc, char const **argv, char **envp)
 {
 	t_shell		data;
@@ -67,6 +76,7 @@ int	main(int argc, char const **argv, char **envp)
 	data = (t_shell){0};
 	data.env = copy_env(&data, envp);
 	incomplete_env_start(&data, argv[0]);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		if (!read_and_parse_input(&data))

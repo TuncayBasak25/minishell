@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 13:25:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:49:03 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ int		valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
 
 //REDIRECTION
-int		redirection(t_cmd_group *pipeline, char *cmd);
+int		redirection(t_shell *data, char *cmd);
+
+extern int	g_sig;
 
 //EXEC
 void	exec(t_shell *data, t_cmd *cmds);
@@ -158,8 +160,8 @@ int		extract_exit_code(int status);
 void	wait_exec(t_shell *data);
 void	start_and_end(char *cmd, int *s, int *e);
 char	*get_filename(char *cmd, int *i);
-int		get_fd(int type, char **file, int fd);
-int		create_heredoc_fd(char **delimiter);
+int		get_fd(t_shell *data, int type, char **file, int fd);
+int		create_heredoc_fd(t_shell *data, char **delimiter);
 int		find_char(char *str, char c);
 void	up_shlvl(t_shell *data, char **env, int env_len);
 char	*get_original_var(t_shell *data, char *var);
