@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/12 02:28:40 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:39:56 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	get_input_data(t_shell *data)
 		data->cmd_group.cmd_list = init_struct_cmd(prev, utils.tmps, \
 			utils.str, data->cmd_group.path);
 		data->cmd_group.cmd_list->id = utils.i + 1;
-		(void) redirection(&data->cmd_group, utils.strs[utils.i]);
+		(void) redirection(data, utils.strs[utils.i]);
 		prev = data->cmd_group.cmd_list;
 	}
 	utils.strs = free_tab(utils.strs);

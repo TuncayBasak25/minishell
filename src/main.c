@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 09:03:09 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:25:13 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ RESULT	read_and_parse_input(t_shell *data)
 	return (SUCCESS);
 }
 
+int	g_sig = 0;
+
+void	sigquit_handler(sigid)
+{
+	(void)sigid;
+	printf("Hey");
+}
+
 int	main(int argc, char const **argv, char **envp)
 {
 	t_shell		data;
@@ -38,6 +46,7 @@ int	main(int argc, char const **argv, char **envp)
 	data = (t_shell){0};
 	data.env = copy_env(&data, envp);
 	up_shlvl(&data, data.env, data.env_len);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		if (!read_and_parse_input(&data))
