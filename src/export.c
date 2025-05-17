@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:50:40 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 13:17:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:25:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*get_var_key(char *var)
 	return (var_key);
 }
 
-static char	*get_original_var(t_shell *data, char *var)
+char	*get_original_var(t_shell *data, char *var)
 {
 	int		i;
 
