@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 13:10:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 03:52:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	print_error_exec(t_shell *data, t_cmd *cmd)
 	int	slash;
 
 	slash = find_char(cmd->custom_path, '/');
-	if (access(cmd->custom_path, F_OK) == -1 || \
+	if (!cmd->custom_path || access(cmd->custom_path, F_OK) == -1 || \
 	(access(cmd->custom_path, F_OK) == 0 && !slash))
 	{
 		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
@@ -59,7 +59,8 @@ static void	exec_cmd(t_shell *data, t_cmd *cmd)
 	}
 	else
 	{
-		execve(cmd->custom_path, cmd->command, data->env);
+		if (cmd->custom_path)
+			execve(cmd->custom_path, cmd->command, data->env);
 		print_error_exec(data, cmd);
 		free_shell(data, 1);
 		exit(data->exit_status);

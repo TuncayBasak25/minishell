@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 08:19:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/11 20:42:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 03:53:10 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env)
 	cmd->fd_out = 1;
 	cmd->line_cmd = line;
 	cmd->command = command;
-	if (cmd->command)
+	if (cmd->command && find_char(cmd->command[0], '/'))
+		cmd->custom_path = ft_strdup(cmd->command[0]);
+	else if (cmd->command)
 		cmd->custom_path = find_custom_path(command[0], env);
 	cmd->next = NULL;
 	cmd->prev = prev;
