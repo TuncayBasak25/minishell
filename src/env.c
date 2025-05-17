@@ -6,11 +6,37 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 13:08:18 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:09:39 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	up_shlvl(t_shell *data, char **env, int env_len)
+{
+	int		i;
+	char	*shlvl;
+	char	*new_shlvl;
+
+	i = -1;
+	if (!env)
+		return ;
+	while (++i < env_len)
+	{
+		if (!ft_strncmp(env[i], "SHLVL=", 6))
+		{
+			shlvl = ft_strdup(&env[i][6]);
+			new_shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+			free(shlvl);
+			free(env[i]);
+			env[i] = ft_strjoin("SHLVL=", new_shlvl);
+			free(new_shlvl);
+			return ;
+		}
+	}
+	if (i == env_len)
+		export(data, "SHLVL=1");
+}
 
 char	**copy_env(t_shell *data, char **envp)
 {

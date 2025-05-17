@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 13:16:38 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:03:09 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char const **argv, char **envp)
 	(void)argv;
 	data = (t_shell){0};
 	data.env = copy_env(&data, envp);
+	up_shlvl(&data, data.env, data.env_len);
 	while (1)
 	{
 		if (!read_and_parse_input(&data))
