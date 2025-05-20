@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 15:24:46 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 07:50:43 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ typedef enum e_operateur
 	HEREDOC,
 	APPEND
 }	t_operateur;
+
+typedef enum e_result
+{
+	SUCCESS,
+	FAIL
+}	t_result;
+# define RESULT t_result
 
 typedef struct s_utils
 {

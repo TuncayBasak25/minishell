@@ -3,21 +3,28 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
+#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/14 18:40:53 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/20 08:29:21 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = $(shell find src -name "*.c")
+vpath %.c src/
+SRC = built_in.c cd.c create_heredoc.c echo.c env.c exec_utils.c \
+	exec.c exit.c expand_variables_utils.c expand_variables.c export.c \
+	find_char.c free.c get_input_data.c get_prompt.c handlers.c \
+	init_struct_command.c input_checker.c main.c prompt.c pwd.c \
+	redirection_utils.c redirection.c remove_all_quotes.c \
+	sort_and_print_tab.c split_limited.c split_space_limited.c \
+	tab.c unset.c utils.c
 
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./include -I./util/include
+CFLAGS = -Wall -Wextra -Werror -I./include -I./Libft
 
 #				Réinitialisation
 RESET=			"\033[0m"
@@ -61,9 +68,9 @@ BG_BWHITE=		"\033[107m"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	@make -C util || (echo ${BRED}"[ERROR] COMPILATION FAILED !"${RESET} && exit 1)
+	@make -C Libft || (echo ${BRED}"[ERROR] COMPILATION FAILED !"${RESET} && exit 1)
 	@echo ${BYELLOW}"[INFO] COMPILING MINISHELL..."${RESET}
-	@$(CC) $(CFLAGS) $(OBJ) -L./util -lutil -o $(NAME) -lreadline || (echo ${BRED}"[ERROR] COMPILATION FAILED !"${RESET} && exit 1)
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L./Libft -lft -lreadline || (echo ${BRED}"[ERROR] COMPILATION FAILED !"${RESET} && exit 1)
 	@echo ${BGREEN}"[SUCCESS] MINISHELL COMPILED."${RESET}
 
 all: $(NAME)
@@ -74,7 +81,7 @@ clean:
 	@echo ${BGREEN}"[SUCCESS] OBJECTS CLEANED."${RESET}
 
 fclean: clean
-	@make -C util fclean
+	@make -C Libft fclean
 	@echo ${BYELLOW}"[INFO] CLEANING EXECUTABLE..."${RESET}
 	@rm -f $(NAME) || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
 	@echo ${BGREEN}"[SUCCESS] EXECUTABLE CLEANED."${RESET}

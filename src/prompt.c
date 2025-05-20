@@ -6,11 +6,11 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 15:43:39 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 08:26:19 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 RESULT	prompt_handling(t_shell *data)
 {

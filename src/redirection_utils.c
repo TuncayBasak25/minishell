@@ -6,11 +6,11 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 05:18:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 13:57:16 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 08:27:24 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	start_and_end(char *cmd, int *s, int *e)
 {

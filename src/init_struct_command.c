@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 08:19:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 03:53:10 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:26:05 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env)
 {

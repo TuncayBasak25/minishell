@@ -6,12 +6,12 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 15:27:14 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 08:26:14 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	go_to_head(t_shell *data)
 {

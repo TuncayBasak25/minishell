@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sort_and_print_tab.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 23:49:19 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 13:16:56 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:23:25 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static char	**alias_ptr_tab(char **tab, int size)
 {

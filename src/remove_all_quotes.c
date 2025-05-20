@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   remove_all_quotes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 07:40:57 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/03 22:18:13 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:26:38 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static char	*strip_quotes(const char *s)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:55:07 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/17 03:48:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:16:11 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	find_char(char *str, char c)
 {

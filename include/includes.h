@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   includes.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:18:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/16 10:20:31 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:20:10 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../src/Libft/libft.h"
+# include "libft.h"
 
 #endif
