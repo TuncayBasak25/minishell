@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:43 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 20:01:48 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 		exit(EXIT_FAILURE);
 	if (data->pid_last == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		if (prev_fd != -1)
 		{
 			dup2(prev_fd, STDIN_FILENO);
@@ -90,6 +91,7 @@ static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 		}
 		exec_cmd(data, cmds);
 	}
+	signal(SIGQUIT, quit_handler);
 	if (prev_fd != -1)
 		close(prev_fd);
 }
@@ -120,4 +122,5 @@ void	exec(t_shell *data, t_cmd *cmds)
 		cmds = cmds->next;
 	}
 	wait_exec(data);
+	signal(SIGQUIT, SIG_IGN);
 }

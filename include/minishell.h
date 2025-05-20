@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 07:50:43 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 20:02:30 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ RESULT	prompt_handling(t_shell *data);
 int		redirection(t_shell *data, char *cmd);
 
 extern int	g_sig;
+void	quit_handler(int sigid);
 
 //EXEC
 void	exec(t_shell *data, t_cmd *cmds);
