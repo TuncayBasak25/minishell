@@ -6,36 +6,41 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:42:17 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 00:06:12 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:10:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	check_echo_n(char **strs)
+{
+	int	i;
+
+	i = 0;
+	if (!strs || !*strs || !strs[1])
+		return (0);
+	if (strs[1][0] == '-')
+	{
+		while (strs[1][++i])
+		{
+			if (strs[1][i] != 'n')
+				return (1);
+		}
+	}
+	return (0);
+}
+
 void	echo(t_shell *data, char **strs)
 {
 	t_utils	utils;
 	int		n;
-	int		i;
 
 	utils.start = 0;
 	utils.j = 0;
-	n = 0;
-	while (strs[++utils.start])
+	n = check_echo_n(strs);
+	if (strs && *strs)
 	{
-		i = 0;
-		if (strs[utils.start][0] == '-' && utils.start == 1)
-		{
-			while (strs[utils.start][++i])
-			{
-				if (strs[utils.start][i] != 'n')
-				{
-					n = 1;
-					break ;
-				}
-			}
-		}
-		if (strs[utils.start])
+		while (strs[++utils.start])
 		{
 			if (n == 0 && ft_strncmp(strs[utils.start], "-n", 2) == 0)
 				utils.j = 1;
@@ -46,8 +51,8 @@ void	echo(t_shell *data, char **strs)
 				if (strs[utils.start + 1])
 					ft_putstr_fd(" ", 1);
 			}
+			n = 1;
 		}
-		n = 1;
 	}
 	if (!utils.j)
 		ft_putstr_fd("\n", 1);

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 15:33:18 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:47:58 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ void	up_shlvl(t_shell *data, char **env, int env_len);
 char	*get_original_var(t_shell *data, char *var);
 char	*strip_quotes(const char *s);
 void	remove_quotes(char **str, int type);
+void	up_shlvl(t_shell *data, char **env, int env_len);
+int		check_limits_value(int *value, int min, int max, int reset);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

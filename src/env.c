@@ -6,44 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 02:04:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:39:04 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	up_shlvl(t_shell *data, char **env, int env_len)
-{
-	int		i;
-	int		new_value;
-	char	*shlvl;
-	char	*new_shlvl;
-
-	i = -1;
-	if (!env)
-		return ;
-	while (++i < env_len)
-	{
-		if (!ft_strncmp(env[i], "SHLVL=", 6))
-		{
-			shlvl = ft_strdup(&env[i][6]);
-			new_value = ft_atoi(shlvl) + 1;
-			if (new_value > 999)
-			{
-				printf(WHITE"minishell: warning: shell level (%d) too high, \
-resetting to 1\n"RESET, new_value);
-				new_value = 1;
-			}
-			new_shlvl = ft_itoa(new_value);
-			free(shlvl);
-			free(env[i]);
-			env[i] = ft_strjoin("SHLVL=", new_shlvl);
-			return (free(new_shlvl));
-		}
-	}
-	if (i == env_len)
-		export(data, "SHLVL=1");
-}
 
 char	**copy_env(t_shell *data, char **envp)
 {
