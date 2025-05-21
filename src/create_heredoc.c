@@ -3,25 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   create_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/20 20:09:20 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:46:09 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void
-sigint_handler(int sigid)
+static void	sigint_handler(int sigid)
 {
 	g_sig = sigid;
 	rl_replace_line("", 0);
 	close(0);
 }
 
-static void
-child_handler(t_shell *data, char *delimiter, int fd)
+char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
+{
+	int	i;
+
+	i = -1;
+	while (delimiter[++i])
+	{
+		if (delimiter[i] == '\"' || delimiter[i] == '\'')
+			return (line);
+	}
+	return (expand_variables(data, line, data->env_len));
+}
+
+static void	child_handler(t_shell *data, char *delimiter, int fd, char *dnq)
 {
 	char	*line;
 	int		status;
@@ -30,8 +41,9 @@ child_handler(t_shell *data, char *delimiter, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, delimiter))
+		if (!line || !ft_strcmp(line, dnq))
 			break ;
+		line = expand_var_heredoc(data, line, delimiter);
 		if (line)
 		{
 			ft_putstr_fd(line, fd);
@@ -48,8 +60,7 @@ child_handler(t_shell *data, char *delimiter, int fd)
 	exit(status);
 }
 
-static int
-read_heredoc(t_shell *data, char *delimiter)
+static int	read_heredoc(t_shell *data, char *delimiter, char *dnq)
 {
 	int	pipe_fd[2];
 	int	pid;
@@ -63,7 +74,7 @@ read_heredoc(t_shell *data, char *delimiter)
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		child_handler(data, delimiter, pipe_fd[1]);
+		child_handler(data, delimiter, pipe_fd[1], dnq);
 	}
 	close(pipe_fd[1]);
 	status = 1;
@@ -78,16 +89,10 @@ read_heredoc(t_shell *data, char *delimiter)
 int	create_heredoc_fd(t_shell *data, char **delimiter)
 {
 	int		fd;
-	int		fd2;
+	char	*delimiter_no_quotes;
 
-	fd2 = read_heredoc(data, *delimiter);
-	fd = open(HEREDOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
-		return (-1);
-	close(fd);
-	if (fd < 0)
-		return (-1);
-	free(*delimiter);
-	*delimiter = ft_strdup(HEREDOC_FILE);
-	return (fd2);
+	delimiter_no_quotes = strip_quotes(*delimiter);
+	fd = read_heredoc(data, *delimiter, delimiter_no_quotes);
+	free(delimiter_no_quotes);
+	return (fd);
 }

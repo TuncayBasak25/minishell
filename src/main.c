@@ -6,10 +6,9 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:26:14 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:11:02 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -61,6 +60,25 @@ void	incomplete_env_start(t_shell *data, const char *prog_name)
 
 int	g_sig = 0;
 
+void	load_history(void)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(TMP_HISTORY, O_RDONLY);
+	if (fd == -1)
+		return ;
+	line = get_next_line(fd);
+	while (line)
+	{
+		line[ft_strlen(line) - 1] = '\0';
+		add_history(line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+}
+
 int	main(int argc, char const **argv, char **envp)
 {
 	t_shell		data;
@@ -71,6 +89,7 @@ int	main(int argc, char const **argv, char **envp)
 	data.env = copy_env(&data, envp);
 	incomplete_env_start(&data, argv[0]);
 	signal(SIGQUIT, SIG_IGN);
+	load_history();
 	while (1)
 	{
 		if (!read_and_parse_input(&data))

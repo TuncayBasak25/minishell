@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:19 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/21 01:47:22 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		cd(data, cmds->command, &data->prompt);
 	else if (!ft_strncmp(*cmds->command, "pwd", 3) && \
 		ft_strlen(*cmds->command) == 3)
-		pwd(data);
+		pwd(data, cmds->command);
 	else if (!ft_strncmp(*cmds->command, "export", 6) && \
 		ft_strlen(*cmds->command) == 6)
 		export(data, cmds->command[1]);
@@ -52,7 +52,7 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		unset(data, cmds->command[1]);
 	else if (!ft_strncmp(*cmds->command, "env", 3) && \
 		ft_strlen(*cmds->command) == 3)
-		environnement(data, data->env, data->env_len);
+		environnement(data, cmds->command, data->env, data->env_len);
 	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
 		ft_strlen(*cmds->command) == 4)
 		exit_minishell(data, cmds, fd_in, fd_out);
@@ -87,6 +87,9 @@ void	builtin_parent_process(t_shell *data, t_cmd *cmd)
 		dup2(cmd->fd_in, STDIN_FILENO);
 	if (cmd->fd_out > 2)
 		dup2(cmd->fd_out, STDOUT_FILENO);
+	if (cmd->command && !ft_strncmp(*cmd->command, "exit", 4) && \
+	ft_strlen(*cmd->command) == 4)
+		printf("exit\n");
 	built_in(data, cmd, stdin_fd, stdout_fd);
 	restore_std_fds(stdin_fd, stdout_fd);
 }

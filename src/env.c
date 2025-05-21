@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:33 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/21 02:04:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	up_shlvl(t_shell *data, char **env, int env_len)
 {
 	int		i;
+	int		new_value;
 	char	*shlvl;
 	char	*new_shlvl;
 
@@ -26,12 +27,18 @@ void	up_shlvl(t_shell *data, char **env, int env_len)
 		if (!ft_strncmp(env[i], "SHLVL=", 6))
 		{
 			shlvl = ft_strdup(&env[i][6]);
-			new_shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+			new_value = ft_atoi(shlvl) + 1;
+			if (new_value > 999)
+			{
+				printf(WHITE"minishell: warning: shell level (%d) too high, \
+resetting to 1\n"RESET, new_value);
+				new_value = 1;
+			}
+			new_shlvl = ft_itoa(new_value);
 			free(shlvl);
 			free(env[i]);
 			env[i] = ft_strjoin("SHLVL=", new_shlvl);
-			free(new_shlvl);
-			return ;
+			return (free(new_shlvl));
 		}
 	}
 	if (i == env_len)
@@ -107,7 +114,7 @@ char	*get_env(char **env, char *key, int env_len)
 	return (NULL);
 }
 
-void	environnement(t_shell *data, char **env, int env_len)
+void	environnement(t_shell *data, char **cmds, char **env, int env_len)
 {
 	int	i;
 
@@ -115,6 +122,20 @@ void	environnement(t_shell *data, char **env, int env_len)
 	data->exit_status = 0;
 	if (!env)
 		return ;
+	if (cmds[1] && cmds[1][0] == '-')
+	{
+		ft_putstr_fd(WHITE"minishell: env: -: invalid option\n"RESET, 2);
+		data->exit_status = 125;
+		return ;
+	}
+	else if (cmds[1] && cmds[1][0])
+	{
+		ft_putstr_fd(WHITE"minishell: env: "RESET, 2);
+		ft_putstr_fd(cmds[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		data->exit_status = 127;
+		return ;
+	}
 	while (++i < env_len)
 	{
 		ft_putstr_fd(env[i], 1);

@@ -6,11 +6,11 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:18:36 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:12:26 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static void	close_fd(t_cmd *cmd)
 {
@@ -79,8 +79,6 @@ void	free_shell(t_shell *data, int exit_prog)
 		data->env_len = 0;
 		rl_clear_history();
 	}
-	if (access(HEREDOC_FILE, F_OK) == 0)
-		unlink(HEREDOC_FILE);
 	free_cmd(&data->cmd_group);
 	free_prompt(&data->prompt);
 	data->prompt = (t_prompt){0};

@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:48 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:11:58 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 	}
 	restore_std_fds(fd_in, fd_out);
 	free_shell(data, 1);
-	data->exit_status = 0;
+	if (data->prev_status_is_ctrl_c == false)
+		data->exit_status = 0;
 	exit(data->exit_status);
 }

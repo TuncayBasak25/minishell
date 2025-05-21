@@ -6,13 +6,13 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 07:40:57 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:26:38 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:13:15 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*strip_quotes(const char *s)
+char	*strip_quotes(const char *s)
 {
 	char	*dst;
 	int		i;
@@ -39,6 +39,17 @@ static char	*strip_quotes(const char *s)
 	}
 	dst[j] = '\0';
 	return (dst);
+}
+
+void	remove_quotes(char **str, int type)
+{
+	char	*new;
+
+	if (!str || !*str || type == HEREDOC)
+		return ;
+	new = strip_quotes(*str);
+	free(*str);
+	*str = new;
 }
 
 void	remove_all_quotes(char **tab)

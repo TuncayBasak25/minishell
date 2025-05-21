@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:39 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:11:53 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_error_file(char *filename, int flag)
 
 int	handle_outfile(t_shell *data, t_cmd **cmds)
 {
-	if (((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1))
+	if ((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1)
 	{
 		print_error_file((*cmds)->outfile, W_OK);
 		if (!(*cmds)->prev || (*cmds)->command)
@@ -56,7 +56,8 @@ int	handle_outfile(t_shell *data, t_cmd **cmds)
 
 int	handle_infile(t_shell *data, t_cmd **cmds)
 {
-	if (((*cmds)->infile && access((*cmds)->infile, F_OK | R_OK) == -1))
+	if (!data->cmd_group.cmd_list->heredoc && (*cmds)->infile && \
+	access((*cmds)->infile, F_OK | R_OK) == -1)
 	{
 		print_error_file((*cmds)->infile, R_OK);
 		if (!(*cmds)->prev || (*cmds)->command)

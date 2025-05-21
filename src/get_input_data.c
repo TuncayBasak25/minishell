@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:25:52 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:12:31 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ static const char	*skip_redir(const char *s)
 		s++;
 	if (*s == '\'' || *s == '"')
 	{
-		q = *s++;
-		while (*s && *s != q)
-			s++;
-		if (*s == q)
-			s++;
+		while (*s == '\'' || *s == '"')
+		{
+			q = *s++;
+			while (*s && *s != q)
+				s++;
+			if (*s == q)
+				s++;
+		}
 	}
 	else
 	{
@@ -86,7 +89,7 @@ void	get_input_data(t_shell *data)
 	t_cmd	*prev;
 
 	utils.i = -1;
-	utils.strs = split_limited(data->prompt.user_input, '|', "\'\"");
+	utils.strs = split_space_limited(data->prompt.user_input, '|', "\'\"");
 	prev = NULL;
 	if (!utils.strs)
 		return ;

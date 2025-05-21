@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 20:02:30 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:33:18 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,14 @@
 # include "colors.h"
 
 # define PROMPT_DEFAULT "minishell$ "
-# define HEREDOC_FILE ".heredoc_tmp"
+# define TMP_HISTORY "/tmp/minishell_history"
+
+typedef enum e_result
+{
+	SUCCESS,
+	FAIL
+}	t_result;
+# define RESULT t_result
 
 /**
  * @brief Tokens utilisés pour identifier les opérateurs de redirection et de
@@ -35,17 +42,12 @@ typedef enum e_operateur
 	APPEND
 }	t_operateur;
 
-typedef enum e_result
-{
-	SUCCESS,
-	FAIL
-}	t_result;
-# define RESULT t_result
-
 typedef struct s_utils
 {
 	int				i;
 	int				j;
+	size_t			*k;
+	int				o;
 	int				len;
 	int				start;
 	int				end;
@@ -89,6 +91,7 @@ typedef struct s_cmd
 	char			*outfile;
 	int				fd_in;
 	int				fd_out;
+	bool			heredoc;
 	char			*line_cmd;
 	char			**command;
 	char			*custom_path;
@@ -109,6 +112,7 @@ typedef struct s_shell
 	int			env_len;
 	int			status;
 	int			exit_status;
+	bool		prev_status_is_ctrl_c;
 	pid_t		pid_last;
 	pid_t		pid_wait;
 	t_prompt	prompt;
@@ -135,10 +139,10 @@ void	exec(t_shell *data, t_cmd *cmds);
 char	*normalize_cd_args(char **env, char *str, int env_len);
 void	cd(t_shell *data, char **strs, t_prompt *info);
 void	echo(t_shell *data, char **strs);
-void	pwd(t_shell *data);
+void	pwd(t_shell *data, char **cmds);
 void	export(t_shell *data, char *var);
 void	unset(t_shell *data, char *var);
-void	environnement(t_shell *data, char **env, int env_len);
+void	environnement(t_shell *data, char **cmds, char **env, int env_len);
 void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 int		handle_infile(t_shell *data, t_cmd **cmds);
 int		handle_outfile(t_shell *data, t_cmd **cmds);
@@ -155,7 +159,7 @@ void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
-char	*expand_variables(t_shell *data, char *raw_input, int env_len);
+char	*expand_variables(t_shell *data, char *input, int env_len);
 char	**copy_env(t_shell *data, char **envp);
 void	update_var_env(char **env, char *key, char *value, int env_len);
 char	*get_env(char **env, char *key, int env_len);
@@ -173,6 +177,8 @@ int		create_heredoc_fd(t_shell *data, char **delimiter);
 int		find_char(char *str, char c);
 void	up_shlvl(t_shell *data, char **env, int env_len);
 char	*get_original_var(t_shell *data, char *var);
+char	*strip_quotes(const char *s);
+void	remove_quotes(char **str, int type);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

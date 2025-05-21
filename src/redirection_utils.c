@@ -6,38 +6,46 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 05:18:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:27:24 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:13:05 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	skip_redir_quotes(char *cmd, int *start, int *end)
+{
+	int	quote;
+
+	quote = 0;
+	while (cmd[*start] == '\"' || cmd[*start] == '\'')
+	{
+		quote = cmd[*start];
+		while (cmd[++*end] && cmd[*end] != quote)
+			continue ;
+		*end += 1;
+		*start = *end;
+	}
+}
+
 void	start_and_end(char *cmd, int *s, int *e)
 {
 	int	start;
 	int	end;
-	int	quote;
 
-	quote = 0;
 	start = 0;
 	while (cmd[start] && (cmd[start] == ' ' || \
 		cmd[start] == '<' || cmd[start] == '>'))
 		start++;
-	end = start + 1;
+	*s = start;
+	end = start;
 	if (cmd[start] == '\"' || cmd[start] == '\'')
-	{
-		quote = cmd[start];
-		start++;
-		while (cmd[end] && cmd[end] != quote)
-			end++;
-	}
+		skip_redir_quotes(cmd, &start, &end);
 	else
 	{
-		while (cmd[end] && cmd[end] != ' ' && \
+		while (cmd[++end] && cmd[end] != ' ' && \
 			cmd[end] != '<' && cmd[end] != '>')
-			end++;
+			continue ;
 	}
-	*s = start;
 	*e = end;
 }
 

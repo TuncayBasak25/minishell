@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:12 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/21 02:28:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	cd(t_shell *data, char **strs, t_prompt *info)
 	}
 	else
 	{
+		export(data, "OLDPWD=");
 		update_var_env(data->env, "OLDPWD=", info->full_pwd, data->env_len);
 		update_var_env(data->env, "PWD=", getcwd(tmp, sizeof(tmp)), \
 		data->env_len);

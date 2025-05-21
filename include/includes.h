@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:18:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:20:10 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:01:23 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
+# include "get_next_line.h"
 
 #endif

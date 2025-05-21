@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:04:23 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 08:12:52 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:12:03 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	is_valid_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-bool	is_single_quoted(const char *str, int i)
+bool	is_single_quoted(const char *str, int pos)
 {
 	bool	sq;
 	bool	dq;
@@ -26,7 +26,7 @@ bool	is_single_quoted(const char *str, int i)
 	sq = false;
 	dq = false;
 	j = -1;
-	while (++j < i)
+	while (++j < pos)
 	{
 		if (str[j] == '\'' && !dq)
 			sq = !sq;
@@ -36,12 +36,12 @@ bool	is_single_quoted(const char *str, int i)
 	return (sq);
 }
 
-int	append_string(char *out, int o, const char *val)
+int	append_string(char *dst, int o, const char *val)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (val[i])
-		out[o++] = val[i++];
+	j = 0;
+	while (val && val[j])
+		dst[o++] = val[j++];
 	return (o);
 }
