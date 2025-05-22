@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:31 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/22 18:11:59 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	get_input_data(t_shell *data)
 			utils.str, data->cmd_group.path);
 		data->cmd_group.cmd_list->id = utils.i + 1;
 		(void) redirection(data, utils.strs[utils.i]);
+		if (data->heredoc_quit)
+			return ;
 		prev = data->cmd_group.cmd_list;
 	}
 	utils.strs = free_tab(utils.strs);

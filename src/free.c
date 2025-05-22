@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:26 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/22 18:15:02 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	free_shell(t_shell *data, int exit_prog)
 	free_cmd(&data->cmd_group);
 	free_prompt(&data->prompt);
 	data->prompt = (t_prompt){0};
+	data->heredoc_quit = 0;
 }

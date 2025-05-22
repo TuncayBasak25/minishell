@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:11:02 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/22 18:12:59 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ RESULT	read_and_parse_input(t_shell *data)
 	if (prompt_handling(data))
 		return (FAIL);
 	get_input_data(data);
+	if (data->heredoc_quit)
+		return (FAIL);
 	go_to_head(data);
 	return (SUCCESS);
 }

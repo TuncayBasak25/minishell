@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/20 00:46:09 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:17:16 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static int	read_heredoc(t_shell *data, char *delimiter, char *dnq)
 	if (status == 0)
 		return (pipe_fd[0]);
 	close(pipe_fd[0]);
+	data->heredoc_quit = 1;
 	return (-1);
 }
 
@@ -91,6 +92,8 @@ int	create_heredoc_fd(t_shell *data, char **delimiter)
 	int		fd;
 	char	*delimiter_no_quotes;
 
+	if (data->heredoc_quit)
+		return (-1);
 	delimiter_no_quotes = strip_quotes(*delimiter);
 	fd = read_heredoc(data, *delimiter, delimiter_no_quotes);
 	free(delimiter_no_quotes);
