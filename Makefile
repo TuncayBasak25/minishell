@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
+#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/20 08:29:21 by tbasak           ###   ########.fr        #
+#    Updated: 2025/05/21 16:42:02 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = built_in.c cd.c create_heredoc.c echo.c env.c exec_utils.c \
 	init_struct_command.c input_checker.c main.c prompt.c pwd.c \
 	redirection_utils.c redirection.c remove_all_quotes.c \
 	sort_and_print_tab.c split_limited.c split_space_limited.c \
-	tab.c unset.c utils.c
+	tab.c unset.c utils.c shlvl.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -83,7 +83,7 @@ clean:
 fclean: clean
 	@make -C Libft fclean
 	@echo ${BYELLOW}"[INFO] CLEANING EXECUTABLE..."${RESET}
-	@rm -f $(NAME) || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
+	@rm -f $(NAME) /tmp/minishell_history || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
 	@echo ${BGREEN}"[SUCCESS] EXECUTABLE CLEANED."${RESET}
 
 re: fclean all
