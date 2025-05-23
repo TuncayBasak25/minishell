@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:39:15 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 16:47:40 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/23 06:04:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	up_shlvl(t_shell *data, char **env, int env_len)
 			new_value = ft_atoi(shlvl) + 1;
 			if (check_limits_value(&new_value, 1, 999, 1))
 				printf(WHITE"minishell: warning: shell level (%d) too high, \
-resetting to 1\n"RESET, new_value);
+resetting to 1\n"RESET, ft_atoi(shlvl) + 1);
 			new_shlvl = ft_itoa(new_value);
 			free(env[i]);
 			env[i] = ft_strjoin("SHLVL=", new_shlvl);

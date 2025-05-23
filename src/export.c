@@ -3,18 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:50:40 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:14 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 07:02:37 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_valid_var_char_env(char c)
+static bool	is_valid_var_char_env(char *str)
 {
-	return (ft_isalpha(c) || c == '_');
+	int	i;
+
+	if (ft_isalpha(str[0]) || str[0] == '_')
+	{
+		i = -1;
+		while (str[++i])
+		{
+			if (str[i] == '+' && str[i + 1] == '=')
+				return (true);
+			else if (str[i] == '+' && str[i + 1] != '=')
+				return (false);
+			if (str[i] == '=')
+				return (true);
+		}
+		return (true);
+	}
+	return (false);
 }
 
 static char	*get_var_key(char *var)
@@ -27,27 +43,12 @@ static char	*get_var_key(char *var)
 		return (NULL);
 	while (var[i] && var[i] != '=')
 		i++;
-	if (var[i] == '=')
-		i++;
+	if (var[i - 1] == '+')
+		i--;
 	var_key = ft_substr(var, 0, i);
 	if (!var_key)
 		return (NULL);
 	return (var_key);
-}
-
-char	*get_original_var(t_shell *data, char *var)
-{
-	int		i;
-
-	i = -1;
-	if (!data->env)
-		return (NULL);
-	while (++i < data->env_len)
-	{
-		if (ft_strncmp(data->env[i], var, ft_strlen(var)) == 0)
-			return (data->env[i]);
-	}
-	return (NULL);
 }
 
 static void	add_var_to_env(t_shell *data, char *var)
@@ -65,6 +66,35 @@ static void	add_var_to_env(t_shell *data, char *var)
 	data->env[i] = ft_strdup(var);
 }
 
+void	add_value_to_var(char **env, char *key, char *value, int env_len)
+{
+	int		i;
+	char	*new_var;
+
+	i = -1;
+	if (!env || !key || !value)
+		return ;
+	while (++i < env_len)
+	{
+		if (!env[i])
+			continue ;
+		if (!ft_strncmp(env[i], key, ft_strlen(key)) && \
+		(env[i][ft_strlen(key)] == '=' || env[i][ft_strlen(key)] == '\0'))
+		{
+			if (env[i][ft_strlen(key)] == '=' && (!*value || \
+				(value[0] == '=' && value[1] == '\0')))
+				return ;
+			if (env[i][ft_strlen(key)] != '=')
+				new_var = ft_strjoin(env[i], value);
+			else
+				new_var = ft_strjoin(env[i], &value[1]);
+			free(env[i]);
+			env[i] = new_var;
+			return ;
+		}
+	}
+}
+
 void	export(t_shell *data, char *var)
 {
 	int		var_len;
@@ -73,7 +103,7 @@ void	export(t_shell *data, char *var)
 
 	if (!var || !*var)
 		return (sort_and_print_tab(data, data->env, data->env_len));
-	if (is_valid_var_char_env(var[0]) == false)
+	if (is_valid_var_char_env(var) == false)
 	{
 		data->exit_status = 1;
 		return (ft_putstr_fd("minishell: export: `", 2), ft_putstr_fd(var, 2), \
@@ -85,11 +115,11 @@ void	export(t_shell *data, char *var)
 		return ;
 	var_len = ft_strlen(var_key);
 	var_env = get_original_var(data, var_key);
-	if (ft_strlen(&var[var_len]) == 0 && var[var_len - 1] != '=')
-		return (free(var_key));
-	if (var_env)
+	if (var_env && var[var_len] == '+' && var[var_len + 1] == '=')
+		add_value_to_var(data->env, var_key, &var[var_len + 1], data->env_len);
+	else if (var_env && var[var_len])
 		update_var_env(data->env, var_key, &var[var_len], data->env_len);
-	else
+	else if (!var_env)
 		add_var_to_env(data, var);
 	free(var_key);
 }

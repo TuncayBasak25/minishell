@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_and_print_tab.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 23:49:19 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:19 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/22 20:39:39 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ static void	print_export(char **strs, int size)
 				ft_putchar_fd(strs[i][j], 1);
 				if (strs[i][j] == '=')
 				{
-					ft_putchar_fd('\"', 1);
-					ft_putstr_fd(strs[i] + j + 1, 1);
-					ft_putstr_fd("\"\n", 1);
+					printf("\"%s\"\n", &strs[i][j + 1]);
 					break ;
 				}
+				if (!strs[i][j + 1])
+					ft_putchar_fd('\n', 1);
 			}
 		}
 	}

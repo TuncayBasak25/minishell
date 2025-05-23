@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/22 18:09:02 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 07:48:23 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ typedef struct s_shell
 	int			env_len;
 	int			status;
 	int			exit_status;
+	int			heredoc_quit;
 	bool		prev_status_is_ctrl_c;
 	pid_t		pid_last;
 	pid_t		pid_wait;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
-	int			heredoc_quit;
 }	t_shell;
 
 //TAB
@@ -180,7 +180,6 @@ void	up_shlvl(t_shell *data, char **env, int env_len);
 char	*get_original_var(t_shell *data, char *var);
 char	*strip_quotes(const char *s);
 void	remove_quotes(char **str, int type);
-void	up_shlvl(t_shell *data, char **env, int env_len);
 int		check_limits_value(int *value, int min, int max, int reset);
 
 // COMMAND

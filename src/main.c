@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:59 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 07:52:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ RESULT	read_and_parse_input(t_shell *data)
 	if (prompt_handling(data))
 		return (FAIL);
 	get_input_data(data);
+	go_to_head(data);
 	if (data->heredoc_quit)
 		return (FAIL);
-	go_to_head(data);
 	return (SUCCESS);
 }
 

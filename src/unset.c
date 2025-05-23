@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:16:37 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:39 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 06:11:43 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,22 @@ void	unset(t_shell *data, char *var)
 {
 	int		i;
 	int		var_len;
-	char	*var_tmp;
 
 	i = -1;
 	data->exit_status = 0;
 	if (!data->env || !var || !*var)
 		return ;
-	var_tmp = ft_strjoin(var, "=");
-	if (!var_tmp)
-		return ;
-	var_len = ft_strlen(var_tmp);
+	var_len = ft_strlen(var);
 	while (++i < data->env_len)
 	{
-		if (ft_strncmp(data->env[i], var_tmp, var_len) == 0)
+		if (ft_strncmp(data->env[i], var, var_len) == 0 && \
+		(data->env[i][var_len] == '=' || data->env[i][var_len] == '\0'))
 		{
 			free(data->env[i]);
 			data->env[i] = NULL;
 			break ;
 		}
 	}
-	free(var_tmp);
 	if (i == data->env_len)
 		return ;
 	data->env = resize_env(data, -1);

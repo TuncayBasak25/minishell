@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/22 18:11:29 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 08:11:50 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	error_access_redirection(t_shell *data, char *cmd, \
 		{
 			utils->tmp = get_filename(&cmd[utils->i], &utils->i);
 			utils->fd = create_heredoc_fd(data, &utils->tmp);
-			if (data->heredoc_quit)
-				return ;
 			free(utils->tmp);
 			close(utils->fd);
+			if (data->heredoc_quit)
+				break ;
 		}
 	}
 	if (utils->result == INPUT)
@@ -85,13 +85,19 @@ void	get_redirection(t_shell *data, t_utils *utils)
 	{
 		data->cmd_group.cmd_list->fd_in = get_fd(data, utils->result, \
 			&utils->str, data->cmd_group.cmd_list->fd_in);
-		data->cmd_group.cmd_list->infile = ft_strdup(utils->str);
+		if (data->heredoc_quit == 0)
+			data->cmd_group.cmd_list->infile = ft_strdup(utils->str);
 	}
 	else if (utils->result == OUTPUT || utils->result == APPEND)
 	{
 		data->cmd_group.cmd_list->fd_out = get_fd(data, utils->result, \
 			&utils->str, data->cmd_group.cmd_list->fd_out);
 		data->cmd_group.cmd_list->outfile = ft_strdup(utils->str);
+	}
+	if (data->heredoc_quit == 0)
+	{
+		free(data->cmd_group.cmd_list->infile);
+		data->cmd_group.cmd_list->infile = NULL;
 	}
 	free(utils->str);
 }
@@ -117,8 +123,6 @@ int	redirection(t_shell *data, char *cmd)
 		access(utils.str, F_OK) == 0 && access(utils.str, W_OK) == -1))
 		{
 			error_access_redirection(data, cmd, &utils);
-			if (data->heredoc_quit)
-				return (1);
 			break ;
 		}
 		else
