@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:06:37 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/23 20:20:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/23 22:33:53 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	sigint_exec(int sigid)
 void	quit_handler(int sigid)
 {
 	g_sig = sigid;
-	write(1, "Quit", 4);
 }
 
 void	sigint_handler(int sigid)

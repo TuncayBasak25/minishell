@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:11:53 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 22:45:01 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,38 @@ int	extract_exit_code(int status)
 	return (1);
 }
 
+void	handle_sigquit_message(t_shell *data, int status, pid_t pid, pid_t last_pid)
+{
+	int	sig;
+
+	if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT && pid == last_pid)
+		{
+			write(1, "Quit\n", 5);
+			data->exit_status = 131;
+		}
+		else
+		{
+			write(1, "^\\", 2);
+			data->exit_status = 0;
+		}
+	}
+}
+
 void	wait_exec(t_shell *data)
 {
 	data->pid_wait = waitpid(-1, &data->status, 0);
 	while (data->pid_wait > 0)
 	{
 		if (data->pid_wait == data->pid_last)
+		{
 			data->exit_status = extract_exit_code(data->status);
+			handle_sigquit_message(data, data->status, data->pid_wait, data->pid_last);
+		}
 		data->pid_wait = waitpid(-1, &data->status, 0);
 	}
-	if (g_sig)
+	if (g_sig == 2)
 		write(1, "\n", 1);
 }
