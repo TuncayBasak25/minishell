@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handlers.c                                         :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/17 15:06:37 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/23 20:20:59 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/05/23 19:56:36 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/05/23 19:56:45 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	sigint_prompt(int sigid)
+char	*ft_strndup(const char *src, int n)
 {
-	g_sig = sigid;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+	char	*dup;
+	int		i;
 
-void	sigint_exec(int sigid)
-{
-	g_sig = sigid;
-}
-
-void	quit_handler(int sigid)
-{
-	g_sig = sigid;
-	write(1, "Quit", 4);
-}
-
-void	sigint_handler(int sigid)
-{
-	g_sig = sigid;
-	rl_replace_line("", 0);
-	close(0);
+	i = 0;
+	dup = (char *)malloc(sizeof(char) * (n + 1));
+	if (!dup)
+		return (NULL);
+	while (i < n && src[i])
+	{
+		dup[i] = src[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }

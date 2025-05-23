@@ -6,36 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 20:03:40 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:18:00 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	is_in_heredoc(const char *str, int pos)
-{
-	int		i;
-	bool	in_heredoc;
-
-	i = 0;
-	in_heredoc = false;
-	while (i < pos)
-	{
-		if (str[i] == '<' && str[i + 1] == '<')
-		{
-			in_heredoc = true;
-			i += 2;
-			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-				i++;
-			while (str[i] && str[i] != ' ' && str[i] != '\t')
-				i++;
-			continue ;
-		}
-		in_heredoc = false;
-		i++;
-	}
-	return (in_heredoc);
-}
 
 static int	handle_exit(t_shell *data, char *out, char c, int o)
 {
@@ -92,7 +67,19 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 	return (utils->out[o++] = utils->input[(*i)++], o);
 }
 
-char	*expand_variables(t_shell *data, char *input, int env_len)
+static void	expand_variables_norme(t_utils *u, char *input)
+{
+	if (input[u->k[0]] == '$'
+		&& !is_single_quoted(input, u->k[0])
+		&& !is_in_heredoc(input, u->k[0]))
+		u->o = expand_variable(u, input, u->k, u->o);
+	else if (input[u->k[0]] == '~')
+		u->o = handle_tilde(u, u->k, u->o, is_single_quoted(input, u->k[0]));
+	else
+		u->out[u->o++] = input[u->k[0]++];
+}
+
+char	*expand_variables(t_shell *data, char *input)
 {
 	t_utils	u;
 
@@ -101,23 +88,14 @@ char	*expand_variables(t_shell *data, char *input, int env_len)
 	u.k = (size_t []){0, 0};
 	if (!input || !*input)
 		return (input);
-	u.out = malloc(ft_strlen(input) * (ft_strlen(input) + 100));
+	u.out = malloc(data->prompt_len_expanded + 1);
 	if (!u.out)
 		return (input);
 	u.strs = data->env;
-	u.len = env_len;
+	u.len = data->env_len;
 	u.data = data;
 	while (input[u.k[0]])
-	{
-		if (input[u.k[0]] == '$'
-			&& !is_single_quoted(input, u.k[0])
-			&& !is_in_heredoc(input, u.k[0]))
-			u.o = expand_variable(&u, input, u.k, u.o);
-		else if (input[u.k[0]] == '~')
-			u.o = handle_tilde(&u, u.k, u.o, is_single_quoted(input, u.k[0]));
-		else
-			u.out[u.o++] = input[u.k[0]++];
-	}
+		expand_variables_norme(&u, input);
 	u.out[u.o] = '\0';
 	free(input);
 	return (u.out);

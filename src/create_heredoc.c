@@ -6,18 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/23 07:57:25 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:20:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	sigint_handler(int sigid)
-{
-	g_sig = sigid;
-	rl_replace_line("", 0);
-	close(0);
-}
 
 char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 {
@@ -29,7 +22,18 @@ char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 		if (delimiter[i] == '\"' || delimiter[i] == '\'')
 			return (line);
 	}
-	return (expand_variables(data, line, data->env_len));
+	data->prompt_len_expanded = \
+	calc_expanded_length(line, data->env, data->exit_status);
+	return (expand_variables(data, line));
+}
+
+void	print_heredoc(char *line, int fd)
+{
+	if (line)
+	{
+		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
+	}
 }
 
 static void	child_handler(t_shell *data, char *delimiter, int fd, char *dnq)
@@ -49,11 +53,7 @@ end-of-file (wanted `%s')\n", dnq);
 			break ;
 		}
 		line = expand_var_heredoc(data, line, delimiter);
-		if (line)
-		{
-			ft_putstr_fd(line, fd);
-			ft_putstr_fd("\n", fd);
-		}
+		print_heredoc(line, fd);
 		free(line);
 	}
 	free(line);

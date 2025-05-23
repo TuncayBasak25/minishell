@@ -6,7 +6,7 @@
 #    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/23 07:09:44 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/23 19:14:10 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = built_in.c cd.c create_heredoc.c echo.c env.c exec_utils.c \
 	init_struct_command.c input_checker.c main.c prompt.c pwd.c \
 	redirection_utils.c redirection.c remove_all_quotes.c \
 	sort_and_print_tab.c split_limited.c split_space_limited.c \
-	tab.c unset.c utils.c shlvl.c env_utils.c
+	tab.c unset.c utils.c shlvl.c env_utils.c prompt_expanded.c
 
 OBJ = $(SRC:.c=.o)
 

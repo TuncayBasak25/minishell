@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:09:12 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 19:26:43 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ RESULT	prompt_handling(t_shell *data)
 		data->prompt.user_input = NULL;
 		return (FAIL);
 	}
-	else
-		data->prompt.user_input = \
-			expand_variables(data, data->prompt.user_input, data->env_len);
+	data->prompt_len_expanded = calc_expanded_length(data->prompt.user_input, \
+		data->env, data->exit_status);
+	data->prompt.user_input = expand_variables(data, data->prompt.user_input);
 	return (SUCCESS);
 }

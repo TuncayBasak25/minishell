@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 07:48:23 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:21:49 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_shell
 	int			status;
 	int			exit_status;
 	int			heredoc_quit;
+	int			prompt_len_expanded;
 	bool		prev_status_is_ctrl_c;
 	pid_t		pid_last;
 	pid_t		pid_wait;
@@ -128,12 +129,12 @@ void	*free_tab(char **tab);
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
+int		calc_expanded_length(const char *input, char **envp, int exit_status);
 
 //REDIRECTION
 int		redirection(t_shell *data, char *cmd);
 
 extern int	g_sig;
-void	quit_handler(int sigid);
 
 //EXEC
 void	exec(t_shell *data, t_cmd *cmds);
@@ -160,7 +161,7 @@ void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
 bool	is_single_quoted(const char *str, int i);
 int		append_string(char *out, int o, const char *val);
-char	*expand_variables(t_shell *data, char *input, int env_len);
+char	*expand_variables(t_shell *data, char *input);
 char	**copy_env(t_shell *data, char **envp);
 void	update_var_env(char **env, char *key, char *value, int env_len);
 char	*get_env(char **env, char *key, int env_len);
@@ -181,6 +182,7 @@ char	*get_original_var(t_shell *data, char *var);
 char	*strip_quotes(const char *s);
 void	remove_quotes(char **str, int type);
 int		check_limits_value(int *value, int min, int max, int reset);
+bool	is_in_heredoc(const char *str, int pos);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);
@@ -189,8 +191,10 @@ void	get_input_data(t_shell *data);
 //FREE
 void	free_shell(t_shell *data, int exit_prog);
 
+//SIGNAL
 void	sigint_prompt(int sigid);
-
 void	sigint_exec(int sigid);
+void	sigint_handler(int sigid);
+void	quit_handler(int sigid);
 
 #endif
