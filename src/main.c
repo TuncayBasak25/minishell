@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 07:52:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 00:32:24 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int argc, char const **argv, char **envp)
 	load_history();
 	while (1)
 	{
-		if (!read_and_parse_input(&data))
+		if (read_and_parse_input(&data) == SUCCESS)
 			exec(&data, data.cmd_group.cmd_list);
 		free_shell(&data, 0);
 	}
