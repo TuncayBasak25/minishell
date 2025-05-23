@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/23 20:20:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 00:12:50 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,80 +27,46 @@ char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 	return (expand_variables(data, line));
 }
 
-void	print_heredoc(char *line, int fd)
-{
-	if (line)
-	{
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-	}
-}
-
-static void	child_handler(t_shell *data, char *delimiter, int fd, char *dnq)
+static void	read_heredoc(t_shell *data, char *delimiter, char *dnq, int pipe)
 {
 	char	*line;
-	int		status;
 
-	signal(SIGINT, sigint_handler);
-	while (1)
+	line = readline("> ");
+	while (line && ft_strcmp(line, dnq))
 	{
-		line = readline("> ");
-		if (!line || !ft_strcmp(line, dnq))
-		{
-			if (!line && g_sig == 0)
-				printf("minishell: warning: here-document delimited by \
-end-of-file (wanted `%s')\n", dnq);
-			break ;
-		}
 		line = expand_var_heredoc(data, line, delimiter);
-		print_heredoc(line, fd);
+		ft_putendl_fd(line, pipe);
 		free(line);
+		line = readline("> ");
 	}
 	free(line);
-	status = 0;
-	if (g_sig)
-		status = 1;
-	close(fd);
-	free_shell(data, 1);
-	exit(status);
-}
-
-static int	read_heredoc(t_shell *data, char *delimiter, char *dnq)
-{
-	int	pipe_fd[2];
-	int	pid;
-	int	status;
-
-	if (pipe(pipe_fd) == -1)
-		return (-1);
-	pid = fork();
-	if (pid == -1)
-		return (-1);
-	if (pid == 0)
+	if (g_sig == SIGINT)
 	{
-		close(pipe_fd[0]);
-		child_handler(data, delimiter, pipe_fd[1], dnq);
+		data->heredoc_quit = 1;
+		printf("minishell: warning: here-document delimited by \
+end-of-file (wanted `%s')\n", dnq);
 	}
-	close(pipe_fd[1]);
-	status = 1;
-	while (waitpid(pid, &status, 0) == -1)
-		continue ;
-	if (status == 0)
-		return (pipe_fd[0]);
-	close(pipe_fd[0]);
-	data->heredoc_quit = 1;
-	return (-1);
 }
 
 int	create_heredoc_fd(t_shell *data, char **delimiter)
 {
-	int		fd;
+	int		pipe_fd[2];
+	int		save_stdin;
 	char	*delimiter_no_quotes;
 
-	if (data->heredoc_quit)
+	if (data->heredoc_quit || pipe(pipe_fd) == -1)
 		return (-1);
 	delimiter_no_quotes = strip_quotes(*delimiter);
-	fd = read_heredoc(data, *delimiter, delimiter_no_quotes);
+	save_stdin = dup(0);
+	signal(SIGINT, sigint_handler);
+	read_heredoc(data, *delimiter, delimiter_no_quotes, pipe_fd[1]);
+	signal(SIGINT, sigint_prompt);
+	dup2(save_stdin, 0);
+	close(save_stdin);
 	free(delimiter_no_quotes);
-	return (fd);
+	close(pipe_fd[1]);
+	if (!data->heredoc_quit)
+		return (pipe_fd[0]);
+	close(pipe_fd[0]);
+	return (-1);
 }
