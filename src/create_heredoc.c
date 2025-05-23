@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/24 00:12:50 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/24 00:53:22 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ static void	read_heredoc(t_shell *data, char *delimiter, char *dnq, int pipe)
 	}
 	free(line);
 	if (g_sig == SIGINT)
-	{
 		data->heredoc_quit = 1;
+	else if (line == NULL)
 		printf("minishell: warning: here-document delimited by \
 end-of-file (wanted `%s')\n", dnq);
-	}
 }
 
 int	create_heredoc_fd(t_shell *data, char **delimiter)
