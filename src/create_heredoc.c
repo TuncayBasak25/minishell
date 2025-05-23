@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/22 18:17:16 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/23 06:16:13 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ static void	child_handler(t_shell *data, char *delimiter, int fd, char *dnq)
 	{
 		line = readline("> ");
 		if (!line || !ft_strcmp(line, dnq))
+		{
+			if (!line && g_sig == 0)
+				printf("minishell: warning: here-document delimited by \
+end-of-file (wanted `%s')\n", dnq);
 			break ;
+		}
 		line = expand_var_heredoc(data, line, delimiter);
 		if (line)
 		{
