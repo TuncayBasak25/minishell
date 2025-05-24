@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_checker.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:48 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/24 09:09:31 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,14 @@ int	valid_input(t_shell *data)
 	{
 		free(data->prompt.user_input);
 		data->prompt.user_input = NULL;
+		data->exit_status = 2;
 		return (printf(WHITE"minishell: parse error near `\\n'\n"RESET));
 	}
 	else if (result_prompt != 0)
 	{
 		free(data->prompt.user_input);
 		data->prompt.user_input = NULL;
+		data->exit_status = 2;
 		return (printf(WHITE"minishell: parse error near `%c'\n"RESET, \
 			result_prompt));
 	}

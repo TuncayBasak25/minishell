@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 20:18:00 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:04:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ static int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 		return (utils->out[o++] = '$', o);
 	i[1] = i[0];
 	while (is_valid_var_char(input[i[0]]))
+	{
 		i[0]++;
+		if (ft_isdigit(input[i[0] - 1]) && input[i[0] - 2] == '$')
+			break ;
+	}
 	key = ft_substr(input, i[1], i[0] - i[1]);
 	search = ft_strjoin(key, "=");
 	free(key);
@@ -49,20 +53,17 @@ static int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 	return (o);
 }
 
-static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
+static int	handle_tilde(t_utils *utils, size_t *i, int o)
 {
 	char	*home;
 
-	if (*i == 0 || utils->input[*i - 1] == ' ')
+	home = get_env(utils->strs, "HOME=", utils->len);
+	if (home)
 	{
-		home = get_env(utils->strs, "HOME=", utils->len);
-		if (!sq && home)
-		{
-			o = append_string(utils->out, o, home);
-			free(home);
-			(*i)++;
-			return (o);
-		}
+		o = append_string(utils->out, o, home);
+		free(home);
+		(*i)++;
+		return (o);
 	}
 	return (utils->out[o++] = utils->input[(*i)++], o);
 }
@@ -70,11 +71,12 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o, bool sq)
 static void	expand_variables_norme(t_utils *u, char *input)
 {
 	if (input[u->k[0]] == '$'
-		&& !is_single_quoted(input, u->k[0])
+		&& quote_context_at(input, u->k[0]) != '\''
 		&& !is_in_heredoc(input, u->k[0]))
 		u->o = expand_variable(u, input, u->k, u->o);
-	else if (input[u->k[0]] == '~')
-		u->o = handle_tilde(u, u->k, u->o, is_single_quoted(input, u->k[0]));
+	else if (input[u->k[0]] == '~' && !quote_context_at(input, u->k[0]) && \
+		!is_in_heredoc(input, u->k[0]))
+		u->o = handle_tilde(u, u->k, u->o);
 	else
 		u->out[u->o++] = input[u->k[0]++];
 }

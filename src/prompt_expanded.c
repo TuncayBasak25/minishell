@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 19:04:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 20:11:38 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 09:42:11 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	expanded_lenght(t_utils *u, const char *input, \
 		u->len += exit_status_len(exit_status);
 		u->i++;
 	}
-	else
+	else if (input[u->i] != '\0' && input[u->i] != ' ' && input[u->i] != '$')
 	{
 		get_var_length((char *)input, &u->i);
 		u->str = ft_strndup(input + u->start, u->i - u->start);
@@ -92,9 +92,12 @@ static void	expanded_lenght(t_utils *u, const char *input, \
 			free(u->str);
 		}
 	}
+	else
+		u->len++;
 }
 
-int	calc_expanded_length(const char *input, char **envp, int exit_status)
+int	calc_expanded_length(t_shell *data, const char *input, \
+	char **envp, int exit_status)
 {
 	t_utils	u;
 
@@ -104,6 +107,16 @@ int	calc_expanded_length(const char *input, char **envp, int exit_status)
 	{
 		if (input[u.i] == '$')
 			expanded_lenght(&u, input, envp, exit_status);
+		else if (input[u.i] == '~')
+		{
+			u.tmp = get_env(envp, "HOME=", data->env_len);
+			if (u.tmp)
+				u.len += ft_strlen(u.tmp);
+			else
+				u.len++;
+			free(u.tmp);
+			u.i++;
+		}
 		else
 		{
 			u.len++;

@@ -6,33 +6,42 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 22:45:01 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 06:52:26 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_file(char *filename, int flag)
+void	print_error_file(char *filename, int flag, int type)
 {
+	if (type == 1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(filename, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+	}
 	if ((access(filename, F_OK) == -1))
 	{
-		ft_putstr_fd(WHITE"minishell: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": No such file or directory\n"RESET, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
 	else if (access(filename, flag) == -1)
 	{
-		ft_putstr_fd(WHITE"minishell: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": Permission denied\n"RESET, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
 	}
 }
 
 int	handle_outfile(t_shell *data, t_cmd **cmds)
 {
-	if ((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1)
+	struct stat	buf;
+
+	if (((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1) || \
+		(!stat((*cmds)->outfile, &buf) && S_ISDIR(buf.st_mode) == 1))
 	{
-		print_error_file((*cmds)->outfile, W_OK);
+		print_error_file((*cmds)->outfile, W_OK, S_ISDIR(buf.st_mode));
 		if (!(*cmds)->prev || (*cmds)->command)
 			data->exit_status = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
@@ -59,7 +68,7 @@ int	handle_infile(t_shell *data, t_cmd **cmds)
 	if (!data->cmd_group.cmd_list->heredoc && (*cmds)->infile && \
 	access((*cmds)->infile, F_OK | R_OK) == -1)
 	{
-		print_error_file((*cmds)->infile, R_OK);
+		print_error_file((*cmds)->infile, R_OK, 0);
 		if (!(*cmds)->prev || (*cmds)->command)
 			data->exit_status = 1;
 		else if ((*cmds)->prev && !(*cmds)->command)
@@ -90,26 +99,6 @@ int	extract_exit_code(int status)
 	return (1);
 }
 
-void	handle_sigquit_message(t_shell *data, int status, pid_t pid, pid_t last_pid)
-{
-	int	sig;
-
-	if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		if (sig == SIGQUIT && pid == last_pid)
-		{
-			write(1, "Quit\n", 5);
-			data->exit_status = 131;
-		}
-		else
-		{
-			write(1, "^\\", 2);
-			data->exit_status = 0;
-		}
-	}
-}
-
 void	wait_exec(t_shell *data)
 {
 	data->pid_wait = waitpid(-1, &data->status, 0);
@@ -118,7 +107,8 @@ void	wait_exec(t_shell *data)
 		if (data->pid_wait == data->pid_last)
 		{
 			data->exit_status = extract_exit_code(data->status);
-			handle_sigquit_message(data, data->status, data->pid_wait, data->pid_last);
+			handle_sigquit_message(data->status, data->pid_wait, \
+				data->pid_last);
 		}
 		data->pid_wait = waitpid(-1, &data->status, 0);
 	}

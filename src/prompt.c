@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 19:26:43 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 10:15:35 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	save_history(t_shell *data)
 
 void	exit_status_ctrl_c(t_shell *data)
 {
-	if (g_sig == 2)
+	if (g_sig == 2 && data->prog_status == 0)
 	{
 		data->exit_status = 130;
 		data->prev_status_is_ctrl_c = true;
@@ -43,6 +43,7 @@ RESULT	prompt_handling(t_shell *data)
 	signal(SIGINT, sigint_prompt);
 	data->prompt.user_input = readline(data->prompt.prompt);
 	exit_status_ctrl_c(data);
+	data->prog_status = 0;
 	signal(SIGINT, sigint_exec);
 	if (!data->prompt.user_input)
 	{
@@ -59,8 +60,8 @@ RESULT	prompt_handling(t_shell *data)
 		data->prompt.user_input = NULL;
 		return (FAIL);
 	}
-	data->prompt_len_expanded = calc_expanded_length(data->prompt.user_input, \
-		data->env, data->exit_status);
+	data->prompt_len_expanded += calc_expanded_length(data, \
+		data->prompt.user_input, data->env, data->exit_status);
 	data->prompt.user_input = expand_variables(data, data->prompt.user_input);
 	return (SUCCESS);
 }

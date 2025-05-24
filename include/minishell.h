@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 20:21:49 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 09:37:22 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_shell
 	int			exit_status;
 	int			heredoc_quit;
 	int			prompt_len_expanded;
+	int			prog_status;
 	bool		prev_status_is_ctrl_c;
 	pid_t		pid_last;
 	pid_t		pid_wait;
@@ -129,7 +130,8 @@ void	*free_tab(char **tab);
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 RESULT	prompt_handling(t_shell *data);
-int		calc_expanded_length(const char *input, char **envp, int exit_status);
+int		calc_expanded_length(t_shell *data, const char *input, char **envp, \
+	int exit_status);
 
 //REDIRECTION
 int		redirection(t_shell *data, char *cmd);
@@ -159,7 +161,7 @@ char	**split_limited(char *str, char c, char *ignored);
 char	**split_space_limited(char *str, char c, char *ignored);
 void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
-bool	is_single_quoted(const char *str, int i);
+char	quote_context_at(const char *str, int pos);
 int		append_string(char *out, int o, const char *val);
 char	*expand_variables(t_shell *data, char *input);
 char	**copy_env(t_shell *data, char **envp);
@@ -196,5 +198,6 @@ void	sigint_prompt(int sigid);
 void	sigint_exec(int sigid);
 void	sigint_handler(int sigid);
 void	quit_handler(int sigid);
+void	handle_sigquit_message(int status, pid_t pid, pid_t last_pid);
 
 #endif

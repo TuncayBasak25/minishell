@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 06:53:17 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 07:02:48 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 10:24:36 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	**copy_env(t_shell *data, char **envp)
 	char	**env_copy;
 
 	len = 0;
+	data->prompt_len_expanded = 1024;
 	if (!envp)
 		return (NULL);
 	while (envp[len])

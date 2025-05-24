@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 15:38:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 06:48:21 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static void	exec_cmd(t_shell *data, t_cmd *cmd)
 static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 	*cmds, int *pipefd, int prev_fd)
 {
+	data->prog_status = 1;
 	if (cmds->next && pipe(pipefd) == -1)
 		exit(EXIT_FAILURE);
 	data->pid_last = fork();

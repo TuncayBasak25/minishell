@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 10:10:49 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 23:46:31 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/12 23:48:31 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@ int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
-	if (!s1 && !s2)
-		return (0);
-	if (!s1 || !s2)
-		return (1);
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;

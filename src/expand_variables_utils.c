@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:04:23 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 20:17:15 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 05:16:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	is_valid_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-bool	is_single_quoted(const char *str, int pos)
+char	quote_context_at(const char *str, int pos)
 {
 	bool	sq;
 	bool	dq;
@@ -26,14 +26,18 @@ bool	is_single_quoted(const char *str, int pos)
 	sq = false;
 	dq = false;
 	j = -1;
-	while (++j < pos)
+	while (++j < pos && str[j])
 	{
 		if (str[j] == '\'' && !dq)
 			sq = !sq;
 		else if (str[j] == '"' && !sq)
 			dq = !dq;
 	}
-	return (sq);
+	if (sq)
+		return ('\'');
+	else if (dq)
+		return ('"');
+	return (0);
 }
 
 int	append_string(char *dst, int o, const char *val)
@@ -57,6 +61,8 @@ bool	is_in_heredoc(const char *str, int pos)
 	{
 		if (str[i] == '<' && str[i + 1] == '<')
 		{
+			if (quote_context_at(str, i) == '\"')
+				return (in_heredoc);
 			in_heredoc = true;
 			i += 2;
 			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
