@@ -3,23 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
+#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/23 19:14:10 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/24 14:21:40 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-vpath %.c src/
-SRC = built_in.c cd.c create_heredoc.c echo.c env.c exec_utils.c \
-	exec.c exit.c expand_variables_utils.c expand_variables.c export.c \
-	find_char.c free.c get_input_data.c get_prompt.c handlers.c \
-	init_struct_command.c input_checker.c main.c prompt.c pwd.c \
-	redirection_utils.c redirection.c remove_all_quotes.c \
-	sort_and_print_tab.c split_limited.c split_space_limited.c \
-	tab.c unset.c utils.c shlvl.c env_utils.c prompt_expanded.c
+SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec_utils.c \
+	src/exec.c src/exit.c src/expand_variables_utils.c src/expand_variables.c src/export.c \
+	src/find_char.c src/free.c src/get_input_data.c src/get_prompt.c src/handlers.c \
+	src/init_struct_command.c src/input_checker.c src/main.c src/prompt.c src/pwd.c \
+	src/redirection_utils.c src/redirection.c src/remove_all_quotes.c \
+	src/sort_and_print_tab.c src/split_limited.c src/split_space_limited.c \
+	src/tab.c src/unset.c src/utils.c src/shlvl.c src/env_utils.c src/prompt_expanded.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -83,7 +82,7 @@ clean:
 fclean: clean
 	@make -C Libft fclean
 	@echo ${BYELLOW}"[INFO] CLEANING EXECUTABLE..."${RESET}
-	@rm -f $(NAME) /tmp/minishell_history || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
+	@rm -f $(NAME) .minishell_history || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
 	@echo ${BGREEN}"[SUCCESS] EXECUTABLE CLEANED."${RESET}
 
 re: fclean all

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 09:37:22 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:21:25 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "colors.h"
 
 # define PROMPT_DEFAULT "minishell$ "
-# define TMP_HISTORY "/tmp/minishell_history"
+# define TMP_HISTORY ".minishell_history"
 
 typedef enum e_result
 {
