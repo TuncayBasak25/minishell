@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_space_limited.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:29 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/25 18:25:09 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_ignored(char c, char *ignored)
 	return (0);
 }
 
-static int	counts_word(char *s, char sep, char *ignored)
+static int	counts_word(char *s, char *ignored)
 {
 	int	i;
 	int	count;
@@ -43,12 +43,12 @@ static int	counts_word(char *s, char sep, char *ignored)
 			ignore = s[i];
 		else if (s[i] == ignore)
 			ignore = 0;
-		if (!ignore && s[i] != sep && !in_word)
+		if (!ignore && !is_whitespace(s[i]) && !in_word)
 		{
 			in_word = 1;
 			count++;
 		}
-		else if (!ignore && s[i] == sep)
+		else if (!ignore && is_whitespace(s[i]))
 			in_word = 0;
 		i++;
 	}
@@ -64,7 +64,7 @@ static char	*ft_wrdcpy(char **dest, const char *s, int size)
 	return (*dest);
 }
 
-static int	split(char *str, char sep, char *ignored)
+static int	split(char *str, char *ignored)
 {
 	int	i;
 	int	ignore;
@@ -77,14 +77,14 @@ static int	split(char *str, char sep, char *ignored)
 			ignore = str[i];
 		else if (str[i] == ignore)
 			ignore = 0;
-		if (!ignore && str[i] == sep)
+		if (!ignore && is_whitespace(str[i]))
 			break ;
 		i++;
 	}
 	return (i);
 }
 
-char	**split_space_limited(char *str, char c, char *ignored)
+char	**split_whitespace_limited(char *str, char *ignored)
 {
 	int		start;
 	int		end;
@@ -93,18 +93,17 @@ char	**split_space_limited(char *str, char c, char *ignored)
 	char	**dest;
 
 	dest = NULL;
-	start = -1;
+	start = 0;
 	word = -1;
-	len = counts_word(str, c, ignored);
+	len = counts_word(str, ignored);
 	if (len == 0)
 		return (NULL);
 	dest = ft_inittab(len);
 	end = 0;
 	while (word + 1 < len)
 	{
-		while (str[++start] && str[start] == ' ')
-			continue ;
-		end = split(&str[start], c, ignored);
+		start = skip_whitespace(str, start);
+		end = split(&str[start], ignored);
 		if (ft_wrdcpy(&dest[++word], &str[start], end) == NULL)
 			return (NULL);
 		start += end;

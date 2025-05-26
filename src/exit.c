@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:11:58 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:54:14 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_ll_overflow(const char *str)
 			sign = -1;
 		str++;
 	}
-	limit = 9223372036854775807ULL;
+	limit = LLONG_MAX;
 	if (sign == -1)
 		limit += 1;
 	while (*str >= '0' && *str <= '9')

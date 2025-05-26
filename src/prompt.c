@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 10:15:35 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:45:21 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void	save_history(t_shell *data)
 {
 	int	fd;
 
+	if (!data->prompt.user_input || !data->prompt.user_input[0] || \
+		data->prompt.user_input[0] == ' ')
+		return ;
+	if (ft_strcmp(data->prompt.user_input, data->previous_input) == 0)
+		return ;
+	free(data->previous_input);
+	data->previous_input = ft_strdup(data->prompt.user_input);
 	fd = open(TMP_HISTORY, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 		return (add_history(data->prompt.user_input));

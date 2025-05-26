@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 07:09:21 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 01:19:53 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	update_var_env(char **env, char *key, char *value, int env_len)
 	}
 }
 
-static void	print_env(char **env, int env_len)
+static void	print_env(t_shell *data, char **env, int env_len)
 {
 	int	i;
 	int	j;
@@ -54,7 +54,7 @@ static void	print_env(char **env, int env_len)
 		j = -1;
 		while (env[i][++j] && env[i][j] != '=')
 			continue ;
-		if (env[i] && env[i][j] == '=')
+		if (env[i] && env[i][j] == '=' && is_print_path(data, env[i]))
 			printf("%s\n", env[i]);
 	}
 }
@@ -97,5 +97,5 @@ void	environnement(t_shell *data, char **cmds, char **env, int env_len)
 		return ;
 	else if (!cmds[1] || (cmds[1][0] == '-' && cmds[1][1] == '-' && \
 		!cmds[1][2]))
-		print_env(env, env_len);
+		print_env(data, env, env_len);
 }

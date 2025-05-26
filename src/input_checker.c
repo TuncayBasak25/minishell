@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 09:09:31 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/25 18:30:41 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_struct_input(char *p, int *i, char *op, int *repeat)
 	{
 		if (!*op)
 			*op = p[*i];
-		if (*repeat == 1 && p[*i - 1] == ' ' && (p[*i] == '>' || p[*i] == '<'))
+		if (*repeat == 1 && is_whitespace(p[*i - 1]) && (p[*i] == '>' || p[*i] == '<'))
 			return (p[*i]);
 		if ((*op == p[*i] && *repeat < 2 && (*op == '<' || *op == '>')) || \
 		(*op == p[*i] && *repeat < 1 && *op == '|'))
@@ -46,7 +46,7 @@ static int	check_struct_input(char *p, int *i, char *op, int *repeat)
 		else
 			return (p[*i]);
 	}
-	else if (p[*i] && p[*i] != ' ')
+	else if (p[*i] && !is_whitespace(p[*i]))
 	{
 		if (p[*i] == '&')
 			return (p[*i]);
@@ -60,9 +60,10 @@ static int	check_start_input(char *prompt)
 {
 	int	i;
 
-	i = -1;
-	while (prompt[++i] && prompt[i] == ' ')
-		continue ;
+	i = 0;
+	if (!prompt)
+		return (0);
+	i = skip_whitespace(prompt, i);
 	if (prompt[i] == '&' || prompt[i] == '|')
 		return (prompt[i]);
 	return (0);
@@ -80,8 +81,7 @@ static int	input_checker(char *prompt)
 		return (utils.result);
 	while (prompt[++utils.i])
 	{
-		while (prompt[utils.i] == ' ')
-			utils.i++;
+		utils.i = skip_whitespace(prompt, utils.i);
 		if (prompt[utils.i] == '\0')
 			break ;
 		utils.result = check_struct_input(prompt, &utils.i, \

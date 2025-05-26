@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 08:26:03 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:44 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/26 00:23:55 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ char	**find_path(char **envp, int env_len)
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
 			path = ft_split(envp[i] + 5, ':');
-			if (!path)
-				return (NULL);
 			break ;
 		}
 	}

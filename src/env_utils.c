@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 06:53:17 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 10:24:36 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 04:45:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,14 @@ char	**copy_env(t_shell *data, char **envp)
 		return (NULL);
 	while (envp[len])
 		len++;
-	data->env_len = len;
 	env_copy = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!env_copy)
 		return (NULL);
 	env_copy[len] = NULL;
 	i = -1;
 	while (++i < len)
-	{
 		env_copy[i] = ft_strdup(envp[i]);
-		if (!env_copy[i])
-			return (free_tab(env_copy));
-	}
+	data->env_len = len;
 	return (env_copy);
 }
 

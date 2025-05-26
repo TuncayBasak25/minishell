@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 07:51:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/25 19:03:47 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static const char	*skip_redir(const char *s)
 	op = *s++;
 	if (*s == op)
 		s++;
-	while (*s == ' ')
+	while (is_whitespace(*s))
 		s++;
 	if (*s == '\'' || *s == '"')
 	{
@@ -35,7 +35,7 @@ static const char	*skip_redir(const char *s)
 	}
 	else
 	{
-		while (*s && *s != ' ' && *s != '<' && *s != '>')
+		while (*s && !is_whitespace(*s) && *s != '<' && *s != '>')
 			s++;
 	}
 	return (s);
@@ -47,10 +47,10 @@ static char	*trim_spaces(char *str)
 	char	*end;
 
 	start = str;
-	while (*start == ' ')
+	while (is_whitespace(*start))
 		start++;
 	end = start + ft_strlen(start) - 1;
-	while (end > start && *end == ' ')
+	while (end > start && is_whitespace (*end))
 		*end-- = '\0';
 	return (ft_strdup(start));
 }
@@ -89,7 +89,7 @@ void	get_input_data(t_shell *data)
 	t_cmd	*prev;
 
 	utils.i = -1;
-	utils.strs = split_space_limited(data->prompt.user_input, '|', "\'\"");
+	utils.strs = split_limited(data->prompt.user_input, '|', "\'\"");
 	prev = NULL;
 	if (!utils.strs)
 		return ;
@@ -99,7 +99,7 @@ void	get_input_data(t_shell *data)
 		utils.str = get_command(utils.strs[utils.i]);
 		if (!utils.str)
 			return ((void) free_tab(utils.strs));
-		utils.tmps = split_space_limited(utils.str, ' ', "\'\"");
+		utils.tmps = split_whitespace_limited(utils.str, "\'\"");
 		remove_all_quotes(utils.tmps);
 		data->cmd_group.cmd_list = init_struct_cmd(prev, utils.tmps, \
 			utils.str, data->cmd_group.path);

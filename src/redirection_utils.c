@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 05:18:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:05 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/25 19:05:57 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	start_and_end(char *cmd, int *s, int *e)
 	int	end;
 
 	start = 0;
-	while (cmd[start] && (cmd[start] == ' ' || \
+	while (cmd[start] && (is_whitespace(cmd[start]) || \
 		cmd[start] == '<' || cmd[start] == '>'))
 		start++;
 	*s = start;
@@ -42,7 +42,7 @@ void	start_and_end(char *cmd, int *s, int *e)
 		skip_redir_quotes(cmd, &start, &end);
 	else
 	{
-		while (cmd[++end] && cmd[end] != ' ' && \
+		while (cmd[++end] && !is_whitespace(cmd[end]) && \
 			cmd[end] != '<' && cmd[end] != '>')
 			continue ;
 	}

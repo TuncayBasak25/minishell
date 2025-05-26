@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:39:15 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 06:04:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:53:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ resetting to 1\n"RESET, ft_atoi(shlvl) + 1);
 		}
 	}
 	if (i == env_len)
-		export(data, "SHLVL=1");
+		export_var(data, "SHLVL=1");
 }

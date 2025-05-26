@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_limited.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:37:14 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:25 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/25 18:27:07 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,28 @@ static int	is_ignored(char c, char *ignored)
 static int	counts_word(char *s, char sep, char *ignored)
 {
 	int	i;
-	int	j;
 	int	count;
 	int	ignore;
+	int	in_word;
 
-	i = -1;
+	i = 0;
 	count = 0;
 	ignore = 0;
-	if (!s)
-		return (count);
-	while (s[++i])
+	in_word = 0;
+	while (s[i])
 	{
-		j = -1;
-		while (ignored[++j])
+		if (is_ignored(s[i], ignored) && !ignore)
+			ignore = s[i];
+		else if (s[i] == ignore)
+			ignore = 0;
+		if (!ignore && s[i] != sep && !in_word)
 		{
-			if (s[i] == ignored[j] && !ignore)
-				ignore = s[i];
-			else if (s[i] == ignored[j] && ignore)
-				ignore = 0;
-		}
-		if ((s[i] == sep && s[i + 1] != sep && s[i - 1] != sep && !ignore) \
-		|| !s[i + 1])
+			in_word = 1;
 			count++;
+		}
+		else if (!ignore && s[i] == sep)
+			in_word = 0;
+		i++;
 	}
 	return (count);
 }
@@ -64,27 +64,24 @@ static char	*ft_wrdcpy(char **dest, const char *s, int size)
 	return (*dest);
 }
 
-static int	split(char *str, char c, char *ignored)
+static int	split(char *str, char sep, char *ignored)
 {
-	int	end;
+	int	i;
 	int	ignore;
 
-	end = 0;
+	i = 0;
 	ignore = 0;
-	while (str[end])
+	while (str[i])
 	{
-		ignore = is_ignored(str[end], ignored);
-		while (ignore)
-		{
-			end += 1;
-			if (str[end] == ignore)
-				ignore = 0;
-		}
-		end += 1;
-		if (str[end] == c && str[end + 1] != c && str[end - 1] != c)
+		if (is_ignored(str[i], ignored) && !ignore)
+			ignore = str[i];
+		else if (str[i] == ignore)
+			ignore = 0;
+		if (!ignore && str[i] == sep)
 			break ;
+		i++;
 	}
-	return (end);
+	return (i);
 }
 
 char	**split_limited(char *str, char c, char *ignored)

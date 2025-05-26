@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/21 01:47:22 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:48:03 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		pwd(data, cmds->command);
 	else if (!ft_strncmp(*cmds->command, "export", 6) && \
 		ft_strlen(*cmds->command) == 6)
-		export(data, cmds->command[1]);
+		export(data, &cmds->command[1]);
 	else if (!ft_strncmp(*cmds->command, "unset", 5) && \
 		ft_strlen(*cmds->command) == 5)
-		unset(data, cmds->command[1]);
+		unset(data, &cmds->command[1]);
 	else if (!ft_strncmp(*cmds->command, "env", 3) && \
 		ft_strlen(*cmds->command) == 3)
 		environnement(data, cmds->command, data->env, data->env_len);

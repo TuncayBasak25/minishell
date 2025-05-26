@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 23:49:19 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/22 20:39:39 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:09:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,36 +29,13 @@ static char	**alias_ptr_tab(char **tab, int size)
 	return (tmp);
 }
 
-static void	print_export(char **strs, int size)
+int	is_print_path(t_shell *data, char *str)
 {
-	int	i;
-	int	j;
-	int	len;
-
-	i = -1;
-	while (++i < size)
-	{
-		if (strs[i] && strs[i][0] != '_')
-		{
-			ft_putstr_fd("declare -x ", 1);
-			len = ft_strlen(strs[i]);
-			j = -1;
-			while (++j < len)
-			{
-				ft_putchar_fd(strs[i][j], 1);
-				if (strs[i][j] == '=')
-				{
-					printf("\"%s\"\n", &strs[i][j + 1]);
-					break ;
-				}
-				if (!strs[i][j + 1])
-					ft_putchar_fd('\n', 1);
-			}
-		}
-	}
+	return (data->secret_path == false || ft_strncmp(str, "PATH=", 5));
 }
 
-void	sort_and_print_tab(t_shell *data, char **tab, int size)
+void	sort_and_print_tab(t_shell *data, char **tab, int size, \
+	void (*print)(t_shell *, char **, int))
 {
 	int		i;
 	int		j;
@@ -81,7 +58,7 @@ void	sort_and_print_tab(t_shell *data, char **tab, int size)
 			}
 		}
 	}
-	print_export(tmp, size);
+	print(data, tmp, size);
 	free(tmp);
 	data->exit_status = 0;
 }

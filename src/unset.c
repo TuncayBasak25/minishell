@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:16:37 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 06:11:43 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:55:17 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,32 @@ char	**resize_env(t_shell *data, int k)
 	return (data->env);
 }
 
-void	unset(t_shell *data, char *var)
+void	unset(t_shell *data, char **var)
 {
 	int		i;
+	int		j;
 	int		var_len;
 
-	i = -1;
 	data->exit_status = 0;
 	if (!data->env || !var || !*var)
 		return ;
-	var_len = ft_strlen(var);
-	while (++i < data->env_len)
+	j = -1;
+	while (var[++j])
 	{
-		if (ft_strncmp(data->env[i], var, var_len) == 0 && \
-		(data->env[i][var_len] == '=' || data->env[i][var_len] == '\0'))
+		i = -1;
+		var_len = ft_strlen(var[j]);
+		while (++i < data->env_len)
 		{
-			free(data->env[i]);
-			data->env[i] = NULL;
-			break ;
+			if (ft_strncmp(data->env[i], var[j], var_len) == 0 && \
+			(data->env[i][var_len] == '=' || data->env[i][var_len] == '\0'))
+			{
+				free(data->env[i]);
+				data->env[i] = NULL;
+				break ;
+			}
 		}
+		if (i == data->env_len)
+			continue ;
 	}
-	if (i == data->env_len)
-		return ;
-	data->env = resize_env(data, -1);
+	data->env = resize_env(data, -j);
 }

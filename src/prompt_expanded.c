@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 19:04:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 09:42:11 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:07:32 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static int	get_var_length(char *start, int *i)
 		(*i)++;
 		return (1);
 	}
-	while (start[*i] && ((start[*i] >= 'A' && start[*i] <= 'Z') || \
-	(start[*i] >= 'a' && start[*i] <= 'z') || \
-	(start[*i] >= '0' && start[*i] <= '9') || start[*i] == '_'))
+	while (start[*i] && is_valid_var_char(start[*i]))
 	{
 		(*i)++;
 		len++;
@@ -81,7 +79,8 @@ static void	expanded_lenght(t_utils *u, const char *input, \
 		u->len += exit_status_len(exit_status);
 		u->i++;
 	}
-	else if (input[u->i] != '\0' && input[u->i] != ' ' && input[u->i] != '$')
+	else if (input[u->i] != '\0' && !is_whitespace(input[u->i]) && \
+		input[u->i] != '$')
 	{
 		get_var_length((char *)input, &u->i);
 		u->str = ft_strndup(input + u->start, u->i - u->start);

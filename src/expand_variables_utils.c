@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:04:23 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 05:16:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/25 20:08:21 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ bool	is_in_heredoc(const char *str, int pos)
 				return (in_heredoc);
 			in_heredoc = true;
 			i += 2;
-			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+			while (str[i] && is_whitespace(str[i]))
 				i++;
-			while (str[i] && str[i] != ' ' && str[i] != '\t')
+			while (str[i] && !is_whitespace(str[i]))
 				i++;
 			continue ;
 		}
