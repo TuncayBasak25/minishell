@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:16:37 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 12:55:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 04:40:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,40 @@ char	**resize_env(t_shell *data, int k)
 	return (data->env);
 }
 
+int	unset_var(t_shell *data, char *var)
+{
+	int	i;
+	int	var_len;
+
+	i = -1;
+	var_len = ft_strlen(var);
+	while (++i < data->env_len)
+	{
+		if (ft_strncmp(data->env[i], var, var_len) == 0 && \
+		(data->env[i][var_len] == '=' || data->env[i][var_len] == '\0'))
+		{
+			free(data->env[i]);
+			data->env[i] = NULL;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	unset(t_shell *data, char **var)
 {
-	int		i;
 	int		j;
-	int		var_len;
+	int		sub_len;
 
 	data->exit_status = 0;
 	if (!data->env || !var || !*var)
 		return ;
 	j = -1;
+	sub_len = 0;
 	while (var[++j])
 	{
-		i = -1;
-		var_len = ft_strlen(var[j]);
-		while (++i < data->env_len)
-		{
-			if (ft_strncmp(data->env[i], var[j], var_len) == 0 && \
-			(data->env[i][var_len] == '=' || data->env[i][var_len] == '\0'))
-			{
-				free(data->env[i]);
-				data->env[i] = NULL;
-				break ;
-			}
-		}
-		if (i == data->env_len)
-			continue ;
+		if (unset_var(data, var[j]))
+			sub_len--;
 	}
-	data->env = resize_env(data, -j);
+	data->env = resize_env(data, sub_len);
 }

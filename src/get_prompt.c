@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_prompt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 05:35:28 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:36 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/27 05:58:25 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,4 @@ void	build_prompt(t_prompt *prompt, char **envp, int env_len)
 	free(temp_prompt);
 	prompt->prompt = ft_strjoin(tmp, "$ ");
 	free(tmp);
-	if (!prompt->prompt)
-		prompt->prompt = ft_strdup(PROMPT_DEFAULT);
 }

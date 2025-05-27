@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_space_limited.c                              :+:      :+:    :+:   */
+/*   split_whitespace_limited.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/25 18:25:09 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 05:36:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ static int	counts_word(char *s, char *ignored)
 
 static char	*ft_wrdcpy(char **dest, const char *s, int size)
 {
-	*dest = (char *) ft_calloc(size + 1, sizeof(char));
 	if (!dest)
+		return (NULL);
+	*dest = (char *) ft_calloc(size + 1, sizeof(char));
+	if (!*dest)
 		return (NULL);
 	(void) ft_strlcpy(*dest, s, size + 1);
 	return (*dest);
@@ -96,16 +98,16 @@ char	**split_whitespace_limited(char *str, char *ignored)
 	start = 0;
 	word = -1;
 	len = counts_word(str, ignored);
-	if (len == 0)
-		return (NULL);
 	dest = ft_inittab(len);
+	if (!dest)
+		return (NULL);
 	end = 0;
 	while (word + 1 < len)
 	{
 		start = skip_whitespace(str, start);
 		end = split(&str[start], ignored);
 		if (ft_wrdcpy(&dest[++word], &str[start], end) == NULL)
-			return (NULL);
+			return (free_tab(dest));
 		start += end;
 	}
 	return (dest);

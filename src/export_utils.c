@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:00:15 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 15:14:49 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 06:46:38 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,20 @@ char	*get_var_key(char *var)
 void	add_var_to_env(t_shell *data, char *key, char *value)
 {
 	int		i;
+	int		len_before_resize;
 
 	i = -1;
 	if (!key)
 		return ;
 	if (!data->env)
 		data->env_len = 0;
+	len_before_resize = data->env_len;
 	resize_env(data, 1);
+	if (data->env_len <= len_before_resize)
+		return ;
 	while (data->env[++i])
 		continue ;
-	if (value)
+	if (value && *value)
 	{
 		if (*value == '+')
 			value++;

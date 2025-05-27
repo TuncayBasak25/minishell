@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tab.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 15:24:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:34 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/27 05:34:19 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	**ft_inittab(int size)
 {
 	char	**str;
 
+	if (size < 1)
+		return (NULL);
 	str = (char **) ft_calloc(size + 1, sizeof(char *));
 	if (!(str))
 		return (NULL);

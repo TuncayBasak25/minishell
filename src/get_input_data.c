@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/25 19:03:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 05:45:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ void	get_input_data(t_shell *data)
 		remove_all_quotes(utils.tmps);
 		data->cmd_group.cmd_list = init_struct_cmd(prev, utils.tmps, \
 			utils.str, data->cmd_group.path);
+		if (!data->cmd_group.cmd_list)
+		{
+			data->cmd_group.cmd_list = prev;
+			return ((void) free_tab(utils.strs), free(utils.str), \
+				(void) free_tab(utils.tmps));
+		}
 		data->cmd_group.cmd_list->id = utils.i + 1;
 		(void) redirection(data, utils.strs[utils.i]);
 		prev = data->cmd_group.cmd_list;
