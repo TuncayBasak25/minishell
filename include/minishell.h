@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 14:06:11 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:15:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define TMP_HISTORY ".minishell_history"
 # define MINIMAL_PATH \
 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define HEREDOC_WARNING \
+"minishell: warning: here-document delimited by end-of-file (wanted `%s')\n"
 
 typedef enum e_result
 {
@@ -118,6 +120,7 @@ typedef struct s_shell
 	int			prompt_len_expanded;
 	int			prog_status;
 	bool		prev_status_is_ctrl_c;
+	bool		prev_status_is_ctrl_d;
 	bool		secret_path;
 	pid_t		pid_last;
 	pid_t		pid_wait;
@@ -186,8 +189,11 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 	int strs_len);
 int		extract_exit_code(int status);
 void	wait_exec(t_shell *data);
+int		check_redirection(char *cmd, int *i);
 void	start_and_end(char *cmd, int *s, int *e);
 char	*get_filename(char *cmd, int *i);
+void	print_heredoc(char *line, int fd, char *dnq);
+void	fake_heredoc(t_shell *data, char *input);
 int		get_fd(t_shell *data, int type, char **file, int fd);
 int		create_heredoc_fd(t_shell *data, char **delimiter);
 int		find_char(char *str, char c);
@@ -201,6 +207,7 @@ int		skip_whitespace(const char *str, int i);
 int		is_whitespace(char c);
 char	**split_whitespace_limited(char *str, char *ignored);
 int		is_print_path(t_shell *data, char *str);
+char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter);
 
 // COMMAND
 t_cmd	*init_struct_cmd(t_cmd *prev, char **command, char *line, char **env);

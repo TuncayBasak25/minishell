@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/23 08:11:50 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:37:35 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static void	skip_quotes(t_utils *utils, char *cmd)
 	}
 }
 
-static int	check_redirection(char *cmd, int *i)
+int	check_redirection(char *cmd, int *i)
 {
 	int	redir;
 
-	redir = 0;
+	redir = NONE;
 	if (cmd[*i] == '<')
 	{
 		redir = INPUT;

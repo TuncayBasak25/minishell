@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/25 22:36:04 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:18:26 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,5 @@ void	free_shell(t_shell *data, int exit_prog)
 	data->prompt = (t_prompt){0};
 	data->prompt_len_expanded = 1024;
 	data->heredoc_quit = 0;
+	data->prev_status_is_ctrl_d = false;
 }
