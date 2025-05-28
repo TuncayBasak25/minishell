@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 19:10:52 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:53:05 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ t_cmd	*init_struct_command(t_shell *data, t_cmd *prev, char *cmd_line, int id)
 		current->prev->next = current;
 	else
 		data->cmd_group.cmd_list = current;
+	if (data->cmd_group.cmd_list->next)
+		data->cmd_group.cmd_list = data->cmd_group.cmd_list->next;
 	(void) redirection(data, cmd_line);
 	return (current);
 }
