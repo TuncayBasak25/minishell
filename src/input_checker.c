@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 21:59:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:49:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_struct_input(char *p, int *i, char *op, int *repeat)
 	{
 		if (!*op)
 			*op = p[*i];
-		if (*repeat == 1 && is_whitespace(p[*i - 1]) && (p[*i] == '>' || p[*i] == '<'))
+		if (*repeat == 1 && is_ws(p[*i - 1]) && (p[*i] == '>' || p[*i] == '<'))
 			return (p[*i]);
 		if ((*op == p[*i] && *repeat < 2 && (*op == '<' || *op == '>')) || \
 		(*op == p[*i] && *repeat < 1 && *op == '|'))

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 05:45:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:10:52 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*trim_spaces(char *str)
 	return (ft_strdup(start));
 }
 
-char	*get_command(char *input)
+static char	*get_command(char *input)
 {
 	t_utils	utils;
 
@@ -83,37 +83,55 @@ char	*get_command(char *input)
 	return ((char *)utils.ptr);
 }
 
+t_cmd	*init_struct_command(t_shell *data, t_cmd *prev, char *cmd_line, int id)
+{
+	t_cmd	*current;
+
+	current = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+	if (!current)
+		return (NULL);
+	current->id = id + 1;
+	current->fd_out = 1;
+	current->line_cmd = get_command(cmd_line);
+	current->command = split_whitespace_limited(current->line_cmd, "\'\"");
+	remove_all_quotes(current->command);
+	if (current->command && find_char(current->command[0], '/'))
+		current->custom_path = ft_strdup(current->command[0]);
+	else if (current->command)
+		current->custom_path = \
+		find_custom_path(current->command[0], data->cmd_group.path);
+	current->next = NULL;
+	current->prev = prev;
+	if (current->prev)
+		current->prev->next = current;
+	else
+		data->cmd_group.cmd_list = current;
+	(void) redirection(data, cmd_line);
+	return (current);
+}
+
 void	get_input_data(t_shell *data)
 {
-	t_utils	utils;
+	int		i;
+	char	**cmds_line;
 	t_cmd	*prev;
 
-	utils.i = -1;
-	utils.strs = split_limited(data->prompt.user_input, '|', "\'\"");
-	prev = NULL;
-	if (!utils.strs)
+	i = -1;
+	cmds_line = split_limited(data->prompt.user_input, '|', "\'\"");
+	if (!cmds_line)
 		return ;
 	data->cmd_group.path = find_path(data->env, data->env_len);
-	while (utils.strs[++utils.i])
+	prev = NULL;
+	while (cmds_line[++i])
 	{
-		utils.str = get_command(utils.strs[utils.i]);
-		if (!utils.str)
-			return ((void) free_tab(utils.strs));
-		utils.tmps = split_whitespace_limited(utils.str, "\'\"");
-		remove_all_quotes(utils.tmps);
-		data->cmd_group.cmd_list = init_struct_cmd(prev, utils.tmps, \
-			utils.str, data->cmd_group.path);
-		if (!data->cmd_group.cmd_list)
+		prev = init_struct_command(data, prev, cmds_line[i], i);
+		if (!prev)
 		{
-			data->cmd_group.cmd_list = prev;
-			return ((void) free_tab(utils.strs), free(utils.str), \
-				(void) free_tab(utils.tmps));
+			free_tab(cmds_line);
+			return ;
 		}
-		data->cmd_group.cmd_list->id = utils.i + 1;
-		(void) redirection(data, utils.strs[utils.i]);
-		prev = data->cmd_group.cmd_list;
 		if (data->heredoc_quit)
 			break ;
 	}
-	utils.strs = free_tab(utils.strs);
+	free_tab(cmds_line);
 }

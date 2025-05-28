@@ -51,7 +51,3 @@ F* = FILE/NON EXISTENT FILE/SYMBOLIC LINK/BROKEN SYMBOLIC LINK
  - >F
  - > F
  - >      F
- 
-- Pas d'expand variables pour les heredoc
-- Crash à partir de 9 x $PATH en input, car l'allocation de strlen(input) + 2000 est insuffisante
-- Rajouter msg d'erreur pour les fichier de sortie ($PATH, etc)

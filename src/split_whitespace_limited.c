@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 05:36:34 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:52:31 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	counts_word(char *s, char *ignored)
 	count = 0;
 	ignore = 0;
 	in_word = 0;
-	while (s[i])
+	while (s && s[i])
 	{
 		if (is_ignored(s[i], ignored) && !ignore)
 			ignore = s[i];
@@ -97,6 +97,8 @@ char	**split_whitespace_limited(char *str, char *ignored)
 	dest = NULL;
 	start = 0;
 	word = -1;
+	if (!str)
+		return (NULL);
 	len = counts_word(str, ignored);
 	dest = ft_inittab(len);
 	if (!dest)

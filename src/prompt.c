@@ -6,31 +6,11 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 06:21:41 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:34:19 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	save_history(t_shell *data)
-{
-	int	fd;
-
-	if (!data->prompt.user_input || !data->prompt.user_input[0] || \
-		data->prompt.user_input[0] == ' ')
-		return ;
-	if (ft_strcmp(data->prompt.user_input, data->previous_input) == 0)
-		return ;
-	free(data->previous_input);
-	data->previous_input = ft_strdup(data->prompt.user_input);
-	fd = open(TMP_HISTORY, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		return (add_history(data->prompt.user_input));
-	add_history(data->prompt.user_input);
-	write(fd, data->prompt.user_input, ft_strlen(data->prompt.user_input));
-	write(fd, "\n", 1);
-	close(fd);
-}
 
 void	exit_status_ctrl_c(t_shell *data)
 {
@@ -44,22 +24,31 @@ void	exit_status_ctrl_c(t_shell *data)
 	g_sig = 0;
 }
 
-RESULT	prompt_handling(t_shell *data)
+void	ft_readline(t_shell *data)
 {
-	build_prompt(&data->prompt, data->env, data->env_len);
-	signal(SIGINT, sigint_prompt);
 	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
 		data->prompt.user_input = readline(data->prompt.prompt);
 	else
 		data->prompt.user_input = readline(PROMPT_DEFAULT);
+	if (data->prog_status == 0)
+	{
+		data->nb_line += data->nb_line_heredoc + 1;
+		data->nb_line_heredoc = 0;
+	}
+	else if (data->prog_status == 1)
+		data->nb_line += 1;
+}
+
+int	prompt_handling(t_shell *data)
+{
+	build_prompt(&data->prompt, data->env, data->env_len);
+	signal(SIGINT, sigint_prompt);
+	ft_readline(data);
 	exit_status_ctrl_c(data);
 	data->prog_status = 0;
 	signal(SIGINT, sigint_exec);
 	if (!data->prompt.user_input)
-	{
-		free_shell(data, 1);
-		exit(data->exit_status);
-	}
+		exit_shell(data);
 	if (!data->prompt.user_input[0])
 		return (FAIL);
 	if (data->prompt.user_input && data->prompt.user_input[0])

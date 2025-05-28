@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/28 00:13:45 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:17:00 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
+static char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 	return (expand_variables(data, line));
 }
 
-void	print_heredoc(char *line, int fd, char *dnq)
+static void	print_heredoc(t_shell *data, char *line, int fd, char *dnq)
 {
 	if (line)
 	{
@@ -35,7 +35,7 @@ void	print_heredoc(char *line, int fd, char *dnq)
 		ft_putstr_fd("\n", fd);
 	}
 	if (!line && g_sig == 0)
-		printf(HEREDOC_WARNING, dnq);
+		printf(HEREDOC_WARNING, data->nb_line, dnq);
 	if (!line && g_sig == 2)
 		printf("\n");
 }
@@ -44,12 +44,18 @@ static void	read_heredoc(t_shell *data, char *delimiter, char *dnq, int pipe)
 {
 	char	*line;
 
+	if (data->nb_line_heredoc > 0)
+		data->nb_line += data->nb_line_heredoc;
+	if (data->nb_line_heredoc > 0 && !data->prev_status_is_ctrl_d)
+		data->nb_line++;
+	data->nb_line_heredoc = 0;
 	line = readline("> ");
 	while (line && ft_strcmp(line, dnq))
 	{
 		line = expand_var_heredoc(data, line, delimiter);
 		ft_putendl_fd(line, pipe);
 		free(line);
+		data->nb_line_heredoc++;
 		line = readline("> ");
 	}
 	free(line);
@@ -58,7 +64,7 @@ static void	read_heredoc(t_shell *data, char *delimiter, char *dnq, int pipe)
 	else if (!line)
 	{
 		data->prev_status_is_ctrl_d = true;
-		print_heredoc(NULL, -1, dnq);
+		print_heredoc(data, NULL, -1, dnq);
 	}
 }
 
