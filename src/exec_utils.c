@@ -6,13 +6,13 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 06:52:26 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/29 03:44:28 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_file(char *filename, int flag, int type)
+static void	print_error_file(char *filename, int flag, int type)
 {
 	if (type == 1)
 	{

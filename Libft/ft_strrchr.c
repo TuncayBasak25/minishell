@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 07:52:45 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/17 07:52:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:50:07 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,3 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	return (NULL);
 }
-
-/*
-#include <stdio.h>
-#include <string.h>
-
-int	main(void)
-{
-	//printf("%s\n", ft_strrchr("teste", 357));
-	printf("%s\n", strrchr("teste", 357));
-	return (0);
-}
-*/

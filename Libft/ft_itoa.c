@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 01:32:34 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/19 01:32:35 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:48:26 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,3 @@ char	*ft_itoa(int n)
 	}
 	return (dest);
 }
-
-/*
-#include <stdio.h>
-
-int main(void)
-{
-	int		n;
-	char	*s;
-
-	printf("Entrer un nombre : ");
-	scanf("%d", &n);
-	s = ft_itoa(n);
-	printf("\nNombre : %d\nChaîne de caractères : \"%s\"\n", n, s);
-	free(s);
-	return (0);
-}
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 00:39:48 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/19 00:39:49 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:49:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size = ft_strlcat(dest, s1, size) + ft_strlcat(dest, s2, size);
 	return (dest);
 }
-
-/*
-#include <stdio.h>
-#include <unistd.h>
-
-int main(int argc, char **argv)
-{
-	//char	*sep = "/";
-	char	*dest = ft_strjoin(argc - 2, &argv[2], argv[1]);
-
-	printf("%s\n", dest);
-	//write(1, dest, sizeof(dest));
-	//write(1, "\n", 1);
-	free(dest);
-	return (0);
-}
-*/

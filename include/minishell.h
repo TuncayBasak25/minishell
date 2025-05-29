@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 19:04:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/29 03:44:57 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	load_history(t_shell *data);
 void	save_history(t_shell *data);
 // -----------------------------------------------------------------------------
 
-// --------------------------- GESTIONS DES TABLEAUX ---------------------------
+// ----------------------------- ARRAY MANAGEMENT ------------------------------
 char	**ft_inittab(int size);
 void	*free_tab(char **tab);
 char	*extract_str_from_strs(char **strs, char *find, char sep, \
@@ -119,6 +119,7 @@ void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out);
 // --------------------------------- EXECUTION ---------------------------------
 void	exec(t_shell *data, t_cmd *cmds);
 void	builtin_parent_process(t_shell *data, t_cmd *cmd);
+void	print_error_exec(t_shell *data, t_cmd *cmd);
 void	restore_std_fds(int stdin_fd, int stdout_fd);
 void	wait_exec(t_shell *data);
 int		extract_exit_code(int status);

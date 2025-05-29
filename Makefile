@@ -6,7 +6,7 @@
 #    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/28 19:19:56 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/29 03:42:45 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec
 	src/redirection.c src/remove_all_quotes.c src/sort_and_print_tab.c src/split_limited.c \
 	src/split_whitespace_limited.c src/tab.c src/unset.c src/utils.c src/shlvl.c \
 	src/env_utils.c src/prompt_expanded.c src/skip_white_space.c src/export_utils.c \
-	src/fake_heredoc.c src/history.c src/start_without_env.c src/error.c
+	src/fake_heredoc.c src/history.c src/start_without_env.c src/error.c src/exec_error.c
 
 OBJ = $(SRC:.c=.o)
 

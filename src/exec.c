@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 06:48:21 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/29 03:42:30 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,6 @@ static void	redir_io(t_cmd *cmd)
 	{
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);
-	}
-}
-
-static void	print_error_exec(t_shell *data, t_cmd *cmd)
-{
-	int	slash;
-
-	slash = find_char(cmd->custom_path, '/');
-	if (!cmd->custom_path || access(cmd->custom_path, F_OK) == -1 || \
-	(access(cmd->custom_path, F_OK) == 0 && !slash))
-	{
-		ft_putstr_fd(WHITE"minishell: command not found: ", 2);
-		ft_putstr_fd(*cmd->command, 2);
-		ft_putstr_fd("\n"RESET, 2);
-		data->exit_status = 127;
-	}
-	else
-	{
-		ft_putstr_fd(WHITE"minishell: ", 2);
-		ft_putstr_fd(cmd->custom_path, 2);
-		ft_putstr_fd(": Permission denied\n"RESET, 2);
-		data->exit_status = 126;
 	}
 }
 

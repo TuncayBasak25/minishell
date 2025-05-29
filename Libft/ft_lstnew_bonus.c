@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:34:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/22 22:34:21 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:48:55 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,40 +23,3 @@ t_list	*ft_lstnew(void *content)
 	lst->next = NULL;
 	return (lst);
 }
-
-/*
-#include <stdio.h>
-
-void viderBuffer(void)
-{
-  int c;
-  while((c=getchar()) != EOF && c != '\n');
- 
-}
-
-int main(void)
-{
-	t_list	*lst;
-	char	content[1000];
-	char	*content_copy;
-
-	printf("Contenu de la liste : ");
-	fgets(content, sizeof(content), stdin);
-	//viderBuffer();
-	content_copy = (char *) ft_calloc(ft_strlen(content) + 1, sizeof(char));
-	if (!(content_copy))
-		return (1);
-	(void) ft_strlcpy(content_copy, content, ft_strlen(content));
-	lst = ft_lstnew(content_copy);
-	if (!(lst))
-	{
-		free(content_copy);
-		return (1);
-	}
-	printf("\nLst->content : %s\n", (char *) lst->content);
-	printf("Lst->next : %p\n", lst->next);
-	free(lst->content);
-	free(lst);
-	return (0);
-}
-*/

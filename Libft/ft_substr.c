@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:09:56 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/21 09:09:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:50:23 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +30,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	len = ft_strlcpy(dest, &s[start], len + 1);
 	return (dest);
 }
-
-/*
-#include <stdio.h>
-
-void viderBuffer(void)
-{
-  int c;
-  while((c=getchar()) != EOF && c != '\n');
- 
-}
-
-int main(void)
-{
-	unsigned int	start;
-	size_t			max;
-	char			s[2000];
-	char			*d;
-
-	start = 0;
-	max = 0;
-	printf("Entrer une chaine de caractère : ");
-	scanf("%s", s);
-	viderBuffer();
-	printf("\nIndice de début de copie : ");
-	scanf("%d", &start);
-	viderBuffer();
-	printf("Indice de fin de copie : ");
-	scanf("%ld", &max);
-	viderBuffer();
-	d = ft_substr(s, start, max);
-	printf("\nSource : %s\nCopie : \"%s\"\n", s, d);
-	free(d);
-	return (0);
-}
-*/

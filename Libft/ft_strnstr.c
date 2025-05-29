@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 07:54:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/17 07:54:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:49:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,3 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	}
 	return (0);
 }
-/*
-#include <stdio.h>
-#include<string.h>
-int main()
-{
-	char str[100] = "Hello gkoigjriejriigrflhadjfre grr g rgrgreger";
-	char to_find[100] = "grr";
-	printf("%s\n", ft_strnstr(str, to_find, 5));
-	printf("%s\n", strnstr(str, to_find, 5));
-}
-*/

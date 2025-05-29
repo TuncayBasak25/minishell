@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 07:50:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/17 07:50:37 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:49:42 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	dst[i] = '\0';
 	return (length);
 }
-
-/*
-#include <stdio.h>
-#include <bsd/string.h>
-int main()
-{
-	char src[] = "hello lhadj Ahmed";
-	char dest[] = "hello le kabyle";
-	char src2[] = "hello lhadj Ahmed";
-	char dest2[] = "hello le kabyle";
-	printf("%u\n", ft_strlcpy(dest, src, 0));
-	printf("%s\n", dest);
-	printf("%zu\n", strlcpy(dest2, src2, 0));
-	printf("%s\n", dest2);
-}
-*/

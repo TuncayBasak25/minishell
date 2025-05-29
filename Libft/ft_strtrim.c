@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:45:15 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/21 10:45:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:50:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,50 +25,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 		;
 	return (ft_substr(s1, 0, size + 1));
 }
-
-/*
-#include <stdio.h>
-
-void viderBuffer(void)
-{
-  int c;
-  while((c=getchar()) != EOF && c != '\n');
- 
-}
-
-int main(void)
-{
-	int		choice;
-	char	s[2000];
-	char	set[2000];
-	char	*d;
-	char	*tfixe1 = "   xxx   xxx";
-	char	*tfixe2 = " x";
-
-	printf("(1) Test dynamique\n");
-	printf("(2) Test fixe\n");
-	printf("Choisir : ");
-	scanf("%d", &choice);
-	printf("\n");
-	viderBuffer();
-	if (choice == 1)
-	{
-		printf("Entrer une chaine de caractère : ");
-		scanf("%s", s);
-		viderBuffer();
-		printf("Caractere a retirer : ");
-		scanf("%s", set);
-		viderBuffer();
-		d = ft_strtrim((const char *) s, set);
-		printf("\nSource : %s\nCopie : \"%s\"\n", s, d);
-	}
-	else
-	{
-		d = ft_strtrim((const char *) tfixe1, tfixe2);
-		printf("\nS1 : %s\nS2 : %s\nCopie : \"%s\"\n", tfixe1, tfixe2, d);
-	}
-
-	free(d);
-	return (0);
-}
-*/

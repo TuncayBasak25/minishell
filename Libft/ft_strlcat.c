@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 07:50:57 by rel-hass          #+#    #+#             */
-/*   Updated: 2024/10/17 07:50:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:49:37 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,3 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	*dst = '\0';
 	return (dst_length + src_length);
 }
-
-/*
-#include <stdio.h>
-
-int main()
-{
-	char src[100] = "bbbb";
-	char dest[100] = "aaaaaaaaaaaaaaa";
-	unsigned int size;
-
-	size = 10;
-	printf("%d", ft_strlcat(dest, src, size));
-}
-*/

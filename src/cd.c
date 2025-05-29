@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 11:52:53 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/29 03:21:12 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int	setup_cd(t_shell *data, char **strs)
 		if (strs[2])
 		{
 			data->exit_status = 1;
-			return (ft_putstr_fd(WHITE"minishell: cd: too many arguments\n"\
-				RESET, 2), FAIL);
+			ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+			return (FAIL);
 		}
 		strs[1] = normalize_cd_args(data->env, strs[1], data->env_len);
 	}
@@ -77,7 +77,7 @@ void	print_error_cd(char *path)
 		{
 			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": Permission denied\n"RESET, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
 		}
 	}
 }
