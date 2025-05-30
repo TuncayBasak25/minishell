@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 12:48:03 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:17:29 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	builtin_parent_process(t_shell *data, t_cmd *cmd)
 	if (cmd->fd_out > 2)
 		dup2(cmd->fd_out, STDOUT_FILENO);
 	if (cmd->command && !ft_strncmp(*cmd->command, "exit", 4) && \
-	ft_strlen(*cmd->command) == 4)
+	ft_strlen(*cmd->command) == 4 && isatty(1))
 		printf("exit\n");
 	built_in(data, cmd, stdin_fd, stdout_fd);
 	restore_std_fds(stdin_fd, stdout_fd);

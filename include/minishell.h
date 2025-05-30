@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:44:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:51:19 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 // -----------------------------------------------------------------------------
 
 // ------------------------------ PROMPT HANDLING ------------------------------
+char	*prompt_line(const char *message);
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 int		prompt_handling(t_shell *data);
@@ -138,7 +139,6 @@ int		is_print_path(t_shell *data, char *str);
 // -----------------------------------------------------------------------------
 
 // ---------------------------- CONTROL CHARACTERS -----------------------------
-void	sigint_prompt(int sigid);
 void	sigint_exec(int sigid);
 void	sigint_handler(int sigid);
 void	quit_handler(int sigid);

@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:06:37 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/24 06:52:42 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:48:33 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sigint_prompt(int sigid)
-{
-	g_sig = sigid;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
 
 void	sigint_exec(int sigid)
 {

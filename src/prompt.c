@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 14:34:19 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:03:43 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ void	exit_status_ctrl_c(t_shell *data)
 
 void	ft_readline(t_shell *data)
 {
-	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
-		data->prompt.user_input = readline(data->prompt.prompt);
-	else
-		data->prompt.user_input = readline(PROMPT_DEFAULT);
+	g_sig = SIGINT;
+	while (g_sig == SIGINT)
+		data->prompt.user_input = prompt_line(PROMPT_DEFAULT);
 	if (data->prog_status == 0)
 	{
 		data->nb_line += data->nb_line_heredoc + 1;
@@ -42,11 +41,9 @@ void	ft_readline(t_shell *data)
 int	prompt_handling(t_shell *data)
 {
 	build_prompt(&data->prompt, data->env, data->env_len);
-	signal(SIGINT, sigint_prompt);
 	ft_readline(data);
 	exit_status_ctrl_c(data);
 	data->prog_status = 0;
-	signal(SIGINT, sigint_exec);
 	if (!data->prompt.user_input)
 		exit_shell(data);
 	if (!data->prompt.user_input[0])

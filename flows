@@ -1,0 +1,8 @@
+cat <Makefile
+
+cat <<hey
+test
+op
+hey
+
+<Makefile <<jup cat | ls
