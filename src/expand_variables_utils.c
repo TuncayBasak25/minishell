@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:04:23 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/25 20:08:21 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:13:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 bool	is_valid_var_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
+}
+
+bool	is_valid_expand_char(char c)
+{
+	return ((ft_isalnum(c) || c == '_' || c == '$') && c != '\'' && c != '\"');
 }
 
 char	quote_context_at(const char *str, int pos)

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 19:37:35 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:44:38 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ void	error_access_redirection(t_shell *data, char *cmd, \
 		}
 	}
 	if (utils->result == INPUT)
+		free(data->cmd_group.cmd_list->infile);
+	else if (utils->result == OUTPUT || utils->result == APPEND)
+		free(data->cmd_group.cmd_list->outfile);
+	if (utils->result == INPUT)
 		data->cmd_group.cmd_list->infile = ft_strdup(utils->str);
 	else if (utils->result == OUTPUT || utils->result == APPEND)
 		data->cmd_group.cmd_list->outfile = ft_strdup(utils->str);
@@ -86,19 +90,21 @@ void	get_redirection(t_shell *data, t_utils *utils)
 		data->cmd_group.cmd_list->fd_in = get_fd(data, utils->result, \
 			&utils->str, data->cmd_group.cmd_list->fd_in);
 		if (data->heredoc_quit == 0)
+			free(data->cmd_group.cmd_list->infile);
+		if (data->heredoc_quit == 0)
 			data->cmd_group.cmd_list->infile = ft_strdup(utils->str);
 	}
 	else if (utils->result == OUTPUT || utils->result == APPEND)
 	{
 		data->cmd_group.cmd_list->fd_out = get_fd(data, utils->result, \
 			&utils->str, data->cmd_group.cmd_list->fd_out);
+		free(data->cmd_group.cmd_list->outfile);
 		data->cmd_group.cmd_list->outfile = ft_strdup(utils->str);
 	}
 	if (data->heredoc_quit == 0)
-	{
 		free(data->cmd_group.cmd_list->infile);
+	if (data->heredoc_quit == 0)
 		data->cmd_group.cmd_list->infile = NULL;
-	}
 	free(utils->str);
 }
 

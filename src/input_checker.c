@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 07:14:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 12:49:34 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 11:59:01 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,14 @@ int	valid_input(t_shell *data)
 	}
 	else if (result_prompt != 0)
 	{
+		printf("minishell: syntax error near unexpected token `%c'\n", \
+			result_prompt);
+		if (result_prompt == '<' || result_prompt == '>')
+			fake_heredoc(data, data->prompt.user_input);
 		free(data->prompt.user_input);
 		data->prompt.user_input = NULL;
 		data->exit_status = 2;
-		return (printf("minishell: syntax error near unexpected token `%c'\n", \
-			result_prompt));
+		return (result_prompt);
 	}
 	return (0);
 }

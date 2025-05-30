@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/28 19:17:00 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:28:02 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*expand_var_heredoc(t_shell *data, char *line, char *delimiter)
 	}
 	data->prompt_len_expanded += \
 	calc_expanded_length(data, line, data->env, data->exit_status);
-	return (expand_variables(data, line));
+	return (expand_variables_in_heredoc(data, line));
 }
 
 static void	print_heredoc(t_shell *data, char *line, int fd, char *dnq)

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/24 11:04:28 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:39:03 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	handle_exit(t_shell *data, char *out, char c, int o)
 	return (o);
 }
 
-static int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
+int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 {
 	char	*key;
 	char	*val;
@@ -34,10 +34,10 @@ static int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 	i[0]++;
 	if (input[i[0]] == '?')
 		return (handle_exit(utils->data, utils->out, input[i[0]++], o));
-	if (!is_valid_var_char(input[i[0]]))
+	if (!is_valid_var_char(input[i[0]]) && input[i[0]] != '$')
 		return (utils->out[o++] = '$', o);
 	i[1] = i[0];
-	while (is_valid_var_char(input[i[0]]))
+	while (is_valid_expand_char(input[i[0]]))
 	{
 		i[0]++;
 		if (ft_isdigit(input[i[0] - 1]) && input[i[0] - 2] == '$')
@@ -53,7 +53,7 @@ static int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 	return (o);
 }
 
-static int	handle_tilde(t_utils *utils, size_t *i, int o)
+int	handle_tilde(t_utils *utils, size_t *i, int o)
 {
 	char	*home;
 
@@ -70,15 +70,21 @@ static int	handle_tilde(t_utils *utils, size_t *i, int o)
 
 static void	expand_variables_norme(t_utils *u, char *input)
 {
-	if (input[u->k[0]] == '$'
-		&& quote_context_at(input, u->k[0]) != '\''
-		&& !is_in_heredoc(input, u->k[0]))
+	if (input[u->k[0]] == '$' && quote_context_at(input, u->k[0]) != '\'' && \
+		!is_in_heredoc(input, u->k[0]) && input[u->k[0] + 1] != '\'' && \
+		input[u->k[0] + 1] != '\"')
 		u->o = expand_variable(u, input, u->k, u->o);
 	else if (input[u->k[0]] == '~' && !quote_context_at(input, u->k[0]) && \
 		!is_in_heredoc(input, u->k[0]))
 		u->o = handle_tilde(u, u->k, u->o);
 	else
-		u->out[u->o++] = input[u->k[0]++];
+	{
+		if (input[u->k[0]] == '$' && !quote_context_at(input, u->k[0]) && \
+		(input[u->k[0] + 1] == '\'' || input[u->k[0] + 1] == '\"'))
+			u->k[0]++;
+		else
+			u->out[u->o++] = input[u->k[0]++];
+	}
 }
 
 char	*expand_variables(t_shell *data, char *input)

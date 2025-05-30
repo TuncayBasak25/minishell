@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 03:41:38 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:42:17 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:49:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	print_error_path_exec(t_shell *data, t_cmd *cmd)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->custom_path, 2);
-			ft_putstr_fd(": is a directory\n", 2);
+			ft_putstr_fd(": Is a directory\n", 2);
 		}
 		else
 		{

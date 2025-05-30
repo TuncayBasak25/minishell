@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:44:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:12:08 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,13 @@ char	**split_limited(char *str, char c, char *ignored);
 char	**split_whitespace_limited(char *str, char *ignored);
 void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
+bool	is_valid_expand_char(char c);
 char	quote_context_at(const char *str, int pos);
 int		append_string(char *out, int o, const char *val);
+int		handle_tilde(t_utils *utils, size_t *i, int o);
+int		expand_variable(t_utils *utils, char *input, size_t *i, int o);
 char	*expand_variables(t_shell *data, char *input);
+char	*expand_variables_in_heredoc(t_shell *data, char *input);
 char	*normalize_cd_args(char **env, char *str, int env_len);
 // -----------------------------------------------------------------------------
 
