@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:34:59 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/31 11:28:54 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:12:43 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ char	*prompt_line(const char *message)
 	if (isatty(0))
 		line = readline(message);
 	else
+	{
 		line = get_next_line(0);
+		if (line)
+			line[ft_strlen(line) - 1] = '\0';
+	}
 	if (g_sig == SIGINT)
 	{
 		dup2(save_stdin, 0);
