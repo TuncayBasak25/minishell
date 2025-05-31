@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 12:39:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 05:03:47 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@ int	main(int argc, char const **argv, char **envp)
 {
 	t_shell		data;
 
-	(void)argc;
-	(void)argv;
 	data = (t_shell){0};
+	if (argc > 1)
+	{
+		if (ft_strcmp((char *) argv[1], "-t") == 0)
+			data.test_mode = true;
+		else
+			return (ft_putstr_fd("Usage: ./minishell [-t]\n", 2), 2);
+	}
 	data.env = copy_env(&data, envp);
 	incomplete_env_start(&data, argv[0]);
 	secret_path(&data);

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 14:10:28 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:28:29 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_cmd_group
 
 typedef struct s_shell
 {
+	bool		test_mode;
 	char		**env;
 	int			env_len;
 	int			status;

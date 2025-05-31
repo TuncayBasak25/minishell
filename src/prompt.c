@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 14:34:19 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:31:14 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	exit_status_ctrl_c(t_shell *data)
 
 void	ft_readline(t_shell *data)
 {
-	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
+	if (data->test_mode == true)
+		data->prompt.user_input = readline("");
+	else if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
 		data->prompt.user_input = readline(data->prompt.prompt);
 	else
 		data->prompt.user_input = readline(PROMPT_DEFAULT);
