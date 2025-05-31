@@ -6,7 +6,7 @@
 #    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/31 11:51:00 by tbasak           ###   ########.fr        #
+#    Updated: 2025/05/31 15:38:21 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I./include -I./Libft
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g -I./include -I./Libft
 
 #				Réinitialisation
 RESET=			"\033[0m"
