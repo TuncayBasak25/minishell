@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 06:47:37 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 11:46:11 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,6 @@ void	wait_exec(t_shell *data)
 		}
 		data->pid_wait = waitpid(-1, &data->status, 0);
 	}
-	if (g_sig == 2)
+	if (g_sig == SIGINT)
 		write(1, "\n", 1);
 }

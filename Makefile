@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
+#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/30 12:19:45 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/05/31 11:51:00 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec
 	src/split_whitespace_limited.c src/tab.c src/unset.c src/utils.c src/shlvl.c \
 	src/env_utils.c src/prompt_expanded.c src/skip_white_space.c src/export_utils.c \
 	src/fake_heredoc.c src/history.c src/start_without_env.c src/error.c src/exec_error.c \
-	src/expand_variables_in_heredoc.c
+	src/expand_variables_in_heredoc.c src/prompt_line.c
 
 OBJ = $(SRC:.c=.o)
 
