@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 19:18:08 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 05:13:39 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	print_error_cd(char *path)
 {
 	struct stat	buf;
 
-	if (!path || (access(path, F_OK) == -1))
+	if (!path)
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	else if ((access(path, F_OK) == -1))
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
