@@ -1,0 +1,8 @@
+cat <<hey
+lol
+meh
+hey
+cat | ls
+hey
+lol
+meh
