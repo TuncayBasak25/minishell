@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:50:40 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 14:32:20 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 06:52:16 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,8 @@ void	export(t_shell *data, char **var)
 		if (is_valid_var_char_env(var[i]) == false)
 		{
 			data->exit_status = 1;
-			ft_putstr_fd("minishell: export: « ", 2);
-			ft_putstr_fd(var[i], 2);
-			ft_putstr_fd(" »: not a valid identifier\n", 2);
+			ft_fprintf(2, "minishell: export: « %s »: not a valid \
+identifier\n", var[i]);
 			continue ;
 		}
 		export_var(data, var[i]);

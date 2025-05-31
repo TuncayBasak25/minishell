@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/30 12:28:02 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 06:59:36 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	print_heredoc(t_shell *data, char *line, int fd, char *dnq)
 		ft_putstr_fd("\n", fd);
 	}
 	if (!line && g_sig == 0)
-		printf(HEREDOC_WARNING, data->nb_line, dnq);
+		ft_fprintf(2, HEREDOC_WARNING, data->nb_line, dnq);
 	if (!line && g_sig == 2)
 		printf("\n");
 }

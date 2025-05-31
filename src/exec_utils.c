@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:44:28 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 06:47:37 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,11 @@
 static void	print_error_file(char *filename, int flag, int type)
 {
 	if (type == 1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-	}
+		ft_fprintf(2, "minishell: %s: Is a directory\n", filename);
 	if ((access(filename, F_OK) == -1))
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-	}
+		ft_fprintf(2, "minishell: %s: No such file or directory\n", filename);
 	else if (access(filename, flag) == -1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-	}
+		ft_fprintf(2, "minishell: %s: Permission denied\n", filename);
 }
 
 int	handle_outfile(t_shell *data, t_cmd **cmds)

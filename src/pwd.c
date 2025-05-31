@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 07:34:54 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:12:56 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/31 06:54:24 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	pwd(t_shell *data, char **cmds)
 
 	if (cmds[1] && cmds[1][0] == '-')
 	{
-		ft_putstr_fd(WHITE"minishell: pwd: -: invalid option\n"RESET, 2);
+		ft_putstr_fd("minishell: pwd: -: invalid option\n", 2);
 		data->exit_status = 2;
 		return ;
 	}

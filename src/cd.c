@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 11:41:39 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 05:13:39 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/05/31 06:38:24 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ char	*normalize_cd_args(char **env, char *str, int env_len)
 		{
 			ptr = get_env(env, "OLDPWD=", env_len);
 			if (ptr)
-			{
-				ft_putstr_fd(ptr, 1);
-				ft_putstr_fd("\n", 1);
-			}
+				ft_putendl_fd(ptr, 1);
 		}
 		if (!ptr)
 			return (str);
@@ -47,7 +44,7 @@ static int	setup_cd(t_shell *data, char **strs)
 		if (strs[2])
 		{
 			data->exit_status = 1;
-			ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+			ft_fprintf(2, "minishell: cd: too many arguments\n");
 			return (FAIL);
 		}
 		strs[1] = normalize_cd_args(data->env, strs[1], data->env_len);
@@ -60,27 +57,15 @@ void	print_error_cd(char *path)
 	struct stat	buf;
 
 	if (!path)
-		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		ft_fprintf(2, "minishell: cd: HOME not set\n");
 	else if ((access(path, F_OK) == -1))
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-	}
+		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", path);
 	else if (stat(path, &buf) == 0)
 	{
 		if (S_ISDIR(buf.st_mode) == 0)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": Not a directory\n", 2);
-		}
+			ft_fprintf(2, "minishell: cd: %s: Not a directory\n", path);
 		else if (access(path, X_OK) == -1)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-		}
+			ft_fprintf(2, "minishell: cd: %s: Permission denied\n", path);
 	}
 }
 
