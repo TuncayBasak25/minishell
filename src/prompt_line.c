@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:34:59 by tbasak            #+#    #+#             */
-/*   Updated: 2025/05/31 13:12:43 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:20:05 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*prompt_line(const char *message)
 	else
 	{
 		line = get_next_line(0);
-		if (line)
+		if (line && line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
 	}
 	if (g_sig == SIGINT)
