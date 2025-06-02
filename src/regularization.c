@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:09:27 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 14:09:33 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:01:50 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	regularization(t_shell *data, t_cmd *cmd, char **command)
 	t_utils	utils;
 
 	i = -1;
-	if (!cmd || !cmd->command)
+	if (!cmd || !cmd->command || !command)
 		return ;
 	while (cmd->command[++i])
 	{
