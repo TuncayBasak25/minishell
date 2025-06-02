@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 07:42:02 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:50:32 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_shell(t_shell *data, int exit_prog)
 		data->env_len = 0;
 		free(data->previous_input);
 		free(data->tilde);
+		get_next_line(-1);
 		rl_clear_history();
 	}
 	free_cmd(&data->cmd_group);
