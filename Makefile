@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
+#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/05/31 15:38:21 by tbasak           ###   ########.fr        #
+#    Updated: 2025/06/02 14:13:06 by rel-hass         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,14 @@ SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec
 	src/input_checker.c src/main.c src/prompt.c src/pwd.c src/redirection_utils.c \
 	src/redirection.c src/remove_all_quotes.c src/sort_and_print_tab.c src/split_limited.c \
 	src/split_whitespace_limited.c src/tab.c src/unset.c src/utils.c src/shlvl.c \
-	src/env_utils.c src/prompt_expanded.c src/skip_white_space.c src/export_utils.c \
-	src/fake_heredoc.c src/history.c src/start_without_env.c src/error.c src/exec_error.c \
-	src/expand_variables_in_heredoc.c src/prompt_line.c
+	src/env_utils.c src/skip_white_space.c src/export_utils.c src/fake_heredoc.c src/history.c \
+	src/start_without_env.c src/error.c src/exec_error.c src/expand_variables_in_heredoc.c \
+	src/expand_and_split.c src/regularization.c
 
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g -I./include -I./Libft
+CFLAGS = -Wall -Wextra -Werror -g -I./include -I./Libft
 
 #				Réinitialisation
 RESET=			"\033[0m"

@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 14:29:55 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 02:18:36 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/06/01 02:02:22 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/06/01 02:04:29 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	size_t				i;
-	unsigned char		*d;
-	const unsigned char	*s;
+	void	*new_ptr;
 
-	if (!dest && !src)
+	if (new_size == 0)
+	{
+		free(ptr);
 		return (NULL);
-	d = (unsigned char *)dest;
-	s = (const unsigned char *)src;
-	if (d == s)
-		return (dest);
-	if (d < s)
-	{
-		i = 0;
-		while (i < n)
-		{
-			d[i] = s[i];
-			i++;
-		}
 	}
-	else
+	new_ptr = malloc(new_size);
+	if (!new_ptr)
+		return (ptr);
+	if (ptr)
 	{
-		while (n-- > 0)
-			d[n] = s[n];
+		if (old_size > new_size)
+			old_size = new_size;
+		ft_memmove(new_ptr, ptr, old_size);
+		free(ptr);
 	}
-	return (dest);
+	return (new_ptr);
 }

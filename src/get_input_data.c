@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:14:10 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 21:53:05 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:06:38 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ t_cmd	*init_struct_command(t_shell *data, t_cmd *prev, char *cmd_line, int id)
 	t_cmd	*current;
 
 	current = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
-	if (!current)
-		return (NULL);
+	if (!current || !cmd_line)
+		return (free(current), NULL);
 	current->id = id + 1;
 	current->fd_out = 1;
 	current->line_cmd = get_command(cmd_line);
@@ -114,26 +114,29 @@ t_cmd	*init_struct_command(t_shell *data, t_cmd *prev, char *cmd_line, int id)
 
 void	get_input_data(t_shell *data)
 {
-	int		i;
-	char	**cmds_line;
+	char	**tab;
+	t_utils	u;
 	t_cmd	*prev;
 
-	i = -1;
-	cmds_line = split_limited(data->prompt.user_input, '|', "\'\"");
-	if (!cmds_line)
+	u.i = -1;
+	tab = split_limited(data->prompt.user_input, '|', "\'\"");
+	if (!tab)
 		return ;
 	data->cmd_group.path = find_path(data->env, data->env_len);
 	prev = NULL;
-	while (cmds_line[++i])
+	while (tab[++u.i])
 	{
-		prev = init_struct_command(data, prev, cmds_line[i], i);
+		u.str = get_command(tab[u.i]);
+		tab[u.i] = expand_variables(data, tab[u.i]);
+		u.strs = split_whitespace_limited(u.str, "\'\"");
+		prev = init_struct_command(data, prev, tab[u.i], u.i);
 		if (!prev)
-		{
-			free_tab(cmds_line);
-			return ;
-		}
+			return (free(u.str), (void) free_tab(u.strs), (void) free_tab(tab));
+		regularization(data, prev, u.strs);
+		free_tab(u.strs);
+		free(u.str);
 		if (data->heredoc_quit)
 			break ;
 	}
-	free_tab(cmds_line);
+	free_tab(tab);
 }

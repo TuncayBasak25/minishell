@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:15:49 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/30 12:25:00 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:41:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,20 @@
 
 char	*expand_variables_in_heredoc(t_shell *data, char *input)
 {
-	t_utils	u;
+	size_t	*i;
+	char	*expanded;
 
-	u.input = input;
-	u.o = 0;
-	u.k = (size_t []){0, 0};
+	i = (size_t []){0, 0};
+	expanded = NULL;
 	if (!input || !*input)
 		return (input);
-	u.out = malloc(data->prompt_len_expanded + 1);
-	if (!u.out)
-		return (input);
-	u.strs = data->env;
-	u.len = data->env_len;
-	u.data = data;
-	while (input[u.k[0]])
+	while (input[i[0]])
 	{
-		if (input[u.k[0]] == '$')
-			u.o = expand_variable(&u, input, u.k, u.o);
-		else if (input[u.k[0]] == '~')
-			u.o = handle_tilde(&u, u.k, u.o);
+		if (input[i[0]] == '$')
+			expanded = expand_variable(data, input, expanded, i);
 		else
-			u.out[u.o++] = input[u.k[0]++];
+			expanded = ft_push_char_to_string(expanded, input[i[0]++]);
 	}
-	u.out[u.o] = '\0';
 	free(input);
-	return (u.out);
+	return (expanded);
 }

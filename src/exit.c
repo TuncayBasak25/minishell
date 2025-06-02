@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:21:41 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 06:50:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:50:31 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ static void	exit_is_digit_arg(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		limit = is_ll_overflow(cmds->command[1]);
 	if (!isdigit || limit)
 	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
-			cmds->command[1]);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(cmds->command[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		data->exit_status = 2;
 		restore_std_fds(fd_in, fd_out);
 		free_shell(data, 1);
@@ -86,7 +87,7 @@ void	exit_minishell(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 		exit_is_digit_arg(data, cmds, fd_in, fd_out);
 		if (cmds->command[2])
 		{
-			ft_fprintf(2, "minishell: exit: too many arguments\n");
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			data->exit_status = 1;
 			return ;
 		}

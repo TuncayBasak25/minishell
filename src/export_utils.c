@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:00:15 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/27 06:46:38 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:25:37 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,35 +103,6 @@ void	add_value_to_var(char **env, char *key, char *value, int env_len)
 			free(env[i]);
 			env[i] = new_var;
 			return ;
-		}
-	}
-}
-
-void	print_export(t_shell *data, char **strs, int size)
-{
-	int	i;
-	int	j;
-	int	len;
-
-	i = -1;
-	while (++i < size)
-	{
-		if (strs[i] && strs[i][0] != '_' && is_print_path(data, strs[i]))
-		{
-			ft_putstr_fd("declare -x ", 1);
-			len = ft_strlen(strs[i]);
-			j = -1;
-			while (++j < len)
-			{
-				ft_putchar_fd(strs[i][j], 1);
-				if (strs[i][j] == '=')
-				{
-					printf("\"%s\"\n", &strs[i][j + 1]);
-					break ;
-				}
-				if (!strs[i][j + 1])
-					ft_putchar_fd('\n', 1);
-			}
 		}
 	}
 }

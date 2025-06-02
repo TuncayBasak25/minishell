@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 11:52:59 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:46:59 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_status_ctrl_c(t_shell *data)
 {
-	if (g_sig == SIGINT && data->prog_status == 0)
+	if (g_sig == 2 && data->prog_status == 0)
 	{
 		data->exit_status = 130;
 		data->prev_status_is_ctrl_c = true;
@@ -26,24 +26,12 @@ void	exit_status_ctrl_c(t_shell *data)
 
 void	ft_readline(t_shell *data)
 {
-	char	*message;
-	int		first;
-
-	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
-		message = data->prompt.prompt;
+	if (data->test_mode == true)
+		data->prompt.user_input = readline("");
+	else if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
+		data->prompt.user_input = readline(data->prompt.prompt);
 	else
-		message = PROMPT_DEFAULT;
-	first = 1;
-	while (true)
-	{
-		data->prompt.user_input = prompt_line(message);
-		if (g_sig != SIGINT)
-			break ;
-		if (first)
-			printf("\n");
-		data->nb_line += 1;
-		first = 0;
-	}
+		data->prompt.user_input = readline(PROMPT_DEFAULT);
 	if (data->prog_status == 0)
 	{
 		data->nb_line += data->nb_line_heredoc + 1;
@@ -56,22 +44,22 @@ void	ft_readline(t_shell *data)
 int	prompt_handling(t_shell *data)
 {
 	build_prompt(&data->prompt, data->env, data->env_len);
+	signal(SIGINT, sigint_prompt);
 	ft_readline(data);
 	exit_status_ctrl_c(data);
 	data->prog_status = 0;
-	if (data->prompt.user_input == NULL)
+	signal(SIGINT, sigint_exec);
+	if (!data->prompt.user_input)
 		exit_shell(data);
-	if (data->prompt.user_input[0] == '\0')
+	if (!data->prompt.user_input[0])
 		return (FAIL);
-	save_history(data);
+	if (data->prompt.user_input && data->prompt.user_input[0])
+		save_history(data);
 	if (valid_input(data))
 	{
 		free(data->prompt.user_input);
 		data->prompt.user_input = NULL;
 		return (FAIL);
 	}
-	data->prompt_len_expanded += calc_expanded_length(data, \
-		data->prompt.user_input, data->env, data->exit_status);
-	data->prompt.user_input = expand_variables(data, data->prompt.user_input);
 	return (SUCCESS);
 }

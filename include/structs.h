@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/30 20:28:29 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:32:39 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,19 @@ typedef struct s_utils
 {
 	int				i;
 	int				j;
-	size_t			*k;
-	int				o;
-	int				len;
 	int				start;
-	int				end;
 	int				quote;
 	int				repeat;
 	int				result_tmp;
 	int				result;
-	int				ignore;
 	int				fd;
 	bool			sq;
 	bool			dq;
 	char			operator;
 	char			*str;
-	char			*path;
 	char			*tmp;
-	char			*input;
-	char			*output;
-	char			*out;
 	char			**strs;
-	char			**tmps;
 	const char		*ptr;
-	struct s_shell	*data;
-
 }	t_utils;
 
 typedef struct s_prompt
@@ -85,7 +73,6 @@ typedef struct s_shell
 	int			status;
 	int			exit_status;
 	int			heredoc_quit;
-	int			prompt_len_expanded;
 	int			prog_status;
 	int			nb_line;
 	int			nb_line_heredoc;
@@ -95,6 +82,7 @@ typedef struct s_shell
 	pid_t		pid_last;
 	pid_t		pid_wait;
 	char		*previous_input;
+	char		*tilde;
 	t_prompt	prompt;
 	t_cmd_group	cmd_group;
 }	t_shell;

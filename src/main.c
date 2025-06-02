@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 05:03:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 05:19:44 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char const **argv, char **envp)
 	data.env = copy_env(&data, envp);
 	incomplete_env_start(&data, argv[0]);
 	secret_path(&data);
+	data.tilde = get_env(data.env, "HOME=", data.env_len);
 	signal(SIGQUIT, SIG_IGN);
 	load_history(&data);
 	while (1)

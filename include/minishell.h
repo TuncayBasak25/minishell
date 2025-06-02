@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 11:28:23 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/02 14:12:43 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define HEREDOC_WARNING \
 "minishell: warning: here-document at line %d \
 delimited by end-of-file (wanted `%s')\n"
+# define EASTEREGG "'🏆 CHAMPION MON FRÈRE !!!'"
 # define SUCCESS 0
 # define FAIL 1
 
@@ -51,12 +52,9 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 // -----------------------------------------------------------------------------
 
 // ------------------------------ PROMPT HANDLING ------------------------------
-char	*prompt_line(const char *message);
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 int		prompt_handling(t_shell *data);
-int		calc_expanded_length(t_shell *data, const char *input, char **envp, \
-	int exit_status);
 // -----------------------------------------------------------------------------
 
 // ---------------------------------- PARSING ----------------------------------
@@ -66,16 +64,15 @@ char	**find_path(char **envp, int env_len);
 char	*find_custom_path(const char *cmd, char **paths);
 char	**split_limited(char *str, char c, char *ignored);
 char	**split_whitespace_limited(char *str, char *ignored);
+char	**expand_and_split(t_shell *data, char **argv);
 void	remove_all_quotes(char **tab);
 bool	is_valid_var_char(char c);
 bool	is_valid_expand_char(char c);
 char	quote_context_at(const char *str, int pos);
-int		append_string(char *out, int o, const char *val);
-int		handle_tilde(t_utils *utils, size_t *i, int o);
-int		expand_variable(t_utils *utils, char *input, size_t *i, int o);
+char	*expand_variable(t_shell *data, char *input, char *expanded, size_t *i);
 char	*expand_variables(t_shell *data, char *input);
 char	*expand_variables_in_heredoc(t_shell *data, char *input);
-char	*normalize_cd_args(char **env, char *str, int env_len);
+void	regularization(t_shell *data, t_cmd *cmd, char **command);
 // -----------------------------------------------------------------------------
 
 // -------------------------- ENVIRONMENT MANAGEMENT ---------------------------
@@ -143,6 +140,9 @@ int		is_print_path(t_shell *data, char *str);
 // -----------------------------------------------------------------------------
 
 // ---------------------------- CONTROL CHARACTERS -----------------------------
+void	sigint_prompt(int sigid);
+void	sigint_exec(int sigid);
+void	sigint_handler(int sigid);
 void	quit_handler(int sigid);
 void	handle_sigquit_message(int status, pid_t pid, pid_t last_pid);
 // -----------------------------------------------------------------------------

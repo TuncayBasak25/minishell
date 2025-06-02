@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:23:46 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 18:52:31 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:55:05 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	is_ignored(char c, char *ignored)
 	int	i;
 
 	i = 0;
+	if (!ignored)
+		return (0);
 	while (ignored[i])
 	{
 		if (c == ignored[i])

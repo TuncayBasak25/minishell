@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:04:23 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/30 15:13:16 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:40:36 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	is_valid_var_char(char c)
 
 bool	is_valid_expand_char(char c)
 {
-	return ((ft_isalnum(c) || c == '_' || c == '$') && c != '\'' && c != '\"');
+	return ((ft_isalnum(c) || c == '_') && c != '\'' && c != '\"');
 }
 
 char	quote_context_at(const char *str, int pos)
@@ -43,16 +43,6 @@ char	quote_context_at(const char *str, int pos)
 	else if (dq)
 		return ('"');
 	return (0);
-}
-
-int	append_string(char *dst, int o, const char *val)
-{
-	int	j;
-
-	j = 0;
-	while (val && val[j])
-		dst[o++] = val[j++];
-	return (o);
 }
 
 bool	is_in_heredoc(const char *str, int pos)

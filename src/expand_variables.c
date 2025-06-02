@@ -6,36 +6,44 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 06:12:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/30 16:39:03 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:01:26 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_exit(t_shell *data, char *out, char c, int o)
+static bool	is_expandable_tilde(const char *input, size_t i)
+{
+	return ((i == 0 && (is_ws(input[i + 1]) || input[i + 1] == '/' || \
+	!input[i + 1])) || ((is_ws(input[i + 1]) || input[i + 1] == '/' || \
+	!input[i + 1]) && i > 0 && is_ws(input[i - 1])));
+}
+
+static char	*handle_dollar_exit(t_shell *data, char *expanded, char c)
 {
 	char	*val;
 
-	(void)c;
+	if (c == '$')
+		return (ft_push_string_to_string(expanded, EASTEREGG));
 	val = ft_itoa(data->exit_status);
 	if (!val)
-		return (o);
-	o = append_string(out, o, val);
+		return (expanded);
+	expanded = ft_push_string_to_string(expanded, val);
 	free(val);
-	return (o);
+	return (expanded);
 }
 
-int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
+char	*expand_variable(t_shell *data, char *input, char *expanded, size_t *i)
 {
 	char	*key;
 	char	*val;
 	char	*search;
 
 	i[0]++;
-	if (input[i[0]] == '?')
-		return (handle_exit(utils->data, utils->out, input[i[0]++], o));
+	if (input[i[0]] == '$' || input[i[0]] == '?')
+		return (handle_dollar_exit(data, expanded, input[i[0]++]));
 	if (!is_valid_var_char(input[i[0]]) && input[i[0]] != '$')
-		return (utils->out[o++] = '$', o);
+		return (ft_push_char_to_string(expanded, '$'));
 	i[1] = i[0];
 	while (is_valid_expand_char(input[i[0]]))
 	{
@@ -46,65 +54,48 @@ int	expand_variable(t_utils *utils, char *input, size_t *i, int o)
 	key = ft_substr(input, i[1], i[0] - i[1]);
 	search = ft_strjoin(key, "=");
 	free(key);
-	val = get_env(utils->strs, search, utils->len);
+	val = get_env(data->env, search, data->env_len);
 	free(search);
-	o = append_string(utils->out, o, val);
+	expanded = ft_push_string_to_string(expanded, val);
 	free(val);
-	return (o);
+	return (expanded);
 }
 
-int	handle_tilde(t_utils *utils, size_t *i, int o)
+static char	*expand_variables_norme(t_shell *data, char *input, \
+	char *expanded, size_t *i)
 {
-	char	*home;
-
-	home = get_env(utils->strs, "HOME=", utils->len);
-	if (home)
+	if (input[i[0]] == '$' && quote_context_at(input, i[0]) != '\'' && \
+		!is_in_heredoc(input, i[0]) && input[i[0] + 1] != '\'' && \
+		input[i[0] + 1] != '\"')
+		expanded = expand_variable(data, input, expanded, i);
+	else if (input[i[0]] == '~' && !quote_context_at(input, i[0]) && \
+		!is_in_heredoc(input, i[0]) && is_expandable_tilde(input, i[0]))
 	{
-		o = append_string(utils->out, o, home);
-		free(home);
-		(*i)++;
-		return (o);
+		expanded = ft_push_string_to_string(expanded, data->tilde);
+		i[0]++;
 	}
-	return (utils->out[o++] = utils->input[(*i)++], o);
-}
-
-static void	expand_variables_norme(t_utils *u, char *input)
-{
-	if (input[u->k[0]] == '$' && quote_context_at(input, u->k[0]) != '\'' && \
-		!is_in_heredoc(input, u->k[0]) && input[u->k[0] + 1] != '\'' && \
-		input[u->k[0] + 1] != '\"')
-		u->o = expand_variable(u, input, u->k, u->o);
-	else if (input[u->k[0]] == '~' && !quote_context_at(input, u->k[0]) && \
-		!is_in_heredoc(input, u->k[0]))
-		u->o = handle_tilde(u, u->k, u->o);
 	else
 	{
-		if (input[u->k[0]] == '$' && !quote_context_at(input, u->k[0]) && \
-		(input[u->k[0] + 1] == '\'' || input[u->k[0] + 1] == '\"'))
-			u->k[0]++;
+		if (input[i[0]] == '$' && !quote_context_at(input, i[0]) && \
+		(input[i[0] + 1] == '\'' || input[i[0] + 1] == '\"'))
+			i[0]++;
 		else
-			u->out[u->o++] = input[u->k[0]++];
+			expanded = ft_push_char_to_string(expanded, input[i[0]++]);
 	}
+	return (expanded);
 }
 
 char	*expand_variables(t_shell *data, char *input)
 {
-	t_utils	u;
+	size_t	*i;
+	char	*expanded;
 
-	u.input = input;
-	u.o = 0;
-	u.k = (size_t []){0, 0};
+	expanded = NULL;
+	i = (size_t []){0, 0};
 	if (!input || !*input)
 		return (input);
-	u.out = malloc(data->prompt_len_expanded + 1);
-	if (!u.out)
-		return (input);
-	u.strs = data->env;
-	u.len = data->env_len;
-	u.data = data;
-	while (input[u.k[0]])
-		expand_variables_norme(&u, input);
-	u.out[u.o] = '\0';
+	while (input[i[0]])
+		expanded = expand_variables_norme(data, input, expanded, i);
 	free(input);
-	return (u.out);
+	return (expanded);
 }

@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 09:01:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/31 06:30:55 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:15:34 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,9 @@ void	ft_swap(char **a, char **b);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strndup(const char *src, int n);
 int		ft_fprintf(int fd, const char *format, ...);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+char	*ft_push_char_to_string(char *str, char c);
+char	*ft_push_string_to_string(char *str, const char *to_add);
+char	**ft_strsdup(char **tab);
 
 #endif

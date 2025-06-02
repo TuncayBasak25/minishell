@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_strsdup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 14:29:55 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 02:18:36 by rel-hass         ###   ########.fr       */
+/*   Created: 2025/06/01 13:11:04 by rel-hass          #+#    #+#             */
+/*   Updated: 2025/06/01 16:25:51 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+char	**ft_strsdup(char **tab)
 {
-	size_t				i;
-	unsigned char		*d;
-	const unsigned char	*s;
+	size_t	i;
+	char	**new_tab;
 
-	if (!dest && !src)
+	if (!tab)
 		return (NULL);
-	d = (unsigned char *)dest;
-	s = (const unsigned char *)src;
-	if (d == s)
-		return (dest);
-	if (d < s)
+	i = 0;
+	while (tab[i])
+		i++;
+	new_tab = (char **) malloc(sizeof(char *) * (i + 1));
+	if (!new_tab)
+		return (NULL);
+	i = -1;
+	while (tab[++i])
 	{
-		i = 0;
-		while (i < n)
+		new_tab[i] = ft_strdup(tab[i]);
+		if (!new_tab[i])
 		{
-			d[i] = s[i];
-			i++;
+			while (i > 0)
+				free(new_tab[--i]);
+			free(new_tab);
+			return (NULL);
 		}
 	}
-	else
-	{
-		while (n-- > 0)
-			d[n] = s[n];
-	}
-	return (dest);
+	new_tab[i] = NULL;
+	return (new_tab);
 }
