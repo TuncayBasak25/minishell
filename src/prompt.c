@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 07:42:24 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:40:06 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_readline(t_shell *data)
 	first = 1;
 	while (true)
 	{
-		data->prompt.user_input = prompt_line(message);
+		data->prompt.user_input = prompt_line(data, message);
 		if (g_sig != SIGINT)
 			break ;
 		if (first)

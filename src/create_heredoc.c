@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/06/03 08:55:55 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:39:34 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	read_heredoc(t_shell *data, char *delimiter, char *dnq, int pipe)
 	data->nb_line_heredoc = 0;
 	while (true)
 	{
-		line = prompt_line("> ");
+		line = prompt_line(data, "> ");
 		if (line == NULL || ft_strcmp(line, dnq) == 0)
 			break ;
 		line = expand_var_heredoc(data, line, delimiter);

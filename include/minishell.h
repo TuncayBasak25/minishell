@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 07:52:46 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:38:15 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 int		prompt_handling(t_shell *data);
-char	*prompt_line(const char *message);
+char	*prompt_line(t_shell *data, const char *message);
 // -----------------------------------------------------------------------------
 
 // ---------------------------------- PARSING ----------------------------------

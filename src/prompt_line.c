@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:34:59 by tbasak            #+#    #+#             */
-/*   Updated: 2025/06/03 08:55:20 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:39:04 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ static void	sigint_close_stdin(int sigid)
 	close(0);
 }
 
-static void	setup_signals(void)
+static void	setup_signals(t_shell *data)
 {
 	g_sig = 0;
 	signal(SIGQUIT, signal_notify);
 	signal(SIGINT, sigint_close_stdin);
+	if (data->tester_pid)
+		kill(data->tester_pid, SIGUSR1);
 }
 
-char	*prompt_line(const char *message)
+char	*prompt_line(t_shell *data, const char *message)
 {
 	int		save_stdin;
 	char	*line;
@@ -40,7 +42,7 @@ char	*prompt_line(const char *message)
 	save_stdin = dup(0);
 	if (save_stdin == -1)
 		return (NULL);
-	setup_signals();
+	setup_signals(data);
 	if (isatty(0))
 		line = readline(message);
 	else
