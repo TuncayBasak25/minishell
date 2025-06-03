@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 16:40:06 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 21:45:52 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,32 @@ void	exit_status_ctrl_c(t_shell *data)
 	g_sig = 0;
 }
 
+static char	*message(t_shell *data)
+{
+	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
+		return (data->prompt.prompt);
+	return (PROMPT_DEFAULT);
+}
+
 void	ft_readline(t_shell *data)
 {
-	char	*message;
-	int		first;
+	int	first;
 
-	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
-		message = data->prompt.prompt;
-	else
-		message = PROMPT_DEFAULT;
-	first = 1;
+	first = !data->heredoc_quit;
 	while (true)
 	{
-		data->prompt.user_input = prompt_line(data, message);
+		data->prompt.user_input = prompt_line(data, message(data));
 		if (g_sig != SIGINT)
 			break ;
-		if (first)
+		if (data->heredoc_unexpected)
+			printf("\n\n");
+		else if (first)
 			printf("\n");
 		data->nb_line += 1;
 		first = 0;
 	}
+	data->heredoc_unexpected = false;
+	data->heredoc_quit = 0;
 	if (data->prog_status == 0)
 	{
 		data->nb_line += data->nb_line_heredoc + 1;

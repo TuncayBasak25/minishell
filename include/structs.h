@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 16:36:37 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 21:43:37 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_shell
 	int			status;
 	int			exit_status;
 	int			heredoc_quit;
+	bool		heredoc_unexpected;
 	int			prog_status;
 	int			nb_line;
 	int			nb_line_heredoc;

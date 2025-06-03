@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 12:44:55 by tbasak            #+#    #+#             */
-/*   Updated: 2025/06/03 16:39:34 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 21:43:54 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ static void	print_heredoc(t_shell *data, char *line, int fd, char *dnq)
 	if (line)
 		ft_putendl_fd(line, fd);
 	if (!line && g_sig != SIGINT)
+	{
 		ft_fprintf(2, HEREDOC_WARNING, data->nb_line, dnq);
+		data->heredoc_unexpected = true;
+	}
 	if (!line && g_sig == SIGINT)
 		printf("\n");
 }

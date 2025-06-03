@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 07:38:23 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 21:39:51 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,4 @@ void	exec(t_shell *data, t_cmd *cmds)
 		cmds = cmds->next;
 	}
 	wait_exec(data);
-	signal(SIGQUIT, SIG_IGN);
 }
