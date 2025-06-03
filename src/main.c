@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 05:19:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 07:49:02 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	read_and_parse_input(t_shell *data)
 	return (SUCCESS);
 }
 
-int	g_sig = 0;
-
 int	main(int argc, char const **argv, char **envp)
 {
 	t_shell		data;
@@ -49,7 +47,6 @@ int	main(int argc, char const **argv, char **envp)
 	incomplete_env_start(&data, argv[0]);
 	secret_path(&data);
 	data.tilde = get_env(data.env, "HOME=", data.env_len);
-	signal(SIGQUIT, SIG_IGN);
 	load_history(&data);
 	while (1)
 	{

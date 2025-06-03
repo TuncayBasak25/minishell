@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 14:12:43 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 07:52:46 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ delimited by end-of-file (wanted `%s')\n"
 # define SUCCESS 0
 # define FAIL 1
 
-extern int	g_sig;
+extern volatile sig_atomic_t	g_sig;
 
 typedef enum e_operateur
 {
@@ -55,6 +55,7 @@ char	*extract_str_from_strs(char **strs, char *find, char sep, \
 void	build_prompt(t_prompt *prompt, char **envp, int env_len);
 int		valid_input(t_shell *data);
 int		prompt_handling(t_shell *data);
+char	*prompt_line(const char *message);
 // -----------------------------------------------------------------------------
 
 // ---------------------------------- PARSING ----------------------------------
@@ -124,7 +125,6 @@ void	builtin_parent_process(t_shell *data, t_cmd *cmd);
 void	print_error_exec(t_shell *data, t_cmd *cmd);
 void	restore_std_fds(int stdin_fd, int stdout_fd);
 void	wait_exec(t_shell *data);
-int		extract_exit_code(int status);
 // -----------------------------------------------------------------------------
 
 // ----------------------------------- UTILS -----------------------------------
@@ -137,14 +137,6 @@ int		skip_whitespace(const char *str, int i);
 int		is_whitespace(char c);
 int		is_ws(char c);
 int		is_print_path(t_shell *data, char *str);
-// -----------------------------------------------------------------------------
-
-// ---------------------------- CONTROL CHARACTERS -----------------------------
-void	sigint_prompt(int sigid);
-void	sigint_exec(int sigid);
-void	sigint_handler(int sigid);
-void	quit_handler(int sigid);
-void	handle_sigquit_message(int status, pid_t pid, pid_t last_pid);
 // -----------------------------------------------------------------------------
 
 // ----------------------------- SHELL MANAGEMENT -----------------------------

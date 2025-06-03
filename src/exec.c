@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:42:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 07:38:23 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 		exit(EXIT_FAILURE);
 	if (data->pid_last == 0)
 	{
-		signal(SIGQUIT, SIG_DFL);
 		if (prev_fd != -1)
 		{
 			dup2(prev_fd, STDIN_FILENO);
@@ -70,7 +69,6 @@ static void	fork_and_setup_pipeline_stage(t_shell *data, t_cmd \
 		}
 		exec_cmd(data, cmds);
 	}
-	signal(SIGQUIT, quit_handler);
 	if (prev_fd != -1)
 		close(prev_fd);
 }
