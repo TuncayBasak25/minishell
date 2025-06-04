@@ -6,7 +6,7 @@
 #    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/06/03 07:54:19 by tbasak           ###   ########.fr        #
+#    Updated: 2025/06/04 09:06:43 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ clean:
 fclean: clean
 	@make -C Libft fclean
 	@echo ${BYELLOW}"[INFO] CLEANING EXECUTABLE..."${RESET}
-	@rm -f $(NAME) .minishell_history || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
+	@rm -f $(NAME) /tmp/minishell_history || (echo ${BRED}"[ERROR] EXECUTABLE CLEANING FAILED !"${RESET} && exit 1)
 	@echo ${BGREEN}"[SUCCESS] EXECUTABLE CLEANED."${RESET}
 
 re: fclean all

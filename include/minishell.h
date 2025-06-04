@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 07:33:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 16:38:15 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/04 09:03:35 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "structs.h"
 
 # define PROMPT_DEFAULT "minishell$ "
-# define TMP_HISTORY ".minishell_history"
+# define TMP_HISTORY "/tmp/minishell_history"
 # define MINIMAL_PATH \
 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define HEREDOC_WARNING \

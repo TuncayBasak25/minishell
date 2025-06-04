@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bot.c                                              :+:      :+:    :+:   */
+/*   tester.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 20:53:58 by tbasak            #+#    #+#             */
-/*   Updated: 2025/06/03 16:43:51 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/04 08:58:25 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ static void	minishell(const char *tester_pid)
 	execl("/bin/valgrind", \
 		"valgrind", \
 		"--track-fds=yes", \
+		"--leak-check=full", \
+		"--show-leak-kinds=all", \
+		"--track-origins=yes", \
+		"--trace-children=yes", \
+		"--suppressions=readline.supp", \
+		"-s", \
 		"./minishell", \
 		tester_pid, \
 		NULL);
