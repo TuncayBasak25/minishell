@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/04 08:37:10 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/04 09:29:36 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ typedef struct s_cmd_group
 
 typedef struct s_shell
 {
-	pid_t		tester_pid;
 	char		**env;
 	int			env_len;
 	int			status;
