@@ -6,23 +6,11 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 21:45:52 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/04 07:07:38 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	exit_status_ctrl_c(t_shell *data)
-{
-	if (g_sig == SIGINT && data->prog_status == 0)
-	{
-		data->exit_status = 130;
-		data->prev_status_is_ctrl_c = true;
-	}
-	else
-		data->prev_status_is_ctrl_c = false;
-	g_sig = 0;
-}
 
 static char	*message(t_shell *data)
 {
@@ -63,7 +51,6 @@ int	prompt_handling(t_shell *data)
 {
 	build_prompt(&data->prompt, data->env, data->env_len);
 	ft_readline(data);
-	exit_status_ctrl_c(data);
 	data->prog_status = 0;
 	if (data->prompt.user_input == NULL)
 		exit_shell(data);

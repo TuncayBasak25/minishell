@@ -6,7 +6,7 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:34:59 by tbasak            #+#    #+#             */
-/*   Updated: 2025/06/03 21:23:42 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/04 07:09:07 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ char	*prompt_line(t_shell *data, const char *message)
 	char	*line;
 
 	save_stdin = dup(0);
-	if (save_stdin == -1)
-		return (NULL);
 	setup_signals(data);
 	if (isatty(0))
 		line = readline(message);
@@ -56,6 +54,7 @@ char	*prompt_line(t_shell *data, const char *message)
 		dup2(save_stdin, 0);
 		free(line);
 		line = NULL;
+		data->exit_status = 130;
 	}
 	close(save_stdin);
 	signal(SIGQUIT, signal_notify);
