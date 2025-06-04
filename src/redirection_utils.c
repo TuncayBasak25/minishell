@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 05:18:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/25 19:05:57 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:34:52 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	start_and_end(char *cmd, int *s, int *e)
 	end = start;
 	if (cmd[start] == '\"' || cmd[start] == '\'')
 		skip_redir_quotes(cmd, &start, &end);
-	else
+	else if (cmd[end])
 	{
 		while (cmd[++end] && !is_whitespace(cmd[end]) && \
 			cmd[end] != '<' && cmd[end] != '>')

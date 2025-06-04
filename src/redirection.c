@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:50:51 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/30 16:44:38 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 05:42:36 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	error_access_redirection(t_shell *data, char *cmd, \
 			utils->tmp = get_filename(&cmd[utils->i], &utils->i);
 			utils->fd = create_heredoc_fd(data, &utils->tmp);
 			free(utils->tmp);
-			close(utils->fd);
+			ft_close(utils->fd);
 			if (data->heredoc_quit)
 				break ;
 		}
@@ -124,9 +124,9 @@ int	redirection(t_shell *data, char *cmd)
 		utils.str = get_filename(&cmd[utils.i], &utils.i);
 		utils.result = utils.result_tmp;
 		remove_quotes(&utils.str, utils.result);
-		if ((utils.result == INPUT && access(utils.str, F_OK | R_OK) == -1) || \
-		((utils.result_tmp == OUTPUT || utils.result_tmp == APPEND) && \
-		access(utils.str, F_OK) == 0 && access(utils.str, W_OK) == -1))
+		if (utils.str && (((utils.result_tmp == OUTPUT || utils.result_tmp == \
+		APPEND) && access(utils.str, F_OK) == 0 && access(utils.str, W_OK) == \
+		-1) || (utils.result == INPUT && access(utils.str, F_OK | R_OK) == -1)))
 		{
 			error_access_redirection(data, cmd, &utils);
 			break ;

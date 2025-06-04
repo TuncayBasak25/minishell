@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 20:56:03 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:33:43 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 static void	print_error_file(char *filename, int flag, int type)
 {
-	if (type == 1)
+	if (!filename)
+		return ;
+	if (*filename && type)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 	}
-	if (!filename || (access(filename, F_OK) == -1))
+	else if (!*filename || (access(filename, F_OK) == -1))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
@@ -38,8 +40,8 @@ int	handle_outfile(t_shell *data, t_cmd **cmds)
 {
 	struct stat	buf;
 
-	if (((*cmds)->outfile && access((*cmds)->outfile, F_OK | W_OK) == -1) || \
-		(!stat((*cmds)->outfile, &buf) && S_ISDIR(buf.st_mode) == 1))
+	if ((*cmds)->outfile && ((!stat((*cmds)->outfile, &buf) && \
+	S_ISDIR(buf.st_mode)) || access((*cmds)->outfile, F_OK | W_OK) == -1))
 	{
 		print_error_file((*cmds)->outfile, W_OK, S_ISDIR(buf.st_mode));
 		if (!(*cmds)->prev || (*cmds)->command)

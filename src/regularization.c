@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:09:27 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 15:01:50 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 07:41:50 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	regularization(t_shell *data, t_cmd *cmd, char **command)
 			return ;
 		if (!find_char(command[i], '\"') && !find_char(command[i], '\'') && \
 		find_char(command[i], '$') && (find_char(cmd->command[i], ' ') || \
-		find_char(cmd->command[i], '\t')))
+		find_char(cmd->command[i], '\t') || !cmd->command[i][0]))
 		{
 			command[i] = expand_variables(data, command[i]);
 			if (ft_strcmp(cmd->command[0], "export"))

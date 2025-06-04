@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:38:43 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/29 03:42:30 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:31:11 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	redir_io(t_cmd *cmd)
 static void	exec_cmd(t_shell *data, t_cmd *cmd)
 {
 	redir_io(cmd);
-	if (!cmd->command || !is_builtin(cmd->command[0]))
+	if (!cmd->command || is_builtin(cmd->command[0]))
 	{
 		built_in(data, cmd, -1, -1);
 		free_shell(data, 1);
@@ -86,7 +86,7 @@ void	exec(t_shell *data, t_cmd *cmds)
 		if (handle_infile(data, &cmds) || handle_outfile(data, &cmds))
 			continue ;
 		if (!cmds->prev && !cmds->next && (!cmds->command || \
-			!is_builtin(cmds->command[0])))
+			is_builtin(cmds->command[0])))
 		{
 			builtin_parent_process(data, cmds);
 			cmds = cmds->next;

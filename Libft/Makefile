@@ -5,7 +5,7 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_strlen
 	  ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c \
 	  ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_strcmp.c ft_swap.c\
 	  get_next_line_utils.c get_next_line.c ft_strndup.c ft_fprintf.c ft_putnbr_base_fd.c \
-	  ft_realloc.c ft_push_char_to_string.c ft_push_string_to_string.c ft_strsdup.c
+	  ft_realloc.c ft_push_char_to_string.c ft_push_string_to_string.c ft_strsdup.c ft_close.c
 
 BONUS = ${SRC} ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \
 		ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
@@ -20,22 +20,22 @@ CFLAGS = -Wall -Wextra -Werror
 all: ${NAME}
 
 ${OBJ}:
-	${CC} ${CFLAGS} -I${INC} -c ${@:.o=.c} -o ${@:.c=.o}
+	@${CC} ${CFLAGS} -I${INC} -c ${@:.o=.c} -o ${@:.c=.o}
 
 ${NAME} : ${OBJ}
-	ar rcs ${NAME} ${OBJ}
+	@ar rcs ${NAME} ${OBJ}
 
 clean:
-	rm -rf ${OBJB}
+	@rm -rf ${OBJB}
 
 fclean: clean
-	rm -rf ${NAME}
+	@rm -rf ${NAME}
 
 re: fclean all
 
 bonus: ${OBJB}
-	ar rcs ${NAME} ${OBJB}
+	@ar rcs ${NAME} ${OBJB}
 
 so:
-	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
-	gcc -nostartfiles -shared -o libft.so $(OBJB)
+	@$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
+	@gcc -nostartfiles -shared -o libft.so $(OBJB)

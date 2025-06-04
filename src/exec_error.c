@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 03:41:38 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 20:47:47 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 05:37:13 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	print_error_path_exec(t_shell *data, t_cmd *cmd)
 {
 	struct stat	buf;
 
-	if ((access(cmd->custom_path, F_OK) == -1))
+	if (cmd->custom_path && (access(cmd->custom_path, F_OK) == -1))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->custom_path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		data->exit_status = 127;
 	}
-	else if (stat(cmd->custom_path, &buf) == 0)
+	else if (cmd->custom_path && stat(cmd->custom_path, &buf) == 0)
 	{
 		data->exit_status = 126;
 		if (S_ISDIR(buf.st_mode) == 1)
@@ -48,9 +48,8 @@ void	print_error_exec(t_shell *data, t_cmd *cmd)
 	slash = find_char(*cmd->command, '/');
 	if (!slash)
 	{
-		ft_putstr_fd("minishell: command not found: ", 2);
 		ft_putstr_fd(*cmd->command, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd(": command not found\n", 2);
 		data->exit_status = 127;
 	}
 	else

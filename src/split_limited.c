@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:37:14 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/28 18:51:58 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 08:09:40 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,31 @@ static int	is_ignored(char c, char *ignored)
 
 static int	counts_word(char *s, char sep, char *ignored)
 {
-	int	i;
-	int	count;
-	int	ignore;
-	int	in_word;
+	int		in_word;
+	t_utils	u;
 
-	i = 0;
-	count = 0;
-	ignore = 0;
+	u.i = 0;
+	u.count = 0;
+	u.ignore = 0;
 	in_word = 0;
-	while (s && s[i])
+	while (s && s[u.i])
 	{
-		if (is_ignored(s[i], ignored) && !ignore)
-			ignore = s[i];
-		else if (s[i] == ignore)
-			ignore = 0;
-		if (!ignore && s[i] != sep && !in_word)
+		if (is_ignored(s[u.i], ignored) && !u.ignore)
+			u.ignore = s[u.i];
+		else if (s[u.i] == u.ignore)
+			u.ignore = 0;
+		if (!u.ignore && s[u.i] != sep && !in_word)
 		{
 			in_word = 1;
-			count++;
+			u.count++;
 		}
-		else if (!ignore && s[i] == sep)
+		else if (!u.ignore && s[u.i] == sep)
 			in_word = 0;
-		i++;
+		u.i++;
 	}
-	return (count);
+	if (u.ignore)
+		u.count++;
+	return (u.count);
 }
 
 static char	*ft_wrdcpy(char **dest, const char *s, int size)

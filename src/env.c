@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:48:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 01:19:53 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:09:56 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,17 @@ int	print_error_env(t_shell *data, char **cmds)
 	}
 	else if (cmds[1] && cmds[1][0] != '-')
 	{
-		ft_putstr_fd("env: «", 2);
+		ft_putstr_fd("env: '", 2);
 		ft_putstr_fd(cmds[1], 2);
-		ft_putstr_fd("»: No such file or directory\n", 2);
+		ft_putstr_fd("': No such file or directory\n", 2);
 		data->exit_status = 127;
 		return (1);
 	}
 	else if (cmds[1] && cmds[1][0] == '-' && cmds[1][1] == '-' && cmds[1][2])
 	{
-		ft_putstr_fd("env: option « ", 2);
+		ft_putstr_fd("env: unrecognized option ' ", 2);
 		ft_putstr_fd(cmds[1], 2);
-		ft_putstr_fd(" » not recognized\n", 2);
+		ft_putstr_fd("'\n", 2);
 		data->exit_status = 125;
 		return (1);
 	}

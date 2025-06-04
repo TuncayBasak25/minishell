@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: rel-hass <rel-hass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:20 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/26 12:48:03 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:30:33 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,29 @@
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strncmp(cmd, "echo", 4) && ft_strlen(cmd) == 4)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "cd", 2) && ft_strlen(cmd) == 2)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "pwd", 3) && ft_strlen(cmd) == 3)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "export", 6) && ft_strlen(cmd) == 6)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "unset", 5) && ft_strlen(cmd) == 5)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "env", 3) && ft_strlen(cmd) == 3)
-		return (SUCCESS);
-	else if (!ft_strncmp(cmd, "exit", 4) && ft_strlen(cmd) == 4)
-		return (SUCCESS);
-	return (FAIL);
+	return (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || \
+	ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0 || \
+	ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0 || \
+	ft_strcmp(cmd, "exit") == 0);
 }
 
 void	built_in(t_shell *data, t_cmd *cmds, int fd_in, int fd_out)
 {
 	if (!cmds->command)
 		return ;
-	if (!ft_strncmp(*cmds->command, "echo", 4) && \
-		ft_strlen(*cmds->command) == 4)
+	if (ft_strcmp(*cmds->command, "echo") == 0)
 		echo(data, cmds->command);
-	else if (!ft_strncmp(*cmds->command, "cd", 2) && \
-		ft_strlen(*cmds->command) == 2)
+	else if (ft_strcmp(*cmds->command, "cd") == 0)
 		cd(data, cmds->command, &data->prompt);
-	else if (!ft_strncmp(*cmds->command, "pwd", 3) && \
-		ft_strlen(*cmds->command) == 3)
+	else if (ft_strcmp(*cmds->command, "pwd") == 0)
 		pwd(data, cmds->command);
-	else if (!ft_strncmp(*cmds->command, "export", 6) && \
-		ft_strlen(*cmds->command) == 6)
+	else if (ft_strcmp(*cmds->command, "export") == 0)
 		export(data, &cmds->command[1]);
-	else if (!ft_strncmp(*cmds->command, "unset", 5) && \
-		ft_strlen(*cmds->command) == 5)
+	else if (ft_strcmp(*cmds->command, "unset") == 0)
 		unset(data, &cmds->command[1]);
-	else if (!ft_strncmp(*cmds->command, "env", 3) && \
-		ft_strlen(*cmds->command) == 3)
+	else if (ft_strcmp(*cmds->command, "env") == 0)
 		environnement(data, cmds->command, data->env, data->env_len);
-	else if (!ft_strncmp(*cmds->command, "exit", 4) && \
-		ft_strlen(*cmds->command) == 4)
+	else if (ft_strcmp(*cmds->command, "exit") == 0)
 		exit_minishell(data, cmds, fd_in, fd_out);
 }
 

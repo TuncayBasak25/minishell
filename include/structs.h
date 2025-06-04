@@ -6,7 +6,7 @@
 /*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 13:32:39 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 07:44:42 by rel-hass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ typedef struct s_utils
 {
 	int				i;
 	int				j;
+	int				ignore;
+	int				count;
 	int				start;
 	int				quote;
 	int				repeat;
