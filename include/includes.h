@@ -6,12 +6,14 @@
 /*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 11:18:50 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/05/20 13:01:23 by tbasak           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:27:44 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INCLUDES_H
 # define INCLUDES_H
+
+# define _POSIX_C_SOURCE 200809L
 
 # include <unistd.h>
 # include <stdlib.h>

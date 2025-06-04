@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+         #
+#    By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 09:07:35 by tbasak            #+#    #+#              #
-#    Updated: 2025/06/02 14:13:06 by rel-hass         ###   ########.fr        #
+#    Updated: 2025/06/03 07:54:19 by tbasak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC = src/built_in.c src/cd.c src/create_heredoc.c src/echo.c src/env.c src/exec_utils.c \
 	src/exec.c src/exit.c src/expand_variables_utils.c src/expand_variables.c src/export.c \
-	src/find_char.c src/free.c src/get_input_data.c src/get_prompt.c src/handlers.c \
+	src/find_char.c src/free.c src/get_input_data.c src/get_prompt.c src/prompt_line.c \
 	src/input_checker.c src/main.c src/prompt.c src/pwd.c src/redirection_utils.c \
 	src/redirection.c src/remove_all_quotes.c src/sort_and_print_tab.c src/split_limited.c \
 	src/split_whitespace_limited.c src/tab.c src/unset.c src/utils.c src/shlvl.c \

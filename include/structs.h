@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:36:05 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/04 07:44:42 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 08:37:10 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,13 @@ typedef struct s_cmd_group
 
 typedef struct s_shell
 {
-	bool		test_mode;
+	pid_t		tester_pid;
 	char		**env;
 	int			env_len;
 	int			status;
 	int			exit_status;
 	int			heredoc_quit;
+	bool		heredoc_unexpected;
 	int			prog_status;
 	int			nb_line;
 	int			nb_line_heredoc;

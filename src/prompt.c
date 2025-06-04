@@ -3,35 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 14:49:16 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 13:46:59 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 07:07:38 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_status_ctrl_c(t_shell *data)
+static char	*message(t_shell *data)
 {
-	if (g_sig == 2 && data->prog_status == 0)
-	{
-		data->exit_status = 130;
-		data->prev_status_is_ctrl_c = true;
-	}
-	else
-		data->prev_status_is_ctrl_c = false;
-	g_sig = 0;
+	if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
+		return (data->prompt.prompt);
+	return (PROMPT_DEFAULT);
 }
 
 void	ft_readline(t_shell *data)
 {
-	if (data->test_mode == true)
-		data->prompt.user_input = readline("");
-	else if (data->prompt.prompt && ft_strlen(data->prompt.prompt) < 100)
-		data->prompt.user_input = readline(data->prompt.prompt);
-	else
-		data->prompt.user_input = readline(PROMPT_DEFAULT);
+	int	first;
+
+	first = !data->heredoc_quit;
+	while (true)
+	{
+		data->prompt.user_input = prompt_line(data, message(data));
+		if (g_sig != SIGINT)
+			break ;
+		if (data->heredoc_unexpected)
+			printf("\n\n");
+		else if (first)
+			printf("\n");
+		data->nb_line += 1;
+		first = 0;
+	}
+	data->heredoc_unexpected = false;
+	data->heredoc_quit = 0;
 	if (data->prog_status == 0)
 	{
 		data->nb_line += data->nb_line_heredoc + 1;
@@ -44,17 +50,13 @@ void	ft_readline(t_shell *data)
 int	prompt_handling(t_shell *data)
 {
 	build_prompt(&data->prompt, data->env, data->env_len);
-	signal(SIGINT, sigint_prompt);
 	ft_readline(data);
-	exit_status_ctrl_c(data);
 	data->prog_status = 0;
-	signal(SIGINT, sigint_exec);
-	if (!data->prompt.user_input)
+	if (data->prompt.user_input == NULL)
 		exit_shell(data);
-	if (!data->prompt.user_input[0])
+	if (data->prompt.user_input[0] == '\0')
 		return (FAIL);
-	if (data->prompt.user_input && data->prompt.user_input[0])
-		save_history(data);
+	save_history(data);
 	if (valid_input(data))
 	{
 		free(data->prompt.user_input);

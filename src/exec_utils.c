@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:00:35 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/03 18:33:43 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/04 08:32:37 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,28 +92,28 @@ int	handle_infile(t_shell *data, t_cmd **cmds)
 	return (SUCCESS);
 }
 
-int	extract_exit_code(int status)
-{
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (1);
-}
-
 void	wait_exec(t_shell *data)
 {
-	data->pid_wait = waitpid(-1, &data->status, 0);
-	while (data->pid_wait > 0)
+	data->pid_wait = 1;
+	while (data->pid_wait > -1)
 	{
+		data->pid_wait = waitpid(-1, &data->status, 0);
+		if (data->pid_wait == -1 && g_sig != 0)
+			data->pid_wait = waitpid(-1, &data->status, 0);
 		if (data->pid_wait == data->pid_last)
 		{
-			data->exit_status = extract_exit_code(data->status);
-			handle_sigquit_message(data->status, data->pid_wait, \
-				data->pid_last);
+			if (WIFEXITED(data->status))
+				data->exit_status = WEXITSTATUS(data->status);
+			else if (WIFSIGNALED(data->status))
+			{
+				if (g_sig == SIGQUIT)
+					write(1, "Quit\n", 5);
+				data->exit_status = 128 + WTERMSIG(data->status);
+			}
+			else
+				data->exit_status = 1;
 		}
-		data->pid_wait = waitpid(-1, &data->status, 0);
 	}
 	if (g_sig == SIGINT)
-		write(1, "\n", 1);
+		printf("\n");
 }

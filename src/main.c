@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 07:10:11 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/01 05:19:44 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:37:03 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,27 @@ int	read_and_parse_input(t_shell *data)
 	return (SUCCESS);
 }
 
-int	g_sig = 0;
+static int	parse_pid(const char *cstr)
+{
+	int	pid;
+	int	mypid;
+
+	if (!cstr)
+		return (0);
+	pid = 0;
+	mypid = getpid();
+	while (cstr[0] >= '0' && cstr[0] <= '9')
+	{
+		pid *= 10;
+		pid += cstr[0] - '0';
+		if (pid >= mypid)
+			return (0);
+		cstr++;
+	}
+	if (cstr[0])
+		return (0);
+	return ((int)pid);
+}
 
 int	main(int argc, char const **argv, char **envp)
 {
@@ -40,16 +60,17 @@ int	main(int argc, char const **argv, char **envp)
 	data = (t_shell){0};
 	if (argc > 1)
 	{
-		if (ft_strcmp((char *) argv[1], "-t") == 0)
-			data.test_mode = true;
-		else
-			return (ft_putstr_fd("Usage: ./minishell [-t]\n", 2), 2);
+		data.tester_pid = parse_pid(argv[1]);
+		if (data.tester_pid == 0)
+		{
+			printf("Invalid tester pid[%s]!\n", argv[1]);
+			return (1);
+		}
 	}
 	data.env = copy_env(&data, envp);
 	incomplete_env_start(&data, argv[0]);
 	secret_path(&data);
 	data.tilde = get_env(data.env, "HOME=", data.env_len);
-	signal(SIGQUIT, SIG_IGN);
 	load_history(&data);
 	while (1)
 	{

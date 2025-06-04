@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hass <rel-hass@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: tbasak <tbasak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:59:02 by rel-hass          #+#    #+#             */
-/*   Updated: 2025/06/02 14:50:32 by rel-hass         ###   ########.fr       */
+/*   Updated: 2025/06/03 21:45:15 by tbasak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,5 @@ void	free_shell(t_shell *data, int exit_prog)
 	free_cmd(&data->cmd_group);
 	free_prompt(&data->prompt);
 	data->prompt = (t_prompt){0};
-	data->heredoc_quit = 0;
 	data->prev_status_is_ctrl_d = false;
 }

@@ -1,0 +1,8 @@
+cd src
+ls
+cd ../..
+ls
+cd -
+ls
+cd ..
+cat <Makefile
